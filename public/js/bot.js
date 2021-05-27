@@ -7,9 +7,11 @@ var mineCountdownFinishTime = new Date().getTime();
 var loginCountdownFinishTime = new Date().getTime();
 var interval;
 var isMining = false;
+var totalget = 0.0;
+var minedCount = 0;
 function updateState(state) {
     document.getElementById("status").textContent = state;
-    document.title = userAccount + ': ' + state;
+    document.title = state + ': ' + userAccount;
 }
 
 function updateNextMine(delay) {
@@ -151,7 +153,11 @@ async function miner() {
         try {
             console.log(`account:${userAccount} || answer:${nonce}`);
             result = await claim2(userAccount, nonce);
-            document.getElementById("last_mine").textContent = result;
+            totalget += result;
+            minedCount +=1;
+            let currdate = new Date();
+            document.getElementById("last_mine").textContent = result +' at '+currdate.getHours()+':'+currdate.getMinutes()+':'+currdate.getSeconds();
+            document.getElementById("toal_get").textContent = totalget +' TLM with'+ minedCount +'Times';
             clearTimer();
         } catch (error) {
             updateState('error')
