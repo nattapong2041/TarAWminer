@@ -107,9 +107,11 @@ function get_current_tlm(userAccount) {
 async function run() {
     isWork = true;
     var running = document.getElementById("running");
-    running.textContent = isWork
+
     while (isWork) {
+        running.textContent = isWork
         if (!isMining) {
+            clearTimer();
             console.log('--- start mining ---');
             isMining = true
             //calculate delay
@@ -125,8 +127,7 @@ async function run() {
             updateState('charging')
             updateNextMine(totalDelay)
             mineCountdownFinishTime = new Date().getTime() + totalDelay;
-            interval = setInterval(chargingCountdownfunction, 1000);  
-
+            interval = setInterval(chargingCountdownfunction, 1000);
         }
         await sleep(1000);
     }
@@ -191,13 +192,10 @@ async function miner() {
             }
         }
         if (result != null) {
-            isMining = false
             updateState('mining success sleeping')
             await sleep(10000);
-        } else {
-            isMining = false
-            isWork = false;
         }
+        isMining = false
     }
 }
 function handleError(error) {
