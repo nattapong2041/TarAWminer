@@ -141,18 +141,24 @@ async function miner() {
     updateState('mining');
     mineCountdownFinishTime = new Date().getTime() + mineCountdownTime;
     interval = setInterval(miningCountdownfunction, 1000);
-    let w = nameToInt(userAccount);
-    w = w.slice(0, 8);
-    // let bgm = await background_mine2(userAccount);
-    // console.log(String(bgm))
-    let url = 'https://server-mine-b7clrv20.an.gateway.dev/server_mine?wallet=' + userAccount;
-    let nonce = await fetch(url).then(response => response.text())
+    let nonce = null
+    try{
+        nonce = await ninja_server_mine(userAccount);
+    }catch(err){
+        console.log('Cannot mine from ninja: '+ err);
+        try{
+            nonce = await self_mine(userAccount);
+        }catch(err){
+            console.log('Cannot self mining: ' + err);
+            nonce=null;
+        }
+    }
     if (nonce != null) {
         updateState('claiming')
         let result = null
         try {
             console.log(`account:${userAccount} || answer:${nonce}`);
-            result = await claim2(userAccount, nonce);
+            result = await claim(userAccount, nonce);
             totalget += parseFloat(result.replace(" TLM", ""));
             minedCount +=1;
             let currdate = new Date();

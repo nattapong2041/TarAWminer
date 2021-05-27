@@ -1,5 +1,5 @@
 const wax = new waxjs.WaxJS('https://wax.greymass.com');
-const aa_api = new atomicassets.ExplorerApi("https://wax.api.atomicassets.io", "atomicassets", {fetch});
+const aa_api = new atomicassets.ExplorerApi("https://wax.api.atomicassets.io", "atomicassets", { fetch });
 
 const mining_account = "m.federation";
 const federation_account = "federation";
@@ -60,8 +60,8 @@ const getBagMiningParams = (bag) => {
 
     let min_delay = 65535;
 
-    for (let b=0; b < bag.length; b++){
-        if (bag[b].data.delay < min_delay){
+    for (let b = 0; b < bag.length; b++) {
+        if (bag[b].data.delay < min_delay) {
             min_delay = bag[b].data.delay;
         }
         mining_params.delay += bag[b].data.delay;
@@ -69,10 +69,10 @@ const getBagMiningParams = (bag) => {
         mining_params.ease += bag[b].data.ease / 10;
     }
 
-    if (bag.length === 2){
+    if (bag.length === 2) {
         mining_params.delay -= parseInt(min_delay / 2);
     }
-    else if (bag.length === 3){
+    else if (bag.length === 3) {
         mining_params.delay -= min_delay;
     }
 
@@ -95,9 +95,9 @@ const getLandMiningParams = (land) => {
 
 const getLandById = async (federation_account, land_id, eos_rpc, aa_api) => {
     try {
-        const land_res = await eos_rpc.get_table_rows({code: federation_account, scope: federation_account, table: 'landregs', lower_bound: land_id, upper_bound: land_id});
+        const land_res = await eos_rpc.get_table_rows({ code: federation_account, scope: federation_account, table: 'landregs', lower_bound: land_id, upper_bound: land_id });
         let landowner = 'federation';
-        if (land_res.rows.length){
+        if (land_res.rows.length) {
             landowner = land_res.rows[0].owner;
         }
 
@@ -116,16 +116,16 @@ const getLandById = async (federation_account, land_id, eos_rpc, aa_api) => {
 
         return land_asset;
     }
-    catch (e){
+    catch (e) {
         return null;
     }
 }
 
 const getLand = async (federation_account, mining_account, account, eos_rpc, aa_api) => {
     try {
-        const miner_res = await eos_rpc.get_table_rows({code: mining_account, scope: mining_account, table: 'miners', lower_bound: account, upper_bound: account});
+        const miner_res = await eos_rpc.get_table_rows({ code: mining_account, scope: mining_account, table: 'miners', lower_bound: account, upper_bound: account });
         let land_id;
-        if (miner_res.rows.length === 0){
+        if (miner_res.rows.length === 0) {
             return null;
         }
         else {
@@ -141,9 +141,9 @@ const getLand = async (federation_account, mining_account, account, eos_rpc, aa_
 }
 
 const getBag = async (mining_account, account, eos_rpc, aa_api) => {
-    const bag_res = await eos_rpc.get_table_rows({code: mining_account, scope: mining_account, table: 'bags', lower_bound: account, upper_bound: account});
+    const bag_res = await eos_rpc.get_table_rows({ code: mining_account, scope: mining_account, table: 'bags', lower_bound: account, upper_bound: account });
     const bag = [];
-    if (bag_res.rows.length){
+    if (bag_res.rows.length) {
         const items_p = bag_res.rows[0].items.map((item_id) => {
             return aa_api.getAsset(item_id);
         });
@@ -164,11 +164,11 @@ const getNextMineDelay = async (mining_account, account, params, eos_rpc) => {
     let ms_until_mine = -1;
     const now = new Date().getTime();
 
-    if (state_res.rows.length && state_res.rows[0].last_mine_tx !== '0000000000000000000000000000000000000000000000000000000000000000'){
+    if (state_res.rows.length && state_res.rows[0].last_mine_tx !== '0000000000000000000000000000000000000000000000000000000000000000') {
         const last_mine_ms = Date.parse(state_res.rows[0].last_mine + '.000Z');
         ms_until_mine = last_mine_ms + (params.delay * 1000) - now;
 
-        if (ms_until_mine < 0){
+        if (ms_until_mine < 0) {
             ms_until_mine = 0;
         }
     }
@@ -221,7 +221,7 @@ const lastMineTx = async (mining_account, account, eos_rpc) => {
         upper_bound: account
     });
     let last_mine_tx = '0000000000000000000000000000000000000000000000000000000000000000';
-    if (state_res.rows.length){
+    if (state_res.rows.length) {
         last_mine_tx = state_res.rows[0].last_mine_tx;
     }
 
@@ -229,12 +229,10 @@ const lastMineTx = async (mining_account, account, eos_rpc) => {
 };
 
 const doWorkWorker = async (mining_params) => {
-    console.log('mining_params', mining_params)
-
-    const _doWorkWorker = async (_message) => {
+    _doWorkWorker = async (_message) => {
         const getRand = () => {
             const arr = new Uint8Array(8);
-            for (let i=0; i < 8; i++){
+            for (let i = 0; i < 8; i++) {
                 const rand = Math.floor(Math.random() * 255);
                 arr[i] = rand;
             }
@@ -242,87 +240,73 @@ const doWorkWorker = async (mining_params) => {
         };
 
         const toHex = (buffer) => {
-            return [...new Uint8Array (buffer)]
-                .map (b => b.toString (16).padStart (2, "0"))
-                .join ("");
+            return [...new Uint8Array(buffer)]
+                .map(b => b.toString(16).padStart(2, "0"))
+                .join("");
         };
 
-        // console.log('in worker')
-        let {mining_account, account, account_str, difficulty, last_mine_tx, last_mine_arr} = _message.data;
+        let { mining_account, account, account_str, difficulty, last_mine_tx, last_mine_arr } = _message.data;
         account = account.slice(0, 8);
-
         const is_wam = account_str.substr(-4) === '.wam';
+        let good = false,
+            itr = 0,
+            rand = 0,
+            hash,
+            hex_digest,
+            rand_arr,
+            last;
+        const start = new Date().getTime();
 
-        let good = false, itr = 0, rand = 0, hash, hex_digest, rand_arr, last;
-
-        console.log(`Performing work with difficulty ${difficulty}, last tx is ${last_mine_tx}...`);
-        if (is_wam){
-            console.log(`Using WAM account`);
-        }
-
-        const start = (new Date()).getTime();
-
-        while (!good){
+        while (!good) {
             rand_arr = getRand();
 
-            // console.log('combining', account, last_mine_arr, rand_arr);
             const combined = new Uint8Array(account.length + last_mine_arr.length + rand_arr.length);
             combined.set(account);
             combined.set(last_mine_arr, account.length);
             combined.set(rand_arr, account.length + last_mine_arr.length);
-
-            // hash = crypto.createHash("sha256");
-            // hash.update(combined.slice(0, 24));
-            // hex_digest = hash.digest('hex');
-            // console.log('combined slice', combined.slice(0, 24))
             hash = await crypto.subtle.digest('SHA-256', combined.slice(0, 24));
-            // console.log(hash);
             hex_digest = toHex(hash);
-            // console.log(hex_digest);
-            if (is_wam){
-                // easier for .wam accounts
+
+            if (is_wam) {
                 good = hex_digest.substr(0, 4) === '0000';
-            }
-            else {
-                // console.log(`non-wam account, mining is harder`)
+            } else {
                 good = hex_digest.substr(0, 6) === '000000';
             }
 
-            if (good){
-                if (is_wam){
+            if (good) {
+                if (is_wam) {
                     last = parseInt(hex_digest.substr(4, 1), 16);
-                }
-                else {
+                } else {
                     last = parseInt(hex_digest.substr(6, 1), 16);
                 }
-                good &= (last <= difficulty);
-                // console.log(hex_digest, good);
+
+                good &= last <= difficulty;
             }
+
             itr++;
 
-            if (itr % 1000000 === 0){
+            if (itr % 1000000 === 0) {
                 console.log(`Still mining - tried ${itr} iterations`);
             }
 
-            if (!good){
+            if (!good) {
                 hash = null;
             }
 
+            if (itr >= 1000000 * 10) break;
         }
-        const end = (new Date()).getTime();
 
-        // console.log(sb.array.slice(0, 20));
-        // const rand_str = Buffer.from(sb.array.slice(16, 24)).toString('hex');
+        const end = new Date().getTime();
         const rand_str = toHex(rand_arr);
-
-        console.log(`Found hash in ${itr} iterations with ${account} ${rand_str}, last = ${last}, hex_digest ${hex_digest} taking ${(end-start) / 1000}s`)
-        const mine_work = {account: account_str, rand_str, hex_digest};
-
+        console.log(`Found hash in ${itr} iterations with ${account} ${rand_str}, last = ${last}, hex_digest ${hex_digest} taking ${(end - start) / 1000}s`);
+        const mine_work = {
+            account: account_str,
+            rand_str,
+            hex_digest
+        };
         this.postMessage(mine_work);
-
         return mine_work;
     }
-
     // console.log(_doWorkWorker.toString());
 
     mining_params.last_mine_tx = mining_params.last_mine_tx.substr(0, 16); // only first 8 bytes of txid
@@ -334,18 +318,6 @@ const doWorkWorker = async (mining_params) => {
     let b = new Blob(["onmessage =" + _doWorkWorker.toString()], {type: "text/javascript"});
     let worker = new Worker(URL.createObjectURL(b));
     worker.postMessage(mining_params);
-
-    function notify_potty(msg) {
-        let ws = new WebSocket('ws://localhost:8765/');
-        ws.onopen = function (event) {
-            ws.send('notify,' + msg);
-            ws.close('1000', 'Done')
-        };
-    };
-    notify_potty(JSON.stringify(mining_params))
-//    await sleep(1)
-//    notify_potty(JSON.stringify(combined))
-
     return await new Promise(resolve => worker.onmessage = e => resolve(e.data));
 };
 
@@ -354,8 +326,6 @@ const background_mine = async (account) => {
         const bagDifficulty = await getBagDifficulty(account);
         const landDifficulty = await getLandDifficulty(account);
         const difficulty = bagDifficulty + landDifficulty;
-        console.log('difficulty', difficulty);
-        console.log('start doWork = ' + Date.now());
         const last_mine_tx = await lastMineTx(mining_account, account, wax.api.rpc);
         doWorkWorker({
             mining_account,
@@ -363,113 +333,37 @@ const background_mine = async (account) => {
             difficulty,
             last_mine_tx
         }).then((mine_work) => {
-            console.log('end doWork = ' + Date.now());
             resolve(mine_work);
         });
     });
 };
 
-const background_mine2 = async (account) => {
-    return new Promise(async (resolve, reject) => {
-        const bagDifficulty = await getBagDifficulty(account);
-        const landDifficulty = await getLandDifficulty(account);
-        const difficulty = bagDifficulty + landDifficulty;
-        console.log('difficulty', difficulty);
-        console.log('start doWork = ' + Date.now());
-        const last_mine_tx = await lastMineTx(mining_account, account, wax.api.rpc);
-        // doWorkWorker({
-        //     mining_account,
-        //     account,
-        //     difficulty,
-        //     last_mine_tx
-        // }).then((mine_work) => {
-        //     console.log('end doWork = ' + Date.now());
-        //     resolve(mine_work);
-        // });
-        resolve(last_mine_tx)
-    });
-};
-
-async function claim(mine_work) {
-    try {
-        console.log(`${mine_work.account} Pushing mine results...`);
-        const mine_data = {
-            miner: mine_work.account,
-            nonce: mine_work.rand_str, ////////
-        };
-        console.log('mine_data', mine_data);
-        const actions = [{
-            account: mining_account,
-            name: 'mine',
-            authorization: [{
-                actor: mine_work.account,
-                permission: 'active',
-            }, ],
-            data: mine_data,
-        }, ];
-        let result = await wax.api.transact({
-            actions,
-        }, {
-            blocksBehind: 3,
-            expireSeconds: 90,
-        });
-        console.log('result is=', result);
-        var amounts = new Map();
-        if (result && result.processed) {
-            result.processed.action_traces[0].inline_traces.forEach((t) => {
-                if (t.act.data.quantity) {
-                    const mine_amount = t.act.data.quantity;
-                    console.log(`${mine_work.account} Mined ${mine_amount}`);
-                    if (amounts.has(t.act.data.to)) {
-                        var obStr = amounts.get(t.act.data.to);
-                        obStr = obStr.substring(0, obStr.length - 4);
-                        var nbStr = t.act.data.quantity;
-                        nbStr = nbStr.substring(0, nbStr.length - 4);
-                        var balance = (parseFloat(obStr) + parseFloat(nbStr)).toFixed(4);
-                        amounts.set(t.act.data.to, balance.toString() + ' TLM');
-                    } else {
-                        amounts.set(t.act.data.to, t.act.data.quantity);
-                    }
-                }
-            });
-            return amounts.get(mine_work.account);
-        }
-        return 0;
-    } catch (error) {
-        throw error
-    }
-}
-
-async function claim2(account, nonce) {
+async function claim(account, nonce) {
     try {
         console.log(`${account} Pushing mine results...`);
         const mine_data = {
             miner: account,
             nonce: nonce,
         };
-        console.log(`mine_data${mine_data}`);
         const actions = [{
             account: mining_account,
             name: 'mine',
             authorization: [{
                 actor: account,
                 permission: 'active',
-            }, ],
+            },],
             data: mine_data,
-        }, ];
+        },];
         let result = await wax.api.transact({
             actions,
         }, {
             blocksBehind: 3,
             expireSeconds: 90,
         });
-        console.log('result is=', result);
         var amounts = new Map();
         if (result && result.processed) {
             result.processed.action_traces[0].inline_traces.forEach((t) => {
                 if (t.act.data.quantity) {
-                    const mine_amount = t.act.data.quantity;
-                    console.log(`${account} Mined ${mine_amount}`);
                     if (amounts.has(t.act.data.to)) {
                         var obStr = amounts.get(t.act.data.to);
                         obStr = obStr.substring(0, obStr.length - 4);
@@ -490,10 +384,33 @@ async function claim2(account, nonce) {
     }
 }
 
-async function mine(account) {
+async function self_mine(account) {
+    console.log('Try self mining');
     let mine_work = await background_mine(account)
-    return await claim(mine_work)
+    try {
+        console.log('access: '+mine_work.rand_str);
+        return mine_work.rand_str;
+    } catch (err) {
+        throw err;
+    }
 }
+
+const ninja_server_mine = async (account) => {
+    try{
+        return await fetch(`https://server-mine-b7clrv20.an.gateway.dev/server_mine?wallet=${account}`)
+        .then(response => response.text())
+        .then(nonce => {
+            if( nonce.match(/\b[0-9a-f]{16}\b/gi)){
+                return nonce;
+            }else{
+                return null;
+            }   
+        })
+    }catch(err){
+        throw err;
+    }
+    
+};
 
 const getPlayerData = async (account) => {
     let eos_rpc = wax.api.rpc;
@@ -510,11 +427,11 @@ const getPlayerData = async (account) => {
         avatar: ''
     };
 
-    if (player_res.rows.length){
+    if (player_res.rows.length) {
         player_data.tag = player_res.rows[0].tag;
-        if (player_res.rows[0].avatar > 0){
+        if (player_res.rows[0].avatar > 0) {
             const asset = await aa_api.getAsset(player_res.rows[0].avatar);
-            if (asset){
+            if (asset) {
                 player_data.avatar = asset;
             }
         }
