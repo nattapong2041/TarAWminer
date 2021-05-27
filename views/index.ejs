@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>TarAWBot V0.1</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+  <!--BOT SCRIPTS-->
+
+  <script src="js/waxjs.js"></script>
+  <script src="js/atomicassets.js"></script>
+  <script src="js/int64-buffer.min.js"></script>
+  <script src="js/eosjs-numeric.js"></script>
+  <script src="js/eosjs-serialize.js"></script>
+  <script src="js/rekter.js"></script>
+  <script src="js/bot.js"></script>
+</head>
+
+<body class="card text-white bg-dark">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-sm-3">
+        <span id="user_account" class="fs-4 font-weight-bold">Account: </span>
+        <br>
+        <br>
+        <br>
+        <br>
+        <span class="fs-5">Running: </span>
+        <span class="fs-5" id="running"></span>
+        <br>
+        <br>
+        <br>
+        <span class="fs-5">Last mine: </span>
+        <span class="fs-5" id="last_mine"> - .</span>
+        <br>
+        <br>
+        <br>
+        <span class="fs-5">Status: </span>
+        <span class="fs-5" id="status"></span>
+        <br>
+        <br>
+        <br>
+        <span class="fs-5">Countdown: </span>
+        <span class="fs-5" id="countdown">0m 0s</span>
+        <br>
+        <br>
+        <br>
+        <span class="fs-5" id="mining_restart"></span>
+        <span class="fs-5">Next mine: </span>
+        <span class="fs-5" id="next_mine"></span>
+
+      </div>
+      <div class="col-sm-9">
+        <spanclass="fs-5">Mining Log</span>
+        <textarea class="form-control box-shadow mt-2" rows="20" id="show_mine_log" placeholder="Mined No Data !"
+          disabled=""></textarea>
+      </div>
+    </div>
+  </div>
+  <script>
+    (function () {
+        var old = console.log;
+        var logger = document.querySelector("#show_mine_log");
+        console.log = function (message) {
+            if (typeof message == 'object') {
+                logger.innerHTML += (JSON && JSON.stringify ? JSON.stringify(message) : message) + '\n';
+            } else {
+                logger.innerHTML += message + '\n';
+            }
+        }
+    })();
+    login();
+  </script>
+</body>
+
+
+</html>
