@@ -42,8 +42,8 @@ async function chargingCountdownfunction() {
     document.getElementById("countdown").innerHTML = minutes + "m " + seconds + "s " + 'before mine';
     if (distance < 0) {
         clearTimer();
-        await miner();
         document.getElementById("countdown").innerHTML = "trying to mine";
+        await miner();  
     }
 }
 
@@ -55,7 +55,7 @@ async function miningCountdownfunction() {
     document.getElementById("countdown").innerHTML = minutes + "m " + seconds + "s " + 'before new mine';
     if (distance < 0) {
         clearTimer();
-        restart();
+        restart();  
         document.getElementById("countdown").innerHTML = "restarting";
     }
 }
@@ -153,11 +153,11 @@ async function miner() {
         try {
             console.log(`account:${userAccount} || answer:${nonce}`);
             result = await claim2(userAccount, nonce);
-            totalget += result;
+            totalget += parseFloat(result.replace(" TLM", ""));
             minedCount +=1;
             let currdate = new Date();
             document.getElementById("last_mine").textContent = result +' at '+currdate.getHours()+':'+currdate.getMinutes()+':'+currdate.getSeconds();
-            document.getElementById("toal_get").textContent = totalget +' TLM with'+ minedCount +'Times';
+            document.getElementById("toal_get").textContent = totalget +' TLM with '+ minedCount +' Times';
             clearTimer();
         } catch (error) {
             updateState('error')
@@ -200,8 +200,8 @@ async function miner() {
         if (result != null) {
             updateState('mining success sleeping')
             await sleep(10000);
+            isMining = false;
         }
-        isMining = false
     }
 }
 function handleError(error) {
