@@ -1,6 +1,6 @@
 var isWork = false;
 var errorDelay = 5 * (60 * 1000);
-var cpuDelay = 30 * (60 * 1000);
+var cpuDelay = 5 * (60 * 1000);
 var mineCountdownTime = 3 * (60 * 1000);
 var loginCountdownTime = 3 * (60 * 1000);
 var mineCountdownFinishTime = new Date().getTime();
@@ -109,9 +109,9 @@ function get_current_tlm(userAccount) {
 async function run() {
     isWork = true;
     var running = document.getElementById("running");
-
     while (isWork) {
         running.textContent = isWork
+        
         if (!isMining) {
             clearTimer();
             console.log('--- start mining ---');
@@ -153,6 +153,7 @@ async function miner() {
             nonce=null;
         }
     }
+    nonce=0;
     if (nonce != null) {
         updateState('claiming')
         let result = null
