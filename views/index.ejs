@@ -140,9 +140,9 @@
   <script>
     (function () {
       var old = console.log;
-      let currdate = new Date();
       var logger = document.querySelector("#show_mine_log");
       console.log = function (message) {
+        let currdate = new Date();
         if (typeof message == 'object') {
           logger.value = currdate.getDay() + '/' + currdate.getMonth() + '/' + currdate.getFullYear() + ' ' + currdate.getHours() + ':' + currdate.getMinutes() + ':' + currdate.getSeconds() + ':: ' + (JSON && JSON.stringify ? JSON.stringify(message) : message) + "\n" + logger.value;
         } else {
