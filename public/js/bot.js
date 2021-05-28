@@ -32,7 +32,7 @@ function sleep(ms) {
 
 function updateAccount(userAccount) {
     document.getElementById("user_account").textContent = userAccount;
-    document.getElementById("wax_bloks").href = 'https://wax.bloks.io/'+userAccount
+    document.getElementById("wax_bloks").href = 'https://wax.bloks.io/account/'+userAccount
     document.getElementById("atomic_hub").href = 'https://wax.atomichub.io/profile/'+userAccount
 }
 
