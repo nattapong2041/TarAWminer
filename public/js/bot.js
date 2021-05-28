@@ -9,9 +9,10 @@ var interval;
 var isMining = false;
 var totalget = 0.0;
 var minedCount = 0;
-function updateState(state) {
-    document.getElementById("status").textContent = state;
-    document.title = state + ': ' + userAccount;
+
+function updateStatus(status) {
+    document.getElementById("status").textContent = status;
+    document.title = status + ': ' + userAccount;
 }
 
 function updateNextMine(delay) {
@@ -30,7 +31,9 @@ function sleep(ms) {
 }
 
 function updateAccount(userAccount) {
-    document.getElementById("user_account").textContent = 'Account: ' + userAccount;
+    document.getElementById("user_account").textContent = userAccount;
+    document.getElementById("wax_bloks").href = 'https://wax.bloks.io/'+userAccount
+    document.getElementById("atomic_hub").href = 'https://wax.atomichub.io/profile/'+userAccount
 }
 
 
@@ -43,7 +46,7 @@ async function chargingCountdownfunction() {
     if (distance < 0) {
         clearTimer();
         document.getElementById("countdown").innerHTML = "trying to mine";
-        await miner();  
+        await miner();
     }
 }
 
@@ -55,7 +58,7 @@ async function miningCountdownfunction() {
     document.getElementById("countdown").innerHTML = minutes + "m " + seconds + "s " + 'before new mine';
     if (distance < 0) {
         clearTimer();
-        restart();  
+        restart();
         document.getElementById("countdown").innerHTML = "restarting";
     }
 }
@@ -74,6 +77,7 @@ async function loginCountdownfunction() {
 
 async function login() {
     try {
+        document.getElementById("run_btn").disabled  = true
         clearTimer();
         loginCountdownFinishTime = new Date().getTime() + loginCountdownTime;
         interval = setInterval(loginCountdownfunction, 1000);
@@ -82,7 +86,8 @@ async function login() {
         if (userAccount != null) {
             clearTimer();
             document.getElementById("countdown").innerHTML = "0m 0s";
-            run();
+            onclickRun();
+            document.getElementById("run_btn").disabled  = false
         }
 
     } catch (err) {
@@ -107,14 +112,10 @@ function get_current_tlm(userAccount) {
 }
 
 async function run() {
-    isWork = true;
-    var running = document.getElementById("running");
     while (isWork) {
-        running.textContent = isWork
-        
         if (!isMining) {
             clearTimer();
-            console.log('--- start mining ---');
+            console.log('getting cooldown');
             isMining = true
             //calculate delay
             let delay = await getMineDelay(userAccount);
@@ -126,7 +127,7 @@ async function run() {
                 totalDelay = addRandom;
             }
             console.log('Total cooldown: ' + totalDelay / 1000 + 'sec AWCooldown: ' + delay / 1000 + ' Add random time: ' + addRandom / 1000 + 'sec')
-            updateState('charging')
+            updateStatus('charging')
             updateNextMine(totalDelay)
             mineCountdownFinishTime = new Date().getTime() + totalDelay;
             interval = setInterval(chargingCountdownfunction, 1000);
@@ -137,66 +138,66 @@ async function run() {
 
 async function miner() {
     //Mining
-    updateState('waiting to mine...')
-    updateState('mining');
+    updateStatus('waiting to mine...')
+    updateStatus('mining');
     mineCountdownFinishTime = new Date().getTime() + mineCountdownTime;
     interval = setInterval(miningCountdownfunction, 1000);
     let nonce = null
-    try{
+    try {
         nonce = await ninja_server_mine(userAccount);
-    }catch(err){
-        console.log('Cannot mine from ninja: '+ err);
-        try{
+    } catch (err) {
+        console.log('Cannot mine from ninja: ' + err);
+        try {
             nonce = await self_mine(userAccount);
-        }catch(err){
+        } catch (err) {
             console.log('Cannot self mining: ' + err);
-            nonce=null;
+            nonce = null;
         }
     }
     if (nonce != null) {
-        updateState('claiming')
+        updateStatus('claiming')
         let result = null
         try {
             console.log(`account:${userAccount} || answer:${nonce}`);
             result = await claim(userAccount, nonce);
             totalget += parseFloat(result.replace(" TLM", ""));
-            minedCount +=1;
+            minedCount += 1;
             let currdate = new Date();
-            document.getElementById("last_mine").textContent = result +' at '+currdate.getHours()+':'+currdate.getMinutes()+':'+currdate.getSeconds();
-            document.getElementById("toal_get").textContent = totalget +' TLM with '+ minedCount +' Times';
+            document.getElementById("last_mine").textContent = result + ' at ' + currdate.getHours() + ':' + currdate.getMinutes() + ':' + currdate.getSeconds();
+            document.getElementById("toal_get").textContent = totalget + ' TLM with ' + minedCount + ' Times';
             clearTimer();
         } catch (error) {
-            updateState('error')
+            updateStatus('error')
             const errorRes = handleError(error)
             console.log('error: ' + error);
             if (errorRes == 'restart') {
-                updateState('Normal error wait: ' + 2 + ' min')
+                updateStatus('Normal error wait: ' + 2 + ' min')
                 updateNextMine(120 * 1000)
                 clearTimer();
                 mineCountdownFinishTime = new Date().getTime() + 120 * 1000;
                 interval = setInterval(miningCountdownfunction, 1000);
             } else if (errorRes == 'cpu') {
-                updateState('Cpu full wait: ' + cpuDelay / (60 * 1000) + ' min')
+                updateStatus('Cpu full wait: ' + cpuDelay / (60 * 1000) + ' min')
                 updateNextMine(cpuDelay)
                 clearTimer();
                 mineCountdownFinishTime = new Date().getTime() + cpuDelay;
                 interval = setInterval(miningCountdownfunction, 1000);
             } else if (errorRes == 'wait') {
-                updateState('Unknow error wait: ' + errorDelay / (60 * 1000) + ' min')
+                updateStatus('Unknow error wait: ' + errorDelay / (60 * 1000) + ' min')
                 updateNextMine(errorDelay)
                 clearTimer();
                 mineCountdownFinishTime = new Date().getTime() + errorDelay;
                 interval = setInterval(miningCountdownfunction, 1000);
             }
             else if (errorRes == 'break') {
-                updateState('Nothing to be mine wait : ' + 60 + ' min')
+                updateStatus('Nothing to be mine wait : ' + 60 + ' min')
                 updateNextMine(60 * 60 * 1000)
                 clearTimer();
                 mineCountdownFinishTime = new Date().getTime() + 60 * 60 * 1000;
                 interval = setInterval(miningCountdownfunction, 1000);
             }
             else {
-                updateState('Unknow error wait: ' + errorDelay / (60 * 1000) + ' min')
+                updateStatus('Unknow error wait: ' + errorDelay / (60 * 1000) + ' min')
                 updateNextMine(errorDelay)
                 clearTimer();
                 mineCountdownFinishTime = new Date().getTime() + errorDelay;
@@ -204,10 +205,11 @@ async function miner() {
             }
         }
         if (result != null) {
-            updateState('mining success sleeping')
+            updateStatus('mining success sleeping')
             await sleep(10000);
             isMining = false;
         }
+        console.log('-------------------');
     }
 }
 function handleError(error) {
@@ -229,6 +231,24 @@ function stop() {
     clearTimer();
     isMining = false
     isWork = false;
+}
+
+function onclickRun() {
+    if (isWork) {
+        stop();
+        updateStatus('STOPPING')
+        console.log('======== STOPPING ========');
+        document.getElementById("run_btn").textContent = "Click to Start"
+        document.getElementById("run_btn").className = "btn btn-success"
+    } else {
+        isWork = true;
+        updateStatus('RUNNING')
+        console.log('======== RUNNING ========');
+        run();
+        document.getElementById("run_btn").textContent = "Click to STOP"
+        document.getElementById("run_btn").className = "btn btn-danger"
+    }
+
 }
 
 function restart() {

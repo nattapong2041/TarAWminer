@@ -384,6 +384,170 @@ async function claim(account, nonce) {
     }
 }
 
+async function setLand(account, land) {
+    try {
+        console.log(`${account} changing land to ${land}`);
+        const setland= {
+            'account': account,
+            'land_id': land
+        };
+        const actions = [{
+            'account': 'm.federation',
+            'name': 'setland',
+            'authorization': [{ 
+                'actor': account, 
+                'permission': 'active' 
+            }], 
+            'data': setland
+        }];
+        let result = await wax.api.transact({
+            actions,
+        }, {
+            blocksBehind: 3,
+            expireSeconds: 90,
+        });
+        if (result && result.processed) {
+            let lands = result.processed.action_traces[0].act.data.land_id
+            return 'Set to lands: ' + lands;
+        }
+        return 0;
+    } catch (error) {
+        throw "Status code: "+error.json.code +" "+ error.json.error.details[0].message
+    }
+}
+
+async function swap(account, amount) {
+    try {
+        console.log(`${account} Swaping tlm to wax ...`);
+        const swapdata = {
+            'from': account,
+            'to': 'alcordexmain',
+            'quantity': `${parseFloat(amount).toFixed(4)}  TLM`,
+            'memo': "0.00000000 WAX@eosio.token"
+        };
+        const actions = [{
+            'account': 'alien.worlds',
+            'name': 'transfer',
+            'authorization': [{ 
+                'actor': account, 
+                'permission': 'active' 
+            }], 
+            'data': swapdata
+        }];
+        let result = await wax.api.transact({
+            actions,
+        }, {
+            blocksBehind: 3,
+            expireSeconds: 90,
+        });
+        if (result && result.processed) {
+            let wax = result.processed.action_traces[0].inline_traces[2].act.data.quantity
+            return `Swap ${amount} to ${wax}`
+        }
+        return 0;
+    } catch (error) {
+        throw "Status code: "+error.json.code +" "+ error.json.error.details[0].message
+    }
+}
+
+async function transfer(account, amount, toAcc) {
+    try {
+        console.log(`${account} Transfering ${amount} WAX to ${toAcc} ...`);
+        const transferWAX= {
+            'from': account,
+            'to': toAcc,
+            'quantity': `${parseFloat(amount).toFixed(8)}  WAX`,
+            'memo': `Send ${amount} WAX to ${toAcc}`
+        };
+        const actions = [{
+            'account': 'eosio.token',
+            'name': 'transfer',
+            'authorization': [{ 
+                'actor': account, 
+                'permission': 'active' 
+            }], 
+            'data': transferWAX
+        }];
+        let result = await wax.api.transact({
+            actions,
+        }, {
+            blocksBehind: 3,
+            expireSeconds: 90,
+        });
+        if (result && result.processed) {
+            return `Transfer ${amount} WAX from ${account} to ${toAcc}`
+        }
+        return 0;
+    } catch (error) {
+        throw "Status code: "+error.json.code +" "+ error.json.error.details[0].message
+    }
+}
+
+async function claimNFT(account, claimAcc) {
+    try {
+        console.log(`Claiming NFT drop of ${account} ...`);
+        const claimnfts= {
+            'miner': claimAcc,
+        };
+        const actions = [{
+            'account': 'm.federation',
+            'name': 'claimnfts',
+            'authorization': [{ 
+                'actor': account, 
+                'permission': 'active' 
+            }], 
+            'data': claimnfts
+        }]
+        let result = await wax.api.transact({
+            actions,
+        }, {
+            blocksBehind: 3,
+            expireSeconds: 90,
+        });
+        if (result && result.processed) {
+            return `Claim item success pls check your bag`
+        }
+        return 0;
+    } catch (error) {
+        throw "Status code: "+error.json.code +" "+ error.json.error.details[0].message
+    }
+}
+
+async function stake(account, amount) {
+    try {
+        console.log(`Staking ${amount} WAX to CPU...`);
+        const stake= {
+            'from': account,
+            'receiver': account,
+            'stake_net_quantity': `0.00000000 WAX`,
+            'stake_cpu_quantity': `${parseFloat(amount).toFixed(8)} WAX`,
+            'transfer': false
+        };
+        const actions = [{
+            'account': 'eosio',
+            'name': 'delegatebw',
+            'authorization': [{ 
+                'actor': account, 
+                'permission': 'active' 
+            }], 
+            'data': stake
+        }];
+        let result = await wax.api.transact({
+            actions,
+        }, {
+            blocksBehind: 3,
+            expireSeconds: 90,
+        });
+        if (result && result.processed) {
+            return `Complete stake ${amount} WAX `
+        }
+        return 0;
+    } catch (error) {
+        throw "Status code: "+error.json.code +" "+ error.json.error.details[0].message
+    }
+}
+
+
 async function self_mine(account) {
     console.log('Try self mining');
     let mine_work = await background_mine(account)
