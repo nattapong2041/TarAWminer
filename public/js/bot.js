@@ -153,7 +153,6 @@ async function miner() {
             nonce=null;
         }
     }
-    nonce=0;
     if (nonce != null) {
         updateState('claiming')
         let result = null
