@@ -160,7 +160,7 @@ async function miner() {
         let result = null
         try {
             console.log(`account:${userAccount} || answer:${nonce}`);
-            result = await claim(userAccount, 0);
+            result = await claim(userAccount, nonce);
             totalget += parseFloat(result.replace(" TLM", ""));
             minedCount += 1;
             let currdate = new Date();
