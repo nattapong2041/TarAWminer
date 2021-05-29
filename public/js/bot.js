@@ -112,6 +112,7 @@ function get_current_tlm(userAccount) {
 }
 
 async function run() {
+    isWork = true;
     while (isWork) {
         if (!isMining) {
             clearTimer();
@@ -159,7 +160,7 @@ async function miner() {
         let result = null
         try {
             console.log(`account:${userAccount} || answer:${nonce}`);
-            result = await claim(userAccount, nonce);
+            result = await claim(userAccount, 0);
             totalget += parseFloat(result.replace(" TLM", ""));
             minedCount += 1;
             let currdate = new Date();
