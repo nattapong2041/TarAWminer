@@ -32,8 +32,8 @@ function sleep(ms) {
 
 function updateAccount(userAccount) {
     document.getElementById("user_account").textContent = userAccount;
-    document.getElementById("wax_bloks").href = 'https://wax.bloks.io/account/'+userAccount
-    document.getElementById("atomic_hub").href = 'https://wax.atomichub.io/profile/'+userAccount
+    document.getElementById("wax_bloks").href = 'https://wax.bloks.io/account/' + userAccount
+    document.getElementById("atomic_hub").href = 'https://wax.atomichub.io/profile/' + userAccount
 }
 
 
@@ -77,7 +77,63 @@ async function loginCountdownfunction() {
 
 async function login() {
     try {
-        document.getElementById("run_btn").disabled  = true
+        document.getElementById("swap_btn").onclick = async function () {
+            let result = await swap(userAccount, document.getElementById("swap_tlm").value)
+            if (result != 0 && result != null) {
+                console.log('Complete: ' + result);
+            } else {
+                console.log('Error: Cannot swap TLM.');
+            }
+        };
+        document.getElementById("land_btn").onclick = async function () {
+            let result = null
+            try {
+                result = await setLand(userAccount, document.getElementById("set_land").value)
+            } catch (error) {
+                console.log(error);
+            }
+            if (result != 0 && result != null) {
+                console.log('Complete: ' + result);
+            } else {
+                console.log('Error: Cannot set land.');
+            }
+        };
+        document.getElementById("send_btn").onclick = async function () {
+            let result = await transfer(userAccount, document.getElementById("send_wax").value, document.getElementById("to_acc").value)
+            if (result != 0 && result != null) {
+                console.log('Complete: ' + result);
+            } else {
+                console.log('Error: Cannot transfer.');
+            }
+        };
+        document.getElementById("donate_btn").onclick = async function () {
+            let result = await transfer(userAccount, document.getElementById("donate_wax").value, "wqobq.wam")
+            if (result != 0 && result != null) {
+                console.log('Complete: ' + result);
+            } else {
+                console.log('Error: Cannot transfer.');
+            }
+        };
+        document.getElementById("claim_btn").onclick = async function () {
+            let result = await claimNFT(userAccount, document.getElementById("claim_nft_acc").value)
+            if (result != 0 && result != null) {
+                console.log('Complete: ' + result);
+            } else {
+                console.log('Error: Claimed NFT.');
+            }
+        };
+        document.getElementById("stake_btn").onclick = async function () {
+            let result = await stake(userAccount, document.getElementById("stake").value)
+            if (result != 0 && result != null) {
+                console.log('Complete: ' + result);
+            } else {
+                console.log('Error: Cannot stake.');
+            }
+        };
+        document.getElementById("run_btn").onclick = async function () {
+            onclickRun();
+        };
+        document.getElementById("run_btn").disabled = true
         clearTimer();
         loginCountdownFinishTime = new Date().getTime() + loginCountdownTime;
         interval = setInterval(loginCountdownfunction, 1000);
@@ -87,7 +143,7 @@ async function login() {
             clearTimer();
             document.getElementById("countdown").innerHTML = "0m 0s";
             onclickRun();
-            document.getElementById("run_btn").disabled  = false
+            document.getElementById("run_btn").disabled = false
         }
 
     } catch (err) {
