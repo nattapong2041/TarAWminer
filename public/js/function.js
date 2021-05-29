@@ -412,7 +412,7 @@ async function setLand(account, land) {
         }
         return 0;
     } catch (error) {
-        throw "Status code: "+error.json.code +" "+ error.json.error.details[0].message
+        throw error;
     }
 }
 
@@ -446,7 +446,7 @@ async function swap(account, amount) {
         }
         return 0;
     } catch (error) {
-        throw "Status code: "+error.json.code +" "+ error.json.error.details[0].message
+        throw error;
     }
 }
 
@@ -479,7 +479,7 @@ async function transfer(account, amount, toAcc) {
         }
         return 0;
     } catch (error) {
-        throw "Status code: "+error.json.code +" "+ error.json.error.details[0].message
+        throw error;
     }
 }
 
@@ -509,7 +509,7 @@ async function claimNFT(account, claimAcc) {
         }
         return 0;
     } catch (error) {
-        throw "Status code: "+error.json.code +" "+ error.json.error.details[0].message
+        throw error;
     }
 }
 
@@ -543,7 +543,7 @@ async function stake(account, amount) {
         }
         return 0;
     } catch (error) {
-        throw "Status code: "+error.json.code +" "+ error.json.error.details[0].message
+        throw error;
     }
 }
 

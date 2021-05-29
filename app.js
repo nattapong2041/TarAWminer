@@ -10,7 +10,7 @@ app.use(express.static('public'));
 app.get('/', (req, res) => {
   res.render("index", {});
 });
-app.get('/test', (req, res) => {
+app.get('/mineresult:user', (req, res) => {
   res.send('FUCK')
 });
 app.listen(port,  "0.0.0.0");
