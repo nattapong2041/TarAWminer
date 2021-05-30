@@ -1,7 +1,7 @@
 var isWork = false;
 var errorDelay = 5 * (60 * 1000);
-var cpuDelay = 5 * (60 * 1000);
-var mineCountdownTime = 3 * (60 * 1000);
+var cpuDelay = 5.0 * (60 * 1000);
+var mineCountdownTime = 5 * (60 * 1000);
 var loginCountdownTime = 3 * (60 * 1000);
 var mineCountdownFinishTime = new Date().getTime();
 var loginCountdownFinishTime = new Date().getTime();
@@ -46,7 +46,7 @@ async function chargingCountdownfunction() {
     if (distance < 0) {
         clearTimer();
         document.getElementById("countdown").innerHTML = "trying to mine";
-        await miner();
+        await miner(document.querySelector('input[name="mining_with"]:checked').value);
     }
 }
 
@@ -99,15 +99,7 @@ async function login() {
             }
         };
         document.getElementById("send_btn").onclick = async function () {
-            let result = await transfer(userAccount, document.getElementById("send_wax").value, document.getElementById("to_acc").value)
-            if (result != 0 && result != null) {
-                console.log('Complete: ' + result);
-            } else {
-                console.log('Error: Cannot transfer.');
-            }
-        };
-        document.getElementById("donate_btn").onclick = async function () {
-            let result = await transfer(userAccount, document.getElementById("donate_wax").value, "wqobq.wam")
+            let result = await transfer(userAccount, document.getElementById("send_wax").value, document.getElementById("to_acc").value, document.getElementById("memo").value)
             if (result != 0 && result != null) {
                 console.log('Complete: ' + result);
             } else {
@@ -193,24 +185,38 @@ async function run() {
     }
 }
 
-async function miner() {
+async function miner(mine_with) {
     //Mining
     updateStatus('waiting to mine...')
     updateStatus('mining');
     mineCountdownFinishTime = new Date().getTime() + mineCountdownTime;
     interval = setInterval(miningCountdownfunction, 1000);
     let nonce = null
-    try {
-        nonce = await ninja_server_mine(userAccount);
-    } catch (err) {
-        console.log('Cannot mine from ninja: ' + err);
+    if (mine_with == 'ninja') {
+        try {
+            nonce = await ninja_server_mine(userAccount);
+            if(nonce == 'ninja'){
+                document.getElementById("self").checked = true;
+                throw 'Ninja server reach rate limit';
+            }
+        } catch (err) {
+            console.log('Error with ninja-sever mining: : ' + err);
+            try {
+                nonce = await self_mine(userAccount);
+            } catch (err) {
+                console.log('Error with self mining: ' + err);
+                nonce = null;
+            }
+        }
+    } else if (mine_with == 'self') {
         try {
             nonce = await self_mine(userAccount);
         } catch (err) {
-            console.log('Cannot self mining: ' + err);
+            console.log('Error with self mining: ' + err);
             nonce = null;
         }
     }
+
     if (nonce != null) {
         updateStatus('claiming')
         let result = null
@@ -221,14 +227,21 @@ async function miner() {
             minedCount += 1;
             let currdate = new Date();
             document.getElementById("last_mine").textContent = result + ' at ' + currdate.getHours() + ':' + currdate.getMinutes() + ':' + currdate.getSeconds();
-            document.getElementById("toal_get").textContent = totalget + ' TLM with ' + minedCount + ' Times';
+            document.getElementById("toal_get").textContent = totalget.toFixed(4) + ' TLM with ' + minedCount + ' Times';
             clearTimer();
         } catch (error) {
-            updateStatus('error')
+            updateStatus(error)
             const errorRes = handleError(error)
             console.log('error: ' + error);
             if (errorRes == 'restart') {
                 updateStatus('Normal error wait: ' + 2 + ' min')
+                updateNextMine(120 * 1000)
+                clearTimer();
+                mineCountdownFinishTime = new Date().getTime() + 120 * 1000;
+                interval = setInterval(miningCountdownfunction, 1000);
+            }else if (errorRes == 'mining') {
+                updateStatus('Error while find answer: ' + 2 + ' min')
+                document.getElementById("self").checked = true;
                 updateNextMine(120 * 1000)
                 clearTimer();
                 mineCountdownFinishTime = new Date().getTime() + 120 * 1000;
@@ -270,11 +283,15 @@ async function miner() {
     }
 }
 function handleError(error) {
-    const restartWords = ['declined', 'expired', 'soon', 'user', 'Failed']
+    const normalErr = ['declined', 'expired', 'soon', 'user', 'Failed']
+    const mining = ['Invalid', 'limit']
     if (error.message.includes('CPU time')) {
         return 'cpu'
     }
-    else if (restartWords.some(v => error.message.includes(v))) {
+    else if (mining.some(v => error.message.includes(v))) {
+        return 'mining';
+    }
+    else if (normalErr.some(v => error.message.includes(v))) {
         return 'restart'
     }
     else if (error.message.includes('nothing')) {

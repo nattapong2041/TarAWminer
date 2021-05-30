@@ -315,7 +315,7 @@ const doWorkWorker = async (mining_params) => {
     mining_params.account_str = mining_params.account;
     mining_params.account = nameToArray(mining_params.account);
 
-    let b = new Blob(["onmessage =" + _doWorkWorker.toString()], {type: "text/javascript"});
+    let b = new Blob(["onmessage =" + _doWorkWorker.toString()], { type: "text/javascript" });
     let worker = new Worker(URL.createObjectURL(b));
     worker.postMessage(mining_params);
     return await new Promise(resolve => worker.onmessage = e => resolve(e.data));
@@ -364,18 +364,13 @@ async function claim(account, nonce) {
         if (result && result.processed) {
             result.processed.action_traces[0].inline_traces.forEach((t) => {
                 if (t.act.data.quantity) {
-                    if (amounts.has(t.act.data.to)) {
-                        var obStr = amounts.get(t.act.data.to);
-                        obStr = obStr.substring(0, obStr.length - 4);
-                        var nbStr = t.act.data.quantity;
-                        nbStr = nbStr.substring(0, nbStr.length - 4);
-                        var balance = (parseFloat(obStr) + parseFloat(nbStr)).toFixed(4);
-                        amounts.set(t.act.data.to, balance.toString() + ' TLM');
-                    } else {
-                        amounts.set(t.act.data.to, t.act.data.quantity);
-                    }
+                    var quantityStr = t.act.data.quantity;
+                    quantityStr = quantityStr.substring(0, quantityStr.length - 4);
+                    var balance = (parseFloat(quantityStr)).toFixed(4);
+                    amounts.set(t.act.data.to, balance.toString() + ' TLM');  
                 }
             });
+            console.log('Received: ' + parseFloat(amounts.get(account)));
             return amounts.get(account);
         }
         return 0;
@@ -387,17 +382,17 @@ async function claim(account, nonce) {
 async function setLand(account, land) {
     try {
         console.log(`${account} changing land to ${land}`);
-        const setland= {
+        const setland = {
             'account': account,
             'land_id': land
         };
         const actions = [{
             'account': 'm.federation',
             'name': 'setland',
-            'authorization': [{ 
-                'actor': account, 
-                'permission': 'active' 
-            }], 
+            'authorization': [{
+                'actor': account,
+                'permission': 'active'
+            }],
             'data': setland
         }];
         let result = await wax.api.transact({
@@ -428,10 +423,10 @@ async function swap(account, amount) {
         const actions = [{
             'account': 'alien.worlds',
             'name': 'transfer',
-            'authorization': [{ 
-                'actor': account, 
-                'permission': 'active' 
-            }], 
+            'authorization': [{
+                'actor': account,
+                'permission': 'active'
+            }],
             'data': swapdata
         }];
         let result = await wax.api.transact({
@@ -450,22 +445,22 @@ async function swap(account, amount) {
     }
 }
 
-async function transfer(account, amount, toAcc) {
+async function transfer(account, amount, toAcc, memo) {
     try {
         console.log(`${account} Transfering ${amount} WAX to ${toAcc} ...`);
-        const transferWAX= {
+        const transferWAX = {
             'from': account,
             'to': toAcc,
             'quantity': `${parseFloat(amount).toFixed(8)}  WAX`,
-            'memo': `Send ${amount} WAX to ${toAcc}`
+            'memo': memo
         };
         const actions = [{
             'account': 'eosio.token',
             'name': 'transfer',
-            'authorization': [{ 
-                'actor': account, 
-                'permission': 'active' 
-            }], 
+            'authorization': [{
+                'actor': account,
+                'permission': 'active'
+            }],
             'data': transferWAX
         }];
         let result = await wax.api.transact({
@@ -486,16 +481,16 @@ async function transfer(account, amount, toAcc) {
 async function claimNFT(account, claimAcc) {
     try {
         console.log(`Claiming NFT drop of ${account} ...`);
-        const claimnfts= {
+        const claimnfts = {
             'miner': claimAcc,
         };
         const actions = [{
             'account': 'm.federation',
             'name': 'claimnfts',
-            'authorization': [{ 
-                'actor': account, 
-                'permission': 'active' 
-            }], 
+            'authorization': [{
+                'actor': account,
+                'permission': 'active'
+            }],
             'data': claimnfts
         }]
         let result = await wax.api.transact({
@@ -516,7 +511,7 @@ async function claimNFT(account, claimAcc) {
 async function stake(account, amount) {
     try {
         console.log(`Staking ${amount} WAX to CPU...`);
-        const stake= {
+        const stake = {
             'from': account,
             'receiver': account,
             'stake_net_quantity': `0.00000000 WAX`,
@@ -526,10 +521,10 @@ async function stake(account, amount) {
         const actions = [{
             'account': 'eosio',
             'name': 'delegatebw',
-            'authorization': [{ 
-                'actor': account, 
-                'permission': 'active' 
-            }], 
+            'authorization': [{
+                'actor': account,
+                'permission': 'active'
+            }],
             'data': stake
         }];
         let result = await wax.api.transact({
@@ -552,7 +547,6 @@ async function self_mine(account) {
     console.log('Try self mining');
     let mine_work = await background_mine(account)
     try {
-        console.log('access: '+mine_work.rand_str);
         return mine_work.rand_str;
     } catch (err) {
         throw err;
@@ -560,20 +554,29 @@ async function self_mine(account) {
 }
 
 const ninja_server_mine = async (account) => {
-    try{
+    const ninja = ['Rate', 'rate', 'Limit', 'limit']
+    console.log('Mining with ninja server');
+    try {
         return await fetch(`https://server-mine-b7clrv20.an.gateway.dev/server_mine?wallet=${account}`)
-        .then(response => response.text())
-        .then(nonce => {
-            if( nonce.match(/\b[0-9a-f]{16}\b/gi)){
-                return nonce;
-            }else{
-                return null;
-            }   
-        })
-    }catch(err){
+            .then((response) => {
+                if(response.status == 200){
+                    return response.text();
+                }
+                else if(response.status == 402 || response.status == 206 || ninja.some(v => response.text().includes(v))){
+                    return 'ninja';
+                }
+            })
+            .then(nonce => {
+                if (nonce.match(/\b[0-9a-f]{16}\b/gi)) {
+                    return nonce;
+                } else {
+                    return null;
+                }
+            })
+    } catch (err) {
         throw err;
     }
-    
+
 };
 
 const getPlayerData = async (account) => {
