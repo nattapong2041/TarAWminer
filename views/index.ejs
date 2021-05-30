@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <title>Lazy digger 2.1.1 </title>
+  <title>Lazy digger 2.1.2 </title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
@@ -35,13 +35,15 @@
         <button id="run_btn" type="button" class="btn btn-warning fs-6"
           style="margin-left: 15px; margin-top: 10px; margin-bottom: 10px; ">Waiting</button>
         <br>
-        <span class="fs-6 text-danger">ฺCountdown time > 0 before it can be pressed.</span>
+        <span class="fs-6 text-danger">ฺCountdown time > 0 before it can be pressed to 'STOP'.</span>
         <div class="border">
           <span class="fs-6"><b>Mining with: </b></span>
-          <input type="radio" id="ninja" name="mining_with" value="ninja">
-          <label for="ninja">Ninja</label>
           <input type="radio" id="self" name="mining_with" value="self" checked="checked">
           <label for="self">Self</label>
+          <input type="radio" id="ninja" name="mining_with" value="ninja">
+          <label for="ninja">Ninja Free</label>
+          <input type="radio" id="ninja_vip" name="mining_with" value="ninja_vip">
+          <label for="ninja_vip">Ninja VIP</label>
           <br>
           <br>
           <span class="fs-6"><b>Total get: </b></span>

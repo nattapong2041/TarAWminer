@@ -9,6 +9,7 @@ var interval;
 var isMining = false;
 var totalget = 0.0;
 var minedCount = 0;
+let userAccount ="";
 
 function updateStatus(status) {
     document.getElementById("status").textContent = status;
@@ -192,9 +193,14 @@ async function miner(mine_with) {
     mineCountdownFinishTime = new Date().getTime() + mineCountdownTime;
     interval = setInterval(miningCountdownfunction, 1000);
     let nonce = null
-    if (mine_with == 'ninja') {
+    if (mine_with == 'ninja' || mine_with == 'ninja_vip' ) {
         try {
-            nonce = await ninja_server_mine(userAccount);
+            if(mine_with == 'ninja_vip'){
+                nonce = await ninja_server_mine(userAccount,true);
+            }else{
+                nonce = await ninja_server_mine(userAccount,false);
+            }
+            
             if(nonce == 'ninja'){
                 document.getElementById("self").checked = true;
                 throw 'Ninja server reach rate limit';
@@ -241,7 +247,9 @@ async function miner(mine_with) {
                 interval = setInterval(miningCountdownfunction, 1000);
             }else if (errorRes == 'mining') {
                 updateStatus('Error while find answer: ' + 2 + ' min')
-                document.getElementById("self").checked = true;
+                if(document.querySelector('input[name="mining_with"]:checked').value == 'ninja'){
+                    document.getElementById("self").checked = true;
+                }
                 updateNextMine(120 * 1000)
                 clearTimer();
                 mineCountdownFinishTime = new Date().getTime() + 120 * 1000;
