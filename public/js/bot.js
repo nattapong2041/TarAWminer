@@ -27,6 +27,12 @@ function clearTimer() {
     document.getElementById("countdown").innerHTML = "0m 0s";
 }
 
+function padLeadingZeros(num, size) {
+    var s = num+"";
+    while (s.length < size) s = "0" + s;
+    return s;
+}
+
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -43,7 +49,7 @@ async function chargingCountdownfunction() {
     var distance = mineCountdownFinishTime - now;
     var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-    document.getElementById("countdown").innerHTML = minutes + "m " + seconds + "s " + 'before mine';
+    document.getElementById("countdown").innerHTML = padLeadingZeros(minutes,2) + 'm ' + padLeadingZeros(seconds,2) + 's before mine'
     if (distance < 0) {
         clearTimer();
         document.getElementById("countdown").innerHTML = "trying to mine";
@@ -56,7 +62,7 @@ async function miningCountdownfunction() {
     var distance = mineCountdownFinishTime - now;
     var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-    document.getElementById("countdown").innerHTML = minutes + "m " + seconds + "s " + 'before new mine';
+    document.getElementById("countdown").innerHTML = padLeadingZeros(minutes,2) + 'm ' + padLeadingZeros(seconds,2) + 's before new mine'
     if (distance < 0) {
         clearTimer();
         restart();
@@ -69,7 +75,7 @@ async function loginCountdownfunction() {
     var distance = loginCountdownFinishTime - now;
     var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-    document.getElementById("countdown").innerHTML = minutes + "m " + seconds + "s " + 'before new login';
+    document.getElementById("countdown").innerHTML = padLeadingZeros(minutes,2) + 'm ' + padLeadingZeros(seconds,2) + 's before new login'
     if (distance < 0) {
         clearTimer()
         window.location.reload();
@@ -78,6 +84,9 @@ async function loginCountdownfunction() {
 
 async function login() {
     try {
+        if(document.getElementById("cpu_time").value > 0){
+            cpuDelay = document.getElementById("cpu_time").value * 60 * 1000;
+        }
         document.getElementById("swap_btn").onclick = async function () {
             let result = await swap(userAccount, document.getElementById("swap_tlm").value)
             if (result != 0 && result != null) {
@@ -141,12 +150,6 @@ async function login() {
 
     } catch (err) {
         console.log('Error:' + err);
-        updateState('WTF is this error???? restart in 5 min')
-        updateNextMine(5 * 60 * 1000)
-        isWork = false
-        clearTimer()
-        document.getElementById("countdown").innerHTML = "0m 0s";
-        await sleep(5 * 60 * 1000);
         window.location.reload();
     }
 
@@ -167,6 +170,7 @@ async function run() {
             clearTimer();
             console.log('getting cooldown');
             isMining = true
+
             //calculate delay
             let delay = await getMineDelay(userAccount);
             let addRandom = Math.floor(Math.random() * 21000) + 4000;
@@ -246,7 +250,7 @@ async function miner(mine_with) {
                 mineCountdownFinishTime = new Date().getTime() + 120 * 1000;
                 interval = setInterval(miningCountdownfunction, 1000);
             }else if (errorRes == 'mining') {
-                updateStatus('Error while find answer: ' + 2 + ' min')
+                updateStatus('Error while find answer wait: ' + 2 + ' min')
                 if(document.querySelector('input[name="mining_with"]:checked').value == 'ninja'){
                     document.getElementById("self").checked = true;
                 }
@@ -259,6 +263,12 @@ async function miner(mine_with) {
                 updateNextMine(cpuDelay)
                 clearTimer();
                 mineCountdownFinishTime = new Date().getTime() + cpuDelay;
+                interval = setInterval(miningCountdownfunction, 1000);
+            } else if (errorRes == 'newTx') {
+                updateStatus('User start new transaction wait: ' + 10 + ' sec')
+                updateNextMine(10 * 1000)
+                clearTimer();
+                mineCountdownFinishTime = new Date().getTime() + 10*1000;
                 interval = setInterval(miningCountdownfunction, 1000);
             } else if (errorRes == 'wait') {
                 updateStatus('Unknow error wait: ' + errorDelay / (60 * 1000) + ' min')
@@ -284,17 +294,20 @@ async function miner(mine_with) {
         }
         if (result != null) {
             updateStatus('mining success sleeping')
-            await sleep(10000);
             isMining = false;
+            await sleep(10000);
         }
         console.log('-------------------');
     }
 }
 function handleError(error) {
-    const normalErr = ['declined', 'expired', 'soon', 'user', 'Failed']
+    const normalErr = ['declined', 'expired', 'soon', 'User' ,'Failed']
     const mining = ['Invalid', 'limit']
     if (error.message.includes('CPU time')) {
         return 'cpu'
+    }
+    else if (error.message.includes('started a new transaction')) {
+        return 'newTx'
     }
     else if (mining.some(v => error.message.includes(v))) {
         return 'mining';

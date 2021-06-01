@@ -234,9 +234,6 @@ const doWorkWorker = async (mining_params) => {
     mining_params.account_str = mining_params.account;
     mining_params.account = nameToArray(mining_params.account);
 
-    // let b = new Blob(["onmessage =" + _doWorkWorker.toString()], { type: "text/javascript" });
-    // let worker = new Worker(URL.createObjectURL(b));
-    // worker.postMessage(mining_params);
     const getRand = () => {
         const arr = new Uint8Array(8);
         for (let i = 0; i < 8; i++) {
@@ -264,7 +261,7 @@ const doWorkWorker = async (mining_params) => {
         last;
     const start = new Date().getTime();
 
-    while (!good) {
+    while (!good && isMining) {
         rand_arr = getRand();
 
         const combined = new Uint8Array(account.length + last_mine_arr.length + rand_arr.length);
@@ -300,17 +297,27 @@ const doWorkWorker = async (mining_params) => {
 
         if (itr >= 1000000 * 10) break;
     }
-
-    const end = new Date().getTime();
-    const rand_str = toHex(rand_arr);
-    console.log(`Found answer ${rand_str} in ${itr} iterations taking ${(end - start) / 1000}s`);
-    const mine_work = {
-        account: account_str,
-        rand_str: rand_str,
-        hex_digest: hex_digest
-    };
-    this.postMessage(mine_work);
-    return mine_work;
+    if(!isMining){
+        const mine_work = {
+            account: account_str,
+            rand_str: null,
+            hex_digest: hex_digest
+        };
+        this.postMessage(mine_work);
+        return mine_work;
+    }else{
+        const end = new Date().getTime();
+        const rand_str = toHex(rand_arr);
+        console.log(`Found answer ${rand_str} in ${itr} iterations taking ${(end - start) / 1000}s`);
+        const mine_work = {
+            account: account_str,
+            rand_str: rand_str,
+            hex_digest: hex_digest
+        };
+        this.postMessage(mine_work);
+        return mine_work;
+    }
+    
 };
 
 const background_mine = async (account) => {
@@ -567,7 +574,7 @@ const ninja_server_mine = async (account,isVIP) => {
                 }
             })
             .then(nonce => {
-                if (nonce.match(/\b[0-9a-f]{16}\b/gi)) {
+                if (nonce.match(/\b[0-9a-f]{16}\b/gi) && isMining) {
                     return nonce;
                 } else {
                     return null;
