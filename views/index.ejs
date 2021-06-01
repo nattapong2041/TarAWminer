@@ -2,7 +2,9 @@
 <html lang="en">
 
 <head>
-  <title>Lazy digger 2.1.2 </title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lazy digger - Alien Worlds Bot </title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
@@ -23,10 +25,10 @@
 
 </head>
 
-<body class="card text-white bg-dark">
+<body class="bg-dark text-white">
   <div class="card-body">
     <div class="row">
-      <div class="col-md-5 .col-sm-12">
+      <div class="col-md-6 col-sm-12">
         <span class="fs-5 font-weight-bold"><b>Account: </b></span>
         <span id="user_account" class="fs-5 font-weight-bold"> xxxxx.wam</span>
         <br>
@@ -36,7 +38,7 @@
           style="margin-left: 15px; margin-top: 10px; margin-bottom: 10px; ">Waiting</button>
         <br>
         <span class="fs-6 text-danger">ฺCountdown time > 0 before it can be pressed to 'STOP'.</span>
-        <div class="border">
+        <div class="border" style="height:75%;">
           <span class="fs-6"><b>Mining with: </b></span>
           <input type="radio" id="self" name="mining_with" value="self" checked="checked">
           <label for="self">Self</label>
@@ -50,8 +52,9 @@
           <span class="fs-6" id="toal_get">0.0000 TLM with 0 Times</span>
           <br>
           <br>
-          <span class="fs-6"><b>Last mine: </b></span>
-          <span class="fs-6" id="last_mine"> - TLM. at -.</span>
+          <span class="fs-6"><b>Cpu time: </b></span>
+          <input type="number" id="cpu_time" value="5.0" style="width: 60px;">
+          <span class="fs-6"><b> min</b></span>
           <br>
           <br>
           <span class="fs-6"><b>Status: </b></span>
@@ -62,19 +65,23 @@
           <span class="fs-6" id="countdown">0m 0s</span>
           <br>
           <br>
+          <span class="fs-6"><b>Last mine: </b></span>
+          <span class="fs-6" id="last_mine"> - TLM. at -.</span>
+          <br>
+          <br>
           <span class="fs-6"><b>Next mine: </b></span>
           <span class="fs-6" id="next_mine"></span>
         </div>
       </div>
-      <div class="col-md-7 .col-sm-12">
+      <div class="col-md-6 col-sm-12">>
         <spanclass="fs-6"><b>Mining Log</b></span>
-          <textarea class="form-control box-shadow mt-2 fs-6" rows="14" id="show_mine_log" disabled=""></textarea>
+          <textarea class="form-control box-shadow fs-6" rows="17" style="height:100%;" id="show_mine_log" disabled=""></textarea>
       </div>
     </div>
   </div>
   <div class="card-body">
     <div class="row">
-      <div class="col-md-7 .col-sm-12">
+      <div class="col-md-6 col-sm-12">>
         <span class="fs-4 font-weight-bold">Transaction: </span>
         <span class="fs-6">Most of error in this part cuase by blocked IP</span><br>
         <span class="fs-6 text-danger">Recommend to puase bot before doing transaction</span>
@@ -127,7 +134,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-5 .col-sm-12">
+      <div class="col-md-6 col-sm-12">
         <br>
         <br>
         <a class="btn btn-success" href="https://wallet.wax.io/dashboard" target="_blank"
@@ -142,7 +149,7 @@
           style="margin-left: 5px; margin-top: 10px; margin-bottom: 10px;">Atomic Hub</a>
         <a class="btn btn-success" href="https://wax.alcor.exchange/trade/tlm-alien.worlds_wax-eosio.token/"
           target="_blank" style="margin-left: 5px; margin-top: 10px; margin-bottom: 10px;">Alcor Exchange</a>
-        <p class="fs-6"><u>Donate me free bot</u> <b>: wqobq.wam</b>
+        <p class="fs-6"><u>Donate me(bot dev)</u> <b>: wqobq.wam</b>
         <p class="fs-6"><u>Donate Ninja(mining server)</u> <b>: 2rqba.wam</b>
           <br>
           <center>
@@ -159,9 +166,9 @@
       console.log = function (message) {
         let currdate = new Date();
         if (typeof message == 'object') {
-          logger.value = currdate.getDay() + '/' + currdate.getMonth() + '/' + currdate.getFullYear() + ' ' + currdate.getHours() + ':' + currdate.getMinutes() + ':' + currdate.getSeconds() + ':: ' + (JSON && JSON.stringify ? JSON.stringify(message) : message) + "\n" + logger.value;
+          logger.value = padLeadingZeros(currdate.getDay(),2) + '/' + padLeadingZeros(currdate.getMonth(),2) + '/' + padLeadingZeros(currdate.getFullYear(),2) + ' ' + padLeadingZeros(currdate.getHours(),2) + ':' + padLeadingZeros(currdate.getMinutes(),2)+ ':' + padLeadingZeros(currdate.getSeconds(),2) + ':: ' + (JSON && JSON.stringify ? JSON.stringify(message) : message) + "\n" + logger.value;
         } else {
-          logger.value = currdate.getDay() + '/' + currdate.getMonth() + '/' + currdate.getFullYear() + ' ' + currdate.getHours() + ':' + currdate.getMinutes() + ':' + currdate.getSeconds() + ':: ' + message + "\n" + logger.value;
+          logger.value =padLeadingZeros(currdate.getDay(),2) + '/' + padLeadingZeros(currdate.getMonth(),2) + '/' + padLeadingZeros(currdate.getFullYear(),2) + ' ' + padLeadingZeros(currdate.getHours(),2) + ':' + padLeadingZeros(currdate.getMinutes(),2)+ ':' + padLeadingZeros(currdate.getSeconds(),2) + ':: ' + message + "\n" + logger.value;
         }
       }
     })();
@@ -169,7 +176,6 @@
   </script>
 </body>
 <footer class="footer">
-
-
+</footer>
 
 </html>
