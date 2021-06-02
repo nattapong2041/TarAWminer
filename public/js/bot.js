@@ -19,7 +19,7 @@ function updateStatus(status) {
 function updateNextMine(delay) {
     const time = new Date().getTime()
     const mineTime = new Date(time + delay)
-    document.getElementById("next_mine").textContent = mineTime.toLocaleString()
+    document.getElementById("next_mine").textContent = padLeadingZeros(mineTime.getHours(),2)  + ':' + padLeadingZeros(mineTime.getMinutes(),2)  + ':' + padLeadingZeros(mineTime.getSeconds(),2);
 }
 
 function clearTimer() {
@@ -84,9 +84,6 @@ async function loginCountdownfunction() {
 
 async function login() {
     try {
-        if(document.getElementById("cpu_time").value > 0){
-            cpuDelay = document.getElementById("cpu_time").value * 60 * 1000;
-        }
         document.getElementById("swap_btn").onclick = async function () {
             let result = await swap(userAccount, document.getElementById("swap_tlm").value)
             if (result != 0 && result != null) {
@@ -236,7 +233,7 @@ async function miner(mine_with) {
             totalget += parseFloat(result.replace(" TLM", ""));
             minedCount += 1;
             let currdate = new Date();
-            document.getElementById("last_mine").textContent = result + ' at ' + currdate.getHours() + ':' + currdate.getMinutes() + ':' + currdate.getSeconds();
+            document.getElementById("last_mine").textContent = result + ' at ' + padLeadingZeros(currdate.getHours(),2)  + ':' + padLeadingZeros(currdate.getMinutes(),2)  + ':' + padLeadingZeros(currdate.getSeconds(),2);
             document.getElementById("toal_get").textContent = totalget.toFixed(4) + ' TLM with ' + minedCount + ' Times';
             clearTimer();
         } catch (error) {
@@ -259,6 +256,9 @@ async function miner(mine_with) {
                 mineCountdownFinishTime = new Date().getTime() + 120 * 1000;
                 interval = setInterval(miningCountdownfunction, 1000);
             } else if (errorRes == 'cpu') {
+                if(document.getElementById("cpu_time").value > 0){
+                    cpuDelay = document.getElementById("cpu_time").value * 60 * 1000;
+                }
                 updateStatus('Cpu full wait: ' + cpuDelay / (60 * 1000) + ' min')
                 updateNextMine(cpuDelay)
                 clearTimer();
