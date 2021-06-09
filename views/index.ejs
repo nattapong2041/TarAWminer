@@ -44,6 +44,10 @@
         <span class="fs-6"><b>Bot status: </b></span>
         <button id="run_btn" type="button" class="btn btn-warning fs-6"
           style="margin-left: 15px; margin-top: 10px; margin-bottom: 10px; ">Waiting</button>
+          <button id="save_config" type="button" class="btn btn-warning fs-6"
+          style="margin-left: 15px; margin-top: 10px; margin-bottom: 10px; ">Save Config</button>
+          <!-- <button id="test" type="button" class="btn btn-warning fs-6"
+        style="margin-left: 15px; margin-top: 10px; margin-bottom: 10px; ">TEST</button> -->
         <br>
         <span class="fs-6 text-danger">ฺCountdown time > 0 before it can be pressed to 'STOP'.</span>
         <div class="border" style="height:75%;">
@@ -181,6 +185,7 @@
         }
       }
     })();
+    loadConfig();
     login();
   </script>
 </body>

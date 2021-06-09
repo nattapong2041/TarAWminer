@@ -9,7 +9,22 @@ var interval;
 var isMining = false;
 var totalget = 0.0;
 var minedCount = 0;
-let userAccount ="";
+let userAccount = "";
+
+function saveConfig() {
+    console.log('====SAVE CONFIG====');
+    localStorage.setItem('mining_with', document.querySelector('input[name="mining_with"]:checked').value)
+    localStorage.setItem('cpu_time', document.getElementById("cpu_time").value)
+}
+
+function loadConfig() {
+    if (localStorage.getItem('mining_with') != null) {
+        document.getElementById(localStorage.getItem('mining_with')).checked = true;
+    }
+    if (localStorage.getItem('cpu_time') != null) {
+        document.getElementById("cpu_time").value = localStorage.getItem('cpu_time');
+    }
+}
 
 function updateStatus(status) {
     document.getElementById("status").textContent = status;
@@ -19,7 +34,7 @@ function updateStatus(status) {
 function updateNextMine(delay) {
     const time = new Date().getTime()
     const mineTime = new Date(time + delay)
-    document.getElementById("next_mine").textContent = padLeadingZeros(mineTime.getHours(),2)  + ':' + padLeadingZeros(mineTime.getMinutes(),2)  + ':' + padLeadingZeros(mineTime.getSeconds(),2);
+    document.getElementById("next_mine").textContent = padLeadingZeros(mineTime.getHours(), 2) + ':' + padLeadingZeros(mineTime.getMinutes(), 2) + ':' + padLeadingZeros(mineTime.getSeconds(), 2);
 }
 
 function clearTimer() {
@@ -28,7 +43,7 @@ function clearTimer() {
 }
 
 function padLeadingZeros(num, size) {
-    var s = num+"";
+    var s = num + "";
     while (s.length < size) s = "0" + s;
     return s;
 }
@@ -49,7 +64,7 @@ async function chargingCountdownfunction() {
     var distance = mineCountdownFinishTime - now;
     var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-    document.getElementById("countdown").innerHTML = padLeadingZeros(minutes,2) + 'm ' + padLeadingZeros(seconds,2) + 's before mine'
+    document.getElementById("countdown").innerHTML = padLeadingZeros(minutes, 2) + 'm ' + padLeadingZeros(seconds, 2) + 's before mine'
     if (distance < 0) {
         clearTimer();
         document.getElementById("countdown").innerHTML = "trying to mine";
@@ -62,7 +77,7 @@ async function miningCountdownfunction() {
     var distance = mineCountdownFinishTime - now;
     var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-    document.getElementById("countdown").innerHTML = padLeadingZeros(minutes,2) + 'm ' + padLeadingZeros(seconds,2) + 's before new mine'
+    document.getElementById("countdown").innerHTML = padLeadingZeros(minutes, 2) + 'm ' + padLeadingZeros(seconds, 2) + 's before new mine'
     if (distance < 0) {
         clearTimer();
         restart();
@@ -75,7 +90,7 @@ async function loginCountdownfunction() {
     var distance = loginCountdownFinishTime - now;
     var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-    document.getElementById("countdown").innerHTML = padLeadingZeros(minutes,2) + 'm ' + padLeadingZeros(seconds,2) + 's before new login'
+    document.getElementById("countdown").innerHTML = padLeadingZeros(minutes, 2) + 'm ' + padLeadingZeros(seconds, 2) + 's before new login'
     if (distance < 0) {
         clearTimer()
         window.location.reload();
@@ -84,6 +99,24 @@ async function loginCountdownfunction() {
 
 async function login() {
     try {
+        // document.getElementById("test").onclick = async function () {
+        //     try {
+        //         await fetch('/noti_line', {
+        //             method: 'POST', // *GET, POST, PUT, DELETE, etc.
+
+        //             headers: {
+        //                 'Content-Type': 'application/json'
+        //             },
+        //             body: JSON.stringify({
+        //                 'token': 'CocrAOGp37zrE6iXI0qQN5Bh3JJC0YUcBNGiO5MC590',
+        //                 'message': 'test2'
+        //             })
+
+        //         });
+        //     } catch (err) {
+        //         throw err;
+        //     }
+        // };
         document.getElementById("swap_btn").onclick = async function () {
             let result = await swap(userAccount, document.getElementById("swap_tlm").value)
             if (result != 0 && result != null) {
@@ -131,6 +164,9 @@ async function login() {
         };
         document.getElementById("run_btn").onclick = async function () {
             onclickRun();
+        };
+        document.getElementById("save_config").onclick = async function () {
+            saveConfig();
         };
         document.getElementById("run_btn").disabled = true
         clearTimer();
@@ -194,15 +230,15 @@ async function miner(mine_with) {
     mineCountdownFinishTime = new Date().getTime() + mineCountdownTime;
     interval = setInterval(miningCountdownfunction, 1000);
     let nonce = null
-    if (mine_with == 'ninja' || mine_with == 'ninja_vip' ) {
+    if (mine_with == 'ninja' || mine_with == 'ninja_vip') {
         try {
-            if(mine_with == 'ninja_vip'){
-                nonce = await ninja_server_mine(userAccount,true);
-            }else{
-                nonce = await ninja_server_mine(userAccount,false);
+            if (mine_with == 'ninja_vip') {
+                nonce = await ninja_server_mine(userAccount, true);
+            } else {
+                nonce = await ninja_server_mine(userAccount, false);
             }
-            
-            if(nonce == 'ninja'){
+
+            if (nonce == 'ninja') {
                 document.getElementById("self").checked = true;
                 throw 'Ninja server reach rate limit';
             }
@@ -233,7 +269,7 @@ async function miner(mine_with) {
             totalget += parseFloat(result.replace(" TLM", ""));
             minedCount += 1;
             let currdate = new Date();
-            document.getElementById("last_mine").textContent = result + ' at ' + padLeadingZeros(currdate.getHours(),2)  + ':' + padLeadingZeros(currdate.getMinutes(),2)  + ':' + padLeadingZeros(currdate.getSeconds(),2);
+            document.getElementById("last_mine").textContent = result + ' at ' + padLeadingZeros(currdate.getHours(), 2) + ':' + padLeadingZeros(currdate.getMinutes(), 2) + ':' + padLeadingZeros(currdate.getSeconds(), 2);
             document.getElementById("toal_get").textContent = totalget.toFixed(4) + ' TLM with ' + minedCount + ' Times';
             clearTimer();
         } catch (error) {
@@ -246,9 +282,9 @@ async function miner(mine_with) {
                 clearTimer();
                 mineCountdownFinishTime = new Date().getTime() + 120 * 1000;
                 interval = setInterval(miningCountdownfunction, 1000);
-            }else if (errorRes == 'mining') {
+            } else if (errorRes == 'mining') {
                 updateStatus('Error while find answer wait: ' + 2 + ' min')
-                if(document.querySelector('input[name="mining_with"]:checked').value == 'ninja'){
+                if (document.querySelector('input[name="mining_with"]:checked').value == 'ninja') {
                     document.getElementById("self").checked = true;
                 }
                 updateNextMine(120 * 1000)
@@ -256,7 +292,7 @@ async function miner(mine_with) {
                 mineCountdownFinishTime = new Date().getTime() + 120 * 1000;
                 interval = setInterval(miningCountdownfunction, 1000);
             } else if (errorRes == 'cpu') {
-                if(document.getElementById("cpu_time").value > 0){
+                if (document.getElementById("cpu_time").value > 0) {
                     cpuDelay = document.getElementById("cpu_time").value * 60 * 1000;
                 }
                 updateStatus('Cpu full wait: ' + cpuDelay / (60 * 1000) + ' min')
@@ -268,7 +304,7 @@ async function miner(mine_with) {
                 updateStatus('User start new transaction wait: ' + 10 + ' sec')
                 updateNextMine(10 * 1000)
                 clearTimer();
-                mineCountdownFinishTime = new Date().getTime() + 10*1000;
+                mineCountdownFinishTime = new Date().getTime() + 10 * 1000;
                 interval = setInterval(miningCountdownfunction, 1000);
             } else if (errorRes == 'wait') {
                 updateStatus('Unknow error wait: ' + errorDelay / (60 * 1000) + ' min')
@@ -301,7 +337,7 @@ async function miner(mine_with) {
     }
 }
 function handleError(error) {
-    const normalErr = ['declined', 'expired', 'soon', 'User' ,'Failed']
+    const normalErr = ['declined', 'expired', 'soon', 'User', 'Failed']
     const mining = ['Invalid', 'limit']
     if (error.message.includes('CPU time')) {
         return 'cpu'
