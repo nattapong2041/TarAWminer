@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Lazydigger - Alien Worlds Bot </title>
+  <title>Lazy digger - Alien Worlds Bot </title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
@@ -44,6 +44,10 @@
         <span class="fs-6"><b>Bot status: </b></span>
         <button id="run_btn" type="button" class="btn btn-warning fs-6"
           style="margin-left: 15px; margin-top: 10px; margin-bottom: 10px; ">Waiting</button>
+          <button id="save_config" type="button" class="btn btn-warning fs-6"
+          style="margin-left: 15px; margin-top: 10px; margin-bottom: 10px; ">Save Config</button>
+          <!-- <button id="test" type="button" class="btn btn-warning fs-6"
+        style="margin-left: 15px; margin-top: 10px; margin-bottom: 10px; ">TEST</button> -->
         <br>
         <span class="fs-6 text-danger">ฺCountdown time > 0 before it can be pressed to 'STOP'.</span>
         <div class="border" style="height:75%;">
@@ -82,7 +86,7 @@
         </div>
       </div>
       <div class="col-md-6 col-sm-12">
-        <spanclass="fs-6"><b>Mining Log (ฺBOT version 2.1.3)</b></span>
+        <spanclass="fs-6"><b>Mining Log (ฺBOT version 2.1.4 - add save config)</b></span>
           <textarea class="form-control box-shadow fs-6" rows="17" style="height:100%;" id="show_mine_log"
             disabled=""></textarea>
       </div>
@@ -181,6 +185,7 @@
         }
       }
     })();
+    loadConfig();
     login();
   </script>
 </body>
