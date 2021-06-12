@@ -1,4 +1,4 @@
-const wax = new waxjs.WaxJS('https://wax.greymass.com');
+const wax = new waxjs.WaxJS('https://wax.pink.gg');
 const aa_api = new atomicassets.ExplorerApi("https://wax.api.atomicassets.io", "atomicassets", { fetch });
 
 const mining_account = "m.federation";

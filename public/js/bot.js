@@ -266,7 +266,7 @@ async function miner(mine_with) {
         try {
             console.log(`account:${userAccount} || answer:${nonce}`);
             result = await claim(userAccount, nonce);
-            totalget += parseFloat(result.replace(" TLM", ""));
+            totalget += parseFloat(result);
             minedCount += 1;
             let currdate = new Date();
             document.getElementById("last_mine").textContent = result + ' at ' + padLeadingZeros(currdate.getHours(), 2) + ':' + padLeadingZeros(currdate.getMinutes(), 2) + ':' + padLeadingZeros(currdate.getSeconds(), 2);

@@ -16,9 +16,12 @@
     "babel-preset-es2015": "^6.24.1",
     "ejs": "^3.1.6",
     "express": "^4.17.1",
-    "line-notify-nodejs": "^1.0.0"
+    "line-notify-nodejs": "^1.0.0",
+    "node-fetch": "^2.6.1",
+    "node-webcrypto-p11": "^2.3.6"
   },
   "devDependencies": {
+    "@webcrypto-local/server": "^1.6.4",
     "nodemon": "^2.0.7"
   },
   "engines": {
