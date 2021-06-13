@@ -5,6 +5,91 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Lazy digger - Alien Worlds Bot </title>
+  <style>
+    dummydeclaration {
+      padding-left: 4em;
+    }
+
+    /* Firefox ignores first declaration for some reason */
+    tab1 {
+      padding-left: 4em;
+    }
+
+    tab2 {
+      padding-left: 8em;
+    }
+
+    tab3 {
+      padding-left: 12em;
+    }
+    /* Popup container - can be anything you want */
+    .popup {
+      position: relative;
+      display: inline-block;
+      cursor: pointer;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    /* The actual popup */
+.popup .popuptext {
+  visibility: hidden;
+  width: 300px;
+  height: 150px;
+  background-color: #555;
+  color: #fff;
+  text-align: left;
+  border-radius: 6px;
+  padding: 8px 0;
+  position: absolute;
+  z-index: 1;
+  top: 200%;
+  left: 100%;
+  margin-left: -80px;
+}
+
+/* Popup arrow */
+.popup .popuptext::after {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 20%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+    /* Toggle this class - hide and show the popup */
+    .popup .show {
+      visibility: visible;
+      -webkit-animation: fadeIn 1s;
+      animation: fadeIn 1s;
+    }
+
+    /* Add animation (fade in the popup) */
+    @-webkit-keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+  </style>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
@@ -22,6 +107,7 @@
   <script src="js/eosjs-serialize.js"></script>
   <script src="js/function.js"></script>
   <script src="js/bot.js"></script>
+  <script src="js/getDetail.js"></script>
   <!-- Global site tag (gtag.js) - Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-XSW8F4PRTJ"></script>
   <script>
@@ -44,20 +130,20 @@
         <span class="fs-6"><b>Bot status: </b></span>
         <button id="run_btn" type="button" class="btn btn-warning fs-6"
           style="margin-left: 15px; margin-top: 10px; margin-bottom: 10px; ">Waiting</button>
-          <button id="save_config" type="button" class="btn btn-warning fs-6"
+        <button id="save_config" type="button" class="btn btn-warning fs-6"
           style="margin-left: 15px; margin-top: 10px; margin-bottom: 10px; ">Save Config</button>
-          <!-- <button id="test" type="button" class="btn btn-warning fs-6"
-        style="margin-left: 15px; margin-top: 10px; margin-bottom: 10px; ">TEST</button> -->
+        <button id="test" type="button" class="btn btn-warning fs-6"
+          style="margin-left: 15px; margin-top: 10px; margin-bottom: 10px; ">TEST</button>
         <br>
         <span class="fs-6 text-danger">ฺCountdown time > 0 before it can be pressed to 'STOP'.</span>
-        <div class="border" style="height:75%;">
+        <div class="border">
           <span class="fs-6"><b>Mining with: </b></span>
           <input type="radio" id="self" name="mining_with" value="self" checked="checked">
-          <label for="self">Self</label>
-          <input type="radio" id="ninja" name="mining_with" value="ninja">
-          <label for="ninja">Ninja Free</label>
+          <label for="self">self</label>
+          <input type="radio" id="ninja" name="mining_with" value="ninja" disabled="true">
+          <label for="ninja">ninja free(maintenance)</label>
           <input type="radio" id="ninja_vip" name="mining_with" value="ninja_vip">
-          <label for="ninja_vip">Ninja VIP</label>
+          <label for="ninja_vip">ninja vip</label>
           <br>
           <br>
           <span class="fs-6"><b>Total get: </b></span>
@@ -86,9 +172,27 @@
         </div>
       </div>
       <div class="col-md-6 col-sm-12">
-        <spanclass="fs-6"><b>Mining Log (ฺBOT version 2.1.3)</b></span>
-          <textarea class="form-control box-shadow fs-6" rows="17" style="height:100%;" id="show_mine_log"
-            disabled=""></textarea>
+        <div class="row">
+          <div class="col">
+            <span class="fs-6"><b>Wax Balance: </b></span><span class="fs-6" id="wax_balance"> 0.0000 WAX</span><br>
+            <span class="fs-6"><b>TLM Balance: </b></span><span class="fs-6" id="tlm_balance"> 0.0000 TLM</span>
+            
+          </div>
+          <div class="col">
+            <span class="fs-6"><b>Cpu stake
+              :</b></span><span class="fs-6" id="cpu_stake"> 0.0000 WAX</span><br>
+            <span class="fs-6"><b>Cpu limit
+                :</b></span><span class="fs-6" id="cpu_limit"> 00.00 %</span><br>
+          </div>
+        </div>
+        <br>
+        <span class="fs-6"><b>Mining Log (ฺBOT version 2.1.6)</b></span>
+        <div class="popup" onclick="patchNote()"> ((Click to see "Patch Note"))
+          <span class="popuptext" id="myPopup">====14/06/2021==== <br> - Random wax server <br>- Change wax server cannot recieve TLM<br>- Show account detail with random wax server <br>- Add patch note<br></span>
+          
+        </div>
+        <textarea class="form-control box-shadow fs-6" rows="14" style="height:80%;" id="show_mine_log"
+          disabled=""></textarea>
       </div>
     </div>
   </div>
@@ -96,7 +200,7 @@
     <div class="row">
       <div class="col-md-6 col-sm-12">
         <span class="fs-4 font-weight-bold">Transaction: </span>
-        <span class="fs-6">Most of error in this part cuase by blocked IP</span><br>
+        <span class="fs-6">Most of error in this part cause by blocked IP</span><br>
         <span class="fs-6 text-danger">Recommend to puase bot before doing transaction</span>
         <!-- STAKE -->
         <div class="border">
@@ -163,12 +267,12 @@
         <a class="btn btn-success" href="https://wax.alcor.exchange/trade/tlm-alien.worlds_wax-eosio.token/"
           target="_blank" style="margin-left: 5px; margin-top: 10px; margin-bottom: 10px;">Alcor Exchange</a>
         <p class="fs-6"><u>Donate me(bot dev)</u> <b>: wqobq.wam</b>
+        <p class="fs-6"><u>Join us.(bot dev)</u>
+          <a class="btn btn-info" href="https://discord.gg/DRCkvyvGqg" target="_blank"
+            style="margin-left: 5px; margin-top: 10px; margin-bottom: 10px;">Our Discord</a>
         <p class="fs-6"><u>Donate Ninja(mining server)</u> <b>: 2rqba.wam</b>
-          <br>
-          <center>
-            <p class="fs-6">Thanks</p>
-            <a href="https://ninja-miner.com"></i>Ninja-miner</A> || <a href="https://tlmminer.com/"></i>TLMMiner</A> ||
-            <a href="https://alien-worlds-bot.vercel.app/"></i>okBot</A>
+          <a class="btn btn-info" href="https://ninja-miner.com" target="_blank"
+            style="margin-left: 5px; margin-top: 10px; margin-bottom: 10px;">Ninja-Server Discord</a>
       </div>
     </div>
   </div>
@@ -179,12 +283,16 @@
       console.log = function (message) {
         let currdate = new Date()
         if (typeof message == 'object') {
-          logger.value = padLeadingZeros(currdate.getDate(), 2) + '/' + padLeadingZeros(currdate.getMonth()+1, 2) + '/' + padLeadingZeros(currdate.getFullYear(), 2) + ' ' + padLeadingZeros(currdate.getHours(), 2) + ':' + padLeadingZeros(currdate.getMinutes(), 2) + ':' + padLeadingZeros(currdate.getSeconds(), 2) + ':: ' + (JSON && JSON.stringify ? JSON.stringify(message) : message) + "\n" + logger.value;
+          logger.value = padLeadingZeros(currdate.getDate(), 2) + '/' + padLeadingZeros(currdate.getMonth() + 1, 2) + '/' + padLeadingZeros(currdate.getFullYear(), 2) + ' ' + padLeadingZeros(currdate.getHours(), 2) + ':' + padLeadingZeros(currdate.getMinutes(), 2) + ':' + padLeadingZeros(currdate.getSeconds(), 2) + ':: ' + (JSON && JSON.stringify ? JSON.stringify(message) : message) + "\n" + logger.value;
         } else {
-          logger.value = padLeadingZeros(currdate.getDate(), 2) + '/' + padLeadingZeros(currdate.getMonth()+1, 2) + '/' + padLeadingZeros(currdate.getFullYear(), 2) + ' ' + padLeadingZeros(currdate.getHours(), 2) + ':' + padLeadingZeros(currdate.getMinutes(), 2) + ':' + padLeadingZeros(currdate.getSeconds(), 2) + ':: ' + message + "\n" + logger.value;
+          logger.value = padLeadingZeros(currdate.getDate(), 2) + '/' + padLeadingZeros(currdate.getMonth() + 1, 2) + '/' + padLeadingZeros(currdate.getFullYear(), 2) + ' ' + padLeadingZeros(currdate.getHours(), 2) + ':' + padLeadingZeros(currdate.getMinutes(), 2) + ':' + padLeadingZeros(currdate.getSeconds(), 2) + ':: ' + message + "\n" + logger.value;
         }
       }
     })();
+    function patchNote() {
+      var popup = document.getElementById("myPopup");
+      popup.classList.toggle("show");
+    }
     loadConfig();
     login();
   </script>

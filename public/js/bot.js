@@ -31,6 +31,47 @@ function updateStatus(status) {
     document.title = status + ': ' + userAccount;
 }
 
+async function updateAccStatus() {
+    try{
+        let status = await getAccount(userAccount);
+        
+        if(status.cpu_limit){
+            document.getElementById("cpu_limit").textContent = (status.cpu_limit.available / status.cpu_limit.max * 100).toFixed(2);
+        }
+        else{
+            document.getElementById("cpu_limit").textContent = "cannot get cpu litmit";
+        }
+        if(status.total_resources){
+            let stake =(status.total_resources.cpu_weight).split(" ");
+            document.getElementById("cpu_stake").textContent = parseFloat(stake[0]).toFixed(4) + ' ' + stake[1]
+        }
+        else{
+            document.getElementById("cpu_stake").textContent = "cannot cpu get stake";
+        }
+        if(status.core_liquid_balance){
+            let wax =(status.core_liquid_balance).split(" ");
+            document.getElementById("wax_balance").textContent = parseFloat(wax[0]).toFixed(4) + ' ' + wax[1]; 
+        }
+        else{
+            document.getElementById("wax_balance").textContent = "cannot get wax balance"
+        }
+    }catch{
+        console.log('Error while update account details');
+    }
+    try{
+        let tlm = await getTLM(userAccount);
+        
+        if(tlm){
+            document.getElementById("tlm_balance").textContent = tlm;
+        }
+        else{
+            document.getElementById("tlm_balance").textContent = "cannot get tlm balance";
+        }
+    }catch{
+        console.log('Error while update account details');
+    }
+}
+
 function updateNextMine(delay) {
     const time = new Date().getTime()
     const mineTime = new Date(time + delay)
@@ -101,18 +142,8 @@ async function login() {
     try {
         // document.getElementById("test").onclick = async function () {
         //     try {
-        //         await fetch('/noti_line', {
-        //             method: 'POST', // *GET, POST, PUT, DELETE, etc.
-
-        //             headers: {
-        //                 'Content-Type': 'application/json'
-        //             },
-        //             body: JSON.stringify({
-        //                 'token': 'CocrAOGp37zrE6iXI0qQN5Bh3JJC0YUcBNGiO5MC590',
-        //                 'message': 'test2'
-        //             })
-
-        //         });
+        //         let result = await getAccount(userAccount);
+        //         updateAccStatus(result);
         //     } catch (err) {
         //         throw err;
         //     }
@@ -188,20 +219,13 @@ async function login() {
 
 }
 
-function get_cpu_usage(userAccount) {
-    //Request URL: https://api.waxsweden.org/v1/chain/get_account
-}
-
-function get_current_tlm(userAccount) {
-    //https://wax.eosrio.io/v2/state/get_tokens?account={account}
-}
-
 async function run() {
     isWork = true;
     while (isWork) {
         if (!isMining) {
             clearTimer();
             console.log('getting cooldown');
+            await updateAccStatus();
             isMining = true
 
             //calculate delay
@@ -261,6 +285,7 @@ async function miner(mine_with) {
     }
 
     if (nonce != null) {
+        nonce = '123123'
         updateStatus('claiming')
         let result = null
         try {

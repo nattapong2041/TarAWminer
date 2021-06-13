@@ -1,4 +1,19 @@
-const wax = new waxjs.WaxJS('https://wax.pink.gg');
+const base_api = [
+    'https://wax.pink.gg',
+    'https://wax.cryptolions.io',
+    'https://wax.dapplica.io',
+    'https://wax.eosn.io',
+    'https://api.wax.alohaeos.com',
+    'https://wax.greymass.com',
+    'https://wax.eoseoul.io'
+]
+
+function getRandom(min, max) {
+    return Math.floor(Math.random() * (max - min) + min);
+}
+var index = getRandom(0, base_api.length)
+var url = base_api[index];
+var wax = new waxjs.WaxJS(url);
 const aa_api = new atomicassets.ExplorerApi("https://wax.api.atomicassets.io", "atomicassets", { fetch });
 
 const mining_account = "m.federation";
@@ -358,7 +373,7 @@ async function claim(account, nonce) {
         }, {
             blocksBehind: 3,
             expireSeconds: 90,
-        });
+        })
         var amounts = new Map();
         if (result && result.processed) {
             result.processed.action_traces[0].inline_traces.forEach((t) => {
@@ -374,6 +389,10 @@ async function claim(account, nonce) {
         }
         return 0;
     } catch (error) {
+        index = getRandom(0, base_api.length)
+        url = base_api[index];
+        wax = new waxjs.WaxJS(url);
+        console.log('change wax server to: '+ url);
         throw error
     }
 }

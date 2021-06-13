@@ -1,7 +1,7 @@
 var express = require('express')
 var app = express()
 var fs = require('fs');
-const fetch = require("node-fetch");
+// const fetch = require("node-fetch");
 // var tools1 = require('./public/js/waxjs');
 // var tools2 = require('./public/js/atomicassets');
 // eval(fs.readFileSync('public/js/waxjs.js') + '');
@@ -9,7 +9,7 @@ const fetch = require("node-fetch");
 // eval(fs.readFileSync('public/js/int64-buffer.min.js') + '');
 // eval(fs.readFileSync('public/js/eosjs-numeric.js') + '');
 // eval(fs.readFileSync('public/js/eosjs-serialize.js') + '');
-const crypto = require("node-webcrypto-p11");
+// const crypto = require("node-webcrypto-p11");
 
 // const crypto = new Crypto(config);
 
