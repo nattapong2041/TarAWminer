@@ -11,9 +11,9 @@ const base_api = [
 function getRandom(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
 }
-var index = getRandom(0, base_api.length)
-var url = base_api[index];
+var url = base_api[getRandom(0, base_api.length)];
 var wax = new waxjs.WaxJS(url);
+
 const aa_api = new atomicassets.ExplorerApi("https://wax.api.atomicassets.io", "atomicassets", { fetch });
 
 const mining_account = "m.federation";
@@ -389,9 +389,9 @@ async function claim(account, nonce) {
         }
         return 0;
     } catch (error) {
-        index = getRandom(0, base_api.length)
-        url = base_api[index];
+        url = base_api[getRandom(0, base_api.length)];
         wax = new waxjs.WaxJS(url);
+        document.getElementById("wax_server").textContent = 'Wax server: '+url;
         console.log('change wax server to: '+ url);
         throw error
     }

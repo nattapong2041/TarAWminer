@@ -5,12 +5,15 @@ var mineCountdownTime = 5 * (60 * 1000);
 var loginCountdownTime = 3 * (60 * 1000);
 var mineCountdownFinishTime = new Date().getTime();
 var loginCountdownFinishTime = new Date().getTime();
-var interval;
+var nextmine = 0;
+var mineInterval;
+var newMineInterval;
+var loginInterval;
 var isMining = false;
 var totalget = 0.0;
 var minedCount = 0;
 let userAccount = "";
-
+var delay = 0;
 function saveConfig() {
     console.log('====SAVE CONFIG====');
     localStorage.setItem('mining_with', document.querySelector('input[name="mining_with"]:checked').value)
@@ -32,42 +35,42 @@ function updateStatus(status) {
 }
 
 async function updateAccStatus() {
-    try{
+    try {
         let status = await getAccount(userAccount);
-        
-        if(status.cpu_limit){
-            document.getElementById("cpu_limit").textContent = (status.cpu_limit.available / status.cpu_limit.max * 100).toFixed(2);
+
+        if (status.cpu_limit) {
+            document.getElementById("cpu_limit").textContent = (status.cpu_limit.available / status.cpu_limit.max * 100).toFixed(2) + ' %';
         }
-        else{
+        else {
             document.getElementById("cpu_limit").textContent = "cannot get cpu litmit";
         }
-        if(status.total_resources){
-            let stake =(status.total_resources.cpu_weight).split(" ");
+        if (status.total_resources) {
+            let stake = (status.total_resources.cpu_weight).split(" ");
             document.getElementById("cpu_stake").textContent = parseFloat(stake[0]).toFixed(4) + ' ' + stake[1]
         }
-        else{
+        else {
             document.getElementById("cpu_stake").textContent = "cannot cpu get stake";
         }
-        if(status.core_liquid_balance){
-            let wax =(status.core_liquid_balance).split(" ");
-            document.getElementById("wax_balance").textContent = parseFloat(wax[0]).toFixed(4) + ' ' + wax[1]; 
+        if (status.core_liquid_balance) {
+            let wax = (status.core_liquid_balance).split(" ");
+            document.getElementById("wax_balance").textContent = parseFloat(wax[0]).toFixed(4) + ' ' + wax[1];
         }
-        else{
+        else {
             document.getElementById("wax_balance").textContent = "cannot get wax balance"
         }
-    }catch{
+    } catch {
         console.log('Error while update account details');
     }
-    try{
+    try {
         let tlm = await getTLM(userAccount);
-        
-        if(tlm){
+
+        if (tlm) {
             document.getElementById("tlm_balance").textContent = tlm;
         }
-        else{
+        else {
             document.getElementById("tlm_balance").textContent = "cannot get tlm balance";
         }
-    }catch{
+    } catch {
         console.log('Error while update account details');
     }
 }
@@ -79,7 +82,15 @@ function updateNextMine(delay) {
 }
 
 function clearTimer() {
-    clearInterval(interval);
+    if(loginInterval){
+        clearInterval(loginInterval);
+    }
+    if (newMineInterval) {
+        clearInterval(newMineInterval);
+    }
+    if (mineInterval) {
+        clearInterval(mineInterval);
+    }
     document.getElementById("countdown").innerHTML = "0m 0s";
 }
 
@@ -101,6 +112,9 @@ function updateAccount(userAccount) {
 
 
 async function chargingCountdownfunction() {
+    if(newMineInterval){
+        clearInterval(newMineInterval);
+    }
     var now = new Date().getTime();
     var distance = mineCountdownFinishTime - now;
     var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
@@ -114,6 +128,9 @@ async function chargingCountdownfunction() {
 }
 
 async function miningCountdownfunction() {
+    if(mineInterval){
+        clearInterval(mineInterval);
+    }
     var now = new Date().getTime();
     var distance = mineCountdownFinishTime - now;
     var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
@@ -148,6 +165,7 @@ async function login() {
         //         throw err;
         //     }
         // };
+        document.getElementById("wax_server").textContent = 'Wax server: ' + url;
         document.getElementById("swap_btn").onclick = async function () {
             let result = await swap(userAccount, document.getElementById("swap_tlm").value)
             if (result != 0 && result != null) {
@@ -202,7 +220,7 @@ async function login() {
         document.getElementById("run_btn").disabled = true
         clearTimer();
         loginCountdownFinishTime = new Date().getTime() + loginCountdownTime;
-        interval = setInterval(loginCountdownfunction, 1000);
+        loginInterval = setInterval(loginCountdownfunction, 1000);
         userAccount = await wax.login();
         updateAccount(userAccount);
         if (userAccount != null) {
@@ -221,15 +239,13 @@ async function login() {
 
 async function run() {
     isWork = true;
-    while (isWork) {
-        if (!isMining) {
-            clearTimer();
-            console.log('getting cooldown');
-            await updateAccStatus();
-            isMining = true
-
-            //calculate delay
-            let delay = await getMineDelay(userAccount);
+    clearTimer();
+    if (!isMining) {
+        console.log('getting cooldown');
+        isMining = true
+        //calculate delay
+        if(delay == 0){
+            delay = await getMineDelay(userAccount); 
             let addRandom = Math.floor(Math.random() * 21000) + 4000;
             let totalDelay = 0;
             if (Number.isInteger(delay)) {
@@ -240,10 +256,11 @@ async function run() {
             console.log('Total cooldown: ' + totalDelay / 1000 + 'sec AWCooldown: ' + delay / 1000 + ' Add random time: ' + addRandom / 1000 + 'sec')
             updateStatus('charging')
             updateNextMine(totalDelay)
+            updateAccStatus();
             mineCountdownFinishTime = new Date().getTime() + totalDelay;
-            interval = setInterval(chargingCountdownfunction, 1000);
+            mineInterval = setInterval(chargingCountdownfunction, 1000);
         }
-        await sleep(1000);
+        
     }
 }
 
@@ -252,7 +269,7 @@ async function miner(mine_with) {
     updateStatus('waiting to mine...')
     updateStatus('mining');
     mineCountdownFinishTime = new Date().getTime() + mineCountdownTime;
-    interval = setInterval(miningCountdownfunction, 1000);
+    newMineInterval = setInterval(miningCountdownfunction, 1000);
     let nonce = null
     if (mine_with == 'ninja' || mine_with == 'ninja_vip') {
         try {
@@ -261,7 +278,6 @@ async function miner(mine_with) {
             } else {
                 nonce = await ninja_server_mine(userAccount, false);
             }
-
             if (nonce == 'ninja') {
                 document.getElementById("self").checked = true;
                 throw 'Ninja server reach rate limit';
@@ -285,7 +301,6 @@ async function miner(mine_with) {
     }
 
     if (nonce != null) {
-        nonce = '123123'
         updateStatus('claiming')
         let result = null
         try {
@@ -296,69 +311,64 @@ async function miner(mine_with) {
             let currdate = new Date();
             document.getElementById("last_mine").textContent = result + ' at ' + padLeadingZeros(currdate.getHours(), 2) + ':' + padLeadingZeros(currdate.getMinutes(), 2) + ':' + padLeadingZeros(currdate.getSeconds(), 2);
             document.getElementById("toal_get").textContent = totalget.toFixed(4) + ' TLM with ' + minedCount + ' Times';
-            clearTimer();
         } catch (error) {
             updateStatus(error)
             const errorRes = handleError(error)
             console.log('error: ' + error);
             if (errorRes == 'restart') {
                 updateStatus('Normal error wait: ' + 2 + ' min')
-                updateNextMine(120 * 1000)
-                clearTimer();
-                mineCountdownFinishTime = new Date().getTime() + 120 * 1000;
-                interval = setInterval(miningCountdownfunction, 1000);
+                nextmine = 120 * 1000;
+                updateNextMine(nextmine)
             } else if (errorRes == 'mining') {
                 updateStatus('Error while find answer wait: ' + 2 + ' min')
                 if (document.querySelector('input[name="mining_with"]:checked').value == 'ninja') {
                     document.getElementById("self").checked = true;
                 }
-                updateNextMine(120 * 1000)
-                clearTimer();
-                mineCountdownFinishTime = new Date().getTime() + 120 * 1000;
-                interval = setInterval(miningCountdownfunction, 1000);
+                nextmine = 120 * 1000;
+                updateNextMine(nextmine)
             } else if (errorRes == 'cpu') {
                 if (document.getElementById("cpu_time").value > 0) {
                     cpuDelay = document.getElementById("cpu_time").value * 60 * 1000;
                 }
                 updateStatus('Cpu full wait: ' + cpuDelay / (60 * 1000) + ' min')
-                updateNextMine(cpuDelay)
-                clearTimer();
-                mineCountdownFinishTime = new Date().getTime() + cpuDelay;
-                interval = setInterval(miningCountdownfunction, 1000);
+                nextmine = cpuDelay;
+                updateNextMine(nextmine)
             } else if (errorRes == 'newTx') {
                 updateStatus('User start new transaction wait: ' + 10 + ' sec')
-                updateNextMine(10 * 1000)
-                clearTimer();
-                mineCountdownFinishTime = new Date().getTime() + 10 * 1000;
-                interval = setInterval(miningCountdownfunction, 1000);
+                nextmine = 10 * 1000;
+                updateNextMine(nextmine)
             } else if (errorRes == 'wait') {
                 updateStatus('Unknow error wait: ' + errorDelay / (60 * 1000) + ' min')
-                updateNextMine(errorDelay)
-                clearTimer();
-                mineCountdownFinishTime = new Date().getTime() + errorDelay;
-                interval = setInterval(miningCountdownfunction, 1000);
+                nextmine = errorDelay;
+                updateNextMine(nextmine)
             }
             else if (errorRes == 'break') {
                 updateStatus('Nothing to be mine wait : ' + 60 + ' min')
-                updateNextMine(60 * 60 * 1000)
-                clearTimer();
-                mineCountdownFinishTime = new Date().getTime() + 60 * 60 * 1000;
-                interval = setInterval(miningCountdownfunction, 1000);
+                nextmine = 60 * 60 * 1000;
+                updateNextMine(nextmine)
             }
             else {
                 updateStatus('Unknow error wait: ' + errorDelay / (60 * 1000) + ' min')
-                updateNextMine(errorDelay)
-                clearTimer();
-                mineCountdownFinishTime = new Date().getTime() + errorDelay;
-                interval = setInterval(miningCountdownfunction, 1000);
+                nextmine = errorDelay;
+                updateNextMine(nextmine)
             }
         }
+        console.log('-------------------');
         if (result != null) {
+            delay = 0;
+            clearTimer();
             updateStatus('mining success sleeping')
             isMining = false;
             await sleep(10000);
+            run();
         }
-        console.log('-------------------');
+        else {
+            delay = 0;
+            clearTimer();
+            mineCountdownFinishTime = new Date().getTime() + nextmine;
+            newMineInterval = setInterval(miningCountdownfunction, 1000);
+        }
+
     }
 }
 function handleError(error) {
@@ -390,6 +400,7 @@ function stop() {
 }
 
 function onclickRun() {
+    clearTimer();
     if (isWork) {
         stop();
         updateStatus('STOPPING')
