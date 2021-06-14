@@ -39,7 +39,7 @@ async function updateAccStatus() {
         let status = await getAccount(userAccount);
 
         if (status.cpu_limit) {
-            document.getElementById("cpu_limit").textContent = (status.cpu_limit.available / status.cpu_limit.max * 100).toFixed(2) + ' %';
+            document.getElementById("cpu_limit").textContent = (status.cpu_limit.used / status.cpu_limit.max * 100).toFixed(2) + ' %';
         }
         else {
             document.getElementById("cpu_limit").textContent = "cannot get cpu litmit";
@@ -395,6 +395,7 @@ function handleError(error) {
 
 function stop() {
     clearTimer();
+    delay = 0;
     isMining = false
     isWork = false;
 }
@@ -411,6 +412,7 @@ function onclickRun() {
         isWork = true;
         updateStatus('RUNNING')
         console.log('======== RUNNING ========');
+        delay = 0;
         run();
         document.getElementById("run_btn").textContent = "Click to STOP"
         document.getElementById("run_btn").className = "btn btn-danger"

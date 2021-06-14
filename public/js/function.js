@@ -389,10 +389,10 @@ async function claim(account, nonce) {
         }
         return 0;
     } catch (error) {
-        url = base_api[getRandom(0, base_api.length)];
-        wax = new waxjs.WaxJS(url);
-        document.getElementById("wax_server").textContent = 'Wax server: '+url;
-        console.log('change wax server to: '+ url);
+        // url = base_api[getRandom(0, base_api.length)];
+        // wax = new waxjs.WaxJS(url);
+        // document.getElementById("wax_server").textContent = 'Wax server: '+url;
+        // console.log('change wax server to: '+ url);
         throw error
     }
 }
