@@ -1096,4 +1096,3 @@ Serialize.deserializeAction = function (contract, account, name, authorization, 
         data: Serialize.deserializeActionData(contract, account, name, data, textEncoder, textDecoder),
     };
 };
-//# sourceMappingURL=eosjs-serialize.js.map

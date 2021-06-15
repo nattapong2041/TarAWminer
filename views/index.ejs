@@ -126,7 +126,6 @@
         <span class="fs-5 font-weight-bold"><b>Account: </b></span>
         <span id="user_account" class="fs-5 font-weight-bold"> xxxxx.wam</span>
         <br>
-        <br>
         <span class="fs-6"><b>Bot status: </b></span>
         <button id="run_btn" type="button" class="btn btn-warning fs-6"
           style="margin-left: 15px; margin-top: 10px; margin-bottom: 10px; ">Waiting</button>
@@ -144,6 +143,11 @@
           <label for="ninja">ninja free(maintenance)</label>
           <input type="radio" id="ninja_vip" name="mining_with" value="ninja_vip">
           <label for="ninja_vip">ninja vip</label>
+          <br>
+          <br>
+          <span class="fs-6"><b>Real recieve TLM?: </b></span>
+          <input type="checkbox" id="need_real_tlm">
+          <span class="fs-6"> check it out will reduce chance of getting ban IP</span>
           <br>
           <br>
           <span class="fs-6"><b>Total get: </b></span>
@@ -184,12 +188,18 @@
             <span class="fs-6"><b>Cpu limit
                 :</b></span><span class="fs-6" id="cpu_limit"> 00.00 %</span><br>
           </div>
+          <div class="col-3">
+            <button id="update_detail" type="button" class="btn btn-warning fs-6"
+            style="margin-left: 15px; margin-top: 10px; margin-bottom: 10px; ">Update</button>
+          </div>
+          
+        <br>
         </div>
         <br>
-        <span class="fs-6"><b>Mining Log (ฺBOT version 2.2.0 hot fix)</b></span>
+        <span class="fs-6"><b>Mining Log (ฺBOT version 2.2.1)</b></span>
         
         <div class="popup" onclick="patchNote()"> ((Click to see "Patch Note"))
-          <span class="popuptext" id="myPopup">====14/06/2021==== <br> -Otimized bot algorithm(Reduce CPU usesage) <br>- Random wax server <br>- Change wax server cannot recieve TLM<br>- Show account detail with random wax server <br>- Add patch note<br></span>
+          <span class="popuptext" id="myPopup">**16/06/2021** <br> -Show real recieve TLM from mining<br>-Add timeout when recieve TLM <br>-Fix bug bot stop running <br>-add Update button to update<br> current status<br>- Delete some wax server<br></span>
         </div>
         <br><span class="fs-6" id="wax_server" ><b>Wax server: </b></span>
         <textarea class="form-control box-shadow fs-6" rows="14" style="height:80%;" id="show_mine_log"
@@ -218,7 +228,7 @@
             <input type="number" id="swap_tlm" placeholder="0.0000 TLM"
               style="width: 150px; margin-left: 10px; margin-top: 10px; margin-bottom: 10px; padding-left: 5px;">
             <button id="swap_btn" type="button" class="btn btn-danger"
-              style="margin-left: 15px; margin-top: 10px; margin-bottom: 10px; ">Swap</button>
+              style="margin-left: 15px; margin-top: 10px; margin-bottom: 10px; ">Sell at Best</button>
           </div>
           <!-- Set Land -->
           <div class="border border-dark">

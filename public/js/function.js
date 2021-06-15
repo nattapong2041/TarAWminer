@@ -1,1 +1,675 @@
-const _0x62ca=['mine','message','ease','act','error','api','some','claimnfts','toFixed','landregs','forEach','Claiming\x20NFT\x20drop\x20of\x20','floor','https://server-mine-b7clrv20.an.gateway.dev/server_mine_vip?wallet=','.wam','includes','transfer','setland','\x20in\x20','\x20WAX\x20from\x20','federation','https://wax.dapplica.io','planet','\x20WAX\x20to\x20','rate','23mTvlPP','\x20...','SHA-256','0.00000000\x20WAX','\x20iterations\x20taking\x20','579177sjNfPm','alcordexmain','status','reduce','WaxJS','data','log','random','Found\x20answer\x20','text','avatar','subtle','Staking\x20','Swap\x20','length','digest','\x20changing\x20land\x20to\x20','toString','Still\x20mining\x20-\x20tried\x20','slice','toArray','owner','rows','SerialBuffer','2391782fYYtlL','Land\x20owner\x20not\x20found\x20for\x20land\x20id\x20','ninja','delegatebw','match','account_str','1179019ILbkTE','current_land','Mining\x20with\x20ninja\x20vip\x20server','Transfer\x20','getName','\x20WAX\x20to\x20CPU...','Rate','1345ZiIDud','\x20\x20TLM','Complete\x20stake\x20','then','rpc','tag','Failed\x20to\x20get\x20land\x20-\x20','quantity','Claim\x20item\x20success\x20pls\x20check\x20your\x20bag','delay','get_table_rows','postMessage','https://wax.pink.gg','players','getTime','\x20WAX\x20','https://wax.cryptolions.io','pushName','https://server-mine-b7clrv20.an.gateway.dev/server_mine?wallet=','1135BfndKt','15596QislHb','\x20WAX','substring','\x20Swaping\x20tlm\x20to\x20wax\x20...','join','substr','last_mine_tx','eosio','inline_traces','1444933ZRNNoz','0000000000000000000000000000000000000000000000000000000000000000','eosio.token','action_traces','items','Received:\x20','.000Z','img','parse','\x20Transfering\x20','https://wax.api.atomicassets.io','https://wax.eoseoul.io','padStart','getAsset','https://wax.eosn.io','miners','Mining\x20with\x20ninja\x20free\x20server','bags','active','30307AvQBPY','account','\x20iterations','Limit','https://api.wax.alohaeos.com','\x20to\x20','transact','67xWDcdl','set','get','processed','m.federation','array','difficulty','map','Set\x20to\x20lands:\x20','limit','2zEjYcI'];const _0x180076=_0x2b9d;(function(_0x4aa4ec,_0x485847){const _0xc425fa=_0x2b9d;while(!![]){try{const _0x142337=-parseInt(_0xc425fa(0x10a))*-parseInt(_0xc425fa(0x135))+parseInt(_0xc425fa(0xee))*-parseInt(_0xc425fa(0x111))+parseInt(_0xc425fa(0x13a))+-parseInt(_0xc425fa(0xf7))+-parseInt(_0xc425fa(0xda))*parseInt(_0xc425fa(0xed))+-parseInt(_0xc425fa(0xd3))+parseInt(_0xc425fa(0x11b))*parseInt(_0xc425fa(0xcd));if(_0x142337===_0x485847)break;else _0x4aa4ec['push'](_0x4aa4ec['shift']());}catch(_0x4871dd){_0x4aa4ec['push'](_0x4aa4ec['shift']());}}}(_0x62ca,0xd3057));const base_api=[_0x180076(0xe6),_0x180076(0xea),_0x180076(0x131),_0x180076(0x105),_0x180076(0x10e),'https://wax.greymass.com',_0x180076(0x102)];function getRandom(_0x1b473a,_0x7a33d0){const _0x1a9650=_0x180076;return Math['floor'](Math[_0x1a9650(0x141)]()*(_0x7a33d0-_0x1b473a)+_0x1b473a);}var url=base_api[getRandom(0x0,base_api[_0x180076(0xc3)])],wax=new waxjs[(_0x180076(0x13e))](url);function _0x2b9d(_0x2fab39,_0x21819b){_0x2fab39=_0x2fab39-0xbf;let _0x62ca07=_0x62ca[_0x2fab39];return _0x62ca07;}const aa_api=new atomicassets['ExplorerApi'](_0x180076(0x101),'atomicassets',{'fetch':fetch}),mining_account='m.federation',federation_account=_0x180076(0x130),fromHexString=_0x13dde3=>new Uint8Array(_0x13dde3[_0x180076(0xd1)](/.{1,2}/g)[_0x180076(0x118)](_0x67da30=>parseInt(_0x67da30,0x10))),toHexString=_0x464225=>_0x464225[_0x180076(0x13d)]((_0x1dd3c8,_0x36048f)=>_0x1dd3c8+_0x36048f[_0x180076(0xc6)](0x10)[_0x180076(0x103)](0x2,'0'),''),nameToInt=_0x54e5a2=>{const _0x104495=_0x180076,_0x29d216=new Serialize[(_0x104495(0xcc))]({'textEncoder':new TextEncoder(),'textDecoder':new TextDecoder()});_0x29d216[_0x104495(0xeb)](_0x54e5a2);const _0xbae19=new Int64LE(_0x29d216['array']);return _0xbae19+'';},nameToArray=_0x1c6ab1=>{const _0x27e518=_0x180076,_0x29c9f3=new Serialize[(_0x27e518(0xcc))]({'textEncoder':new TextEncoder(),'textDecoder':new TextDecoder()});return _0x29c9f3[_0x27e518(0xeb)](_0x1c6ab1),_0x29c9f3[_0x27e518(0x116)];},intToName=_0x510df4=>{const _0x316226=_0x180076;_0x510df4=new Int64LE(_0x510df4);const _0x374116=new SerialBuffer({'textEncoder':new TextEncoder(),'textDecoder':new TextDecoder()});_0x374116['pushArray'](_0x510df4[_0x316226(0xc9)]());const _0x2c0847=_0x374116[_0x316226(0xd7)]();return _0x2c0847;},getBagMiningParams=_0xd4b51b=>{const _0x1112d8=_0x180076,_0x8d0d92={'delay':0x0,'difficulty':0x0,'ease':0x0};let _0x3c7613=0xffff;for(let _0x1f5b8e=0x0;_0x1f5b8e<_0xd4b51b[_0x1112d8(0xc3)];_0x1f5b8e++){_0xd4b51b[_0x1f5b8e][_0x1112d8(0x13f)][_0x1112d8(0xe3)]<_0x3c7613&&(_0x3c7613=_0xd4b51b[_0x1f5b8e][_0x1112d8(0x13f)][_0x1112d8(0xe3)]),_0x8d0d92[_0x1112d8(0xe3)]+=_0xd4b51b[_0x1f5b8e]['data'][_0x1112d8(0xe3)],_0x8d0d92['difficulty']+=_0xd4b51b[_0x1f5b8e][_0x1112d8(0x13f)][_0x1112d8(0x117)],_0x8d0d92[_0x1112d8(0x11e)]+=_0xd4b51b[_0x1f5b8e][_0x1112d8(0x13f)][_0x1112d8(0x11e)]/0xa;}if(_0xd4b51b[_0x1112d8(0xc3)]===0x2)_0x8d0d92[_0x1112d8(0xe3)]-=parseInt(_0x3c7613/0x2);else _0xd4b51b[_0x1112d8(0xc3)]===0x3&&(_0x8d0d92[_0x1112d8(0xe3)]-=_0x3c7613);return _0x8d0d92;},getLandMiningParams=_0x77b6c2=>{const _0x2895dc=_0x180076,_0x44bcae={'delay':0x0,'difficulty':0x0,'ease':0x0};return _0x44bcae[_0x2895dc(0xe3)]+=_0x77b6c2[_0x2895dc(0x13f)][_0x2895dc(0xe3)],_0x44bcae[_0x2895dc(0x117)]+=_0x77b6c2[_0x2895dc(0x13f)][_0x2895dc(0x117)],_0x44bcae['ease']+=_0x77b6c2[_0x2895dc(0x13f)][_0x2895dc(0x11e)],_0x44bcae;},getLandById=async(_0xa0b27b,_0x3d5d1f,_0x2514d5,_0x2ba5e8)=>{const _0x10763b=_0x180076;try{const _0x40fe9c=await _0x2514d5[_0x10763b(0xe4)]({'code':_0xa0b27b,'scope':_0xa0b27b,'table':_0x10763b(0x125),'lower_bound':_0x3d5d1f,'upper_bound':_0x3d5d1f});let _0x51c6f6=_0x10763b(0x130);_0x40fe9c[_0x10763b(0xcb)][_0x10763b(0xc3)]&&(_0x51c6f6=_0x40fe9c[_0x10763b(0xcb)][0x0][_0x10763b(0xca)]);if(!_0x51c6f6)throw new Error(_0x10763b(0xce)+_0x3d5d1f);const _0x18acb7=await _0x2ba5e8[_0x10763b(0x104)](_0x3d5d1f);return _0x18acb7[_0x10763b(0x13f)][_0x10763b(0x132)]=intToName(_0x18acb7['data']['planet']),_0x18acb7[_0x10763b(0x13f)][_0x10763b(0xfe)]=_0x18acb7[_0x10763b(0x13f)][_0x10763b(0xfe)]||'',_0x18acb7[_0x10763b(0xca)]=_0x18acb7[_0x10763b(0xca)]||_0x51c6f6,_0x18acb7;}catch(_0x3631d2){return null;}},getLand=async(_0x54b078,_0x4e0bad,_0x236780,_0x3ea589,_0x472fb1)=>{const _0x38fe91=_0x180076;try{const _0x1ec42b=await _0x3ea589[_0x38fe91(0xe4)]({'code':_0x4e0bad,'scope':_0x4e0bad,'table':_0x38fe91(0x106),'lower_bound':_0x236780,'upper_bound':_0x236780});let _0x27886f;if(_0x1ec42b[_0x38fe91(0xcb)][_0x38fe91(0xc3)]===0x0)return null;else _0x27886f=_0x1ec42b['rows'][0x0][_0x38fe91(0xd4)];return await getLandById(_0x54b078,_0x27886f,_0x3ea589,_0x472fb1);}catch(_0x1c4e13){return console[_0x38fe91(0x120)](_0x38fe91(0xe0)+_0x1c4e13[_0x38fe91(0x11d)]),null;}},getBag=async(_0x22f88a,_0x18bae7,_0xd95437,_0x1c53b8)=>{const _0x4a7b23=_0x180076,_0x538ee2=await _0xd95437[_0x4a7b23(0xe4)]({'code':_0x22f88a,'scope':_0x22f88a,'table':_0x4a7b23(0x108),'lower_bound':_0x18bae7,'upper_bound':_0x18bae7}),_0x496b7d=[];if(_0x538ee2['rows'][_0x4a7b23(0xc3)]){const _0x42c833=_0x538ee2[_0x4a7b23(0xcb)][0x0][_0x4a7b23(0xfb)]['map'](_0x6cb4bb=>{const _0x1258f5=_0x4a7b23;return _0x1c53b8[_0x1258f5(0x104)](_0x6cb4bb);});return await Promise['all'](_0x42c833);}return _0x496b7d;},getNextMineDelay=async(_0x31dc3f,_0x3a7df3,_0x5d7541,_0xf2f08c)=>{const _0x485ab0=_0x180076,_0x256476=await _0xf2f08c[_0x485ab0(0xe4)]({'code':_0x31dc3f,'scope':_0x31dc3f,'table':_0x485ab0(0x106),'lower_bound':_0x3a7df3,'upper_bound':_0x3a7df3});let _0x534167=-0x1;const _0x165fee=new Date()[_0x485ab0(0xe8)]();if(_0x256476[_0x485ab0(0xcb)]['length']&&_0x256476[_0x485ab0(0xcb)][0x0]['last_mine_tx']!=='0000000000000000000000000000000000000000000000000000000000000000'){const _0x355db3=Date[_0x485ab0(0xff)](_0x256476[_0x485ab0(0xcb)][0x0]['last_mine']+_0x485ab0(0xfd));_0x534167=_0x355db3+_0x5d7541[_0x485ab0(0xe3)]*0x3e8-_0x165fee,_0x534167<0x0&&(_0x534167=0x0);}return _0x534167;},getMineDelay=async function(_0x3f2fa9){const _0x343399=_0x180076;try{const _0x648f34=await getBag(mining_account,_0x3f2fa9,wax[_0x343399(0x121)][_0x343399(0xde)],aa_api),_0x57611a=await getLand(federation_account,mining_account,_0x3f2fa9,wax['api'][_0x343399(0xde)],aa_api),_0x8697d3=getBagMiningParams(_0x648f34),_0x1bad88=getLandMiningParams(_0x57611a);_0x8697d3[_0x343399(0xe3)]*=_0x1bad88['delay']/0xa,_0x8697d3[_0x343399(0x117)]+=_0x1bad88['difficulty'];var _0x2793a3=await getNextMineDelay(mining_account,_0x3f2fa9,_0x8697d3,wax['api'][_0x343399(0xde)]);return _0x2793a3;}catch(_0x1a5f23){return _0x1a5f23;}},getBagDifficulty=async function(_0x367a9f){const _0x2f2c53=_0x180076;try{const _0x4f566c=await getBag(mining_account,_0x367a9f,wax[_0x2f2c53(0x121)][_0x2f2c53(0xde)],aa_api),_0x1ed8df=getBagMiningParams(_0x4f566c);return _0x1ed8df['difficulty'];}catch(_0x40c4e5){return _0x40c4e5;}},getLandDifficulty=async function(_0x3f59d2){const _0x4d8759=_0x180076;try{const _0x30ecb6=await getLand(federation_account,mining_account,_0x3f59d2,wax['api'][_0x4d8759(0xde)],aa_api),_0x4d8d1b=getLandMiningParams(_0x30ecb6);return _0x4d8d1b[_0x4d8759(0x117)];}catch(_0x358c2c){return _0x358c2c;}},lastMineTx=async(_0x358a42,_0x1a0992,_0x3d6c61)=>{const _0x41cc70=_0x180076,_0x50aa41=await _0x3d6c61[_0x41cc70(0xe4)]({'code':_0x358a42,'scope':_0x358a42,'table':_0x41cc70(0x106),'lower_bound':_0x1a0992,'upper_bound':_0x1a0992});let _0x7c46f2=_0x41cc70(0xf8);return _0x50aa41['rows'][_0x41cc70(0xc3)]&&(_0x7c46f2=_0x50aa41[_0x41cc70(0xcb)][0x0][_0x41cc70(0xf4)]),_0x7c46f2;},doWorkWorker=async _0x34d096=>{const _0x3424c9=_0x180076;_0x34d096[_0x3424c9(0xf4)]=_0x34d096[_0x3424c9(0xf4)][_0x3424c9(0xf3)](0x0,0x10),_0x34d096['last_mine_arr']=fromHexString(_0x34d096[_0x3424c9(0xf4)]),_0x34d096[_0x3424c9(0xd2)]=_0x34d096[_0x3424c9(0x10b)],_0x34d096[_0x3424c9(0x10b)]=nameToArray(_0x34d096[_0x3424c9(0x10b)]);const _0x150547=()=>{const _0x553a9b=_0x3424c9,_0x5424f5=new Uint8Array(0x8);for(let _0x27c46f=0x0;_0x27c46f<0x8;_0x27c46f++){const _0x54c910=Math[_0x553a9b(0x128)](Math[_0x553a9b(0x141)]()*0xff);_0x5424f5[_0x27c46f]=_0x54c910;}return _0x5424f5;},_0x5ea0ba=_0x3a438b=>{const _0x102cdf=_0x3424c9;return[...new Uint8Array(_0x3a438b)][_0x102cdf(0x118)](_0x144ac1=>_0x144ac1['toString'](0x10)[_0x102cdf(0x103)](0x2,'0'))[_0x102cdf(0xf2)]('');};let {mining_account:_0x322b66,account:_0x1ab5bc,account_str:_0x15bce9,difficulty:_0x209882,last_mine_tx:_0x5e2098,last_mine_arr:_0x59dec6}=_0x34d096;_0x1ab5bc=_0x1ab5bc[_0x3424c9(0xc8)](0x0,0x8);const _0xd678d0=_0x15bce9['substr'](-0x4)===_0x3424c9(0x12a);let _0x2f3eac=![],_0x469620=0x0,_0x3828cc=0x0,_0x2b3ed9,_0x16684d,_0x4a8c1f,_0x7ce2b8;const _0x30bb05=new Date()['getTime']();while(!_0x2f3eac&&isMining){_0x4a8c1f=_0x150547();const _0x156f1d=new Uint8Array(_0x1ab5bc['length']+_0x59dec6[_0x3424c9(0xc3)]+_0x4a8c1f['length']);_0x156f1d[_0x3424c9(0x112)](_0x1ab5bc),_0x156f1d[_0x3424c9(0x112)](_0x59dec6,_0x1ab5bc[_0x3424c9(0xc3)]),_0x156f1d['set'](_0x4a8c1f,_0x1ab5bc[_0x3424c9(0xc3)]+_0x59dec6['length']),_0x2b3ed9=await crypto[_0x3424c9(0xc0)][_0x3424c9(0xc4)](_0x3424c9(0x137),_0x156f1d[_0x3424c9(0xc8)](0x0,0x18)),_0x16684d=_0x5ea0ba(_0x2b3ed9);_0xd678d0?_0x2f3eac=_0x16684d[_0x3424c9(0xf3)](0x0,0x4)==='0000':_0x2f3eac=_0x16684d[_0x3424c9(0xf3)](0x0,0x6)==='000000';_0x2f3eac&&(_0xd678d0?_0x7ce2b8=parseInt(_0x16684d[_0x3424c9(0xf3)](0x4,0x1),0x10):_0x7ce2b8=parseInt(_0x16684d[_0x3424c9(0xf3)](0x6,0x1),0x10),_0x2f3eac&=_0x7ce2b8<=_0x209882);_0x469620++;_0x469620%0xf4240===0x0&&console[_0x3424c9(0x140)](_0x3424c9(0xc7)+_0x469620+_0x3424c9(0x10c));!_0x2f3eac&&(_0x2b3ed9=null);if(_0x469620>=0xf4240*0xa)break;}if(!isMining){const _0x4dc140={'account':_0x15bce9,'rand_str':null,'hex_digest':_0x16684d};return this[_0x3424c9(0xe5)](_0x4dc140),_0x4dc140;}else{const _0x2950c8=new Date()[_0x3424c9(0xe8)](),_0x35e82b=_0x5ea0ba(_0x4a8c1f);console[_0x3424c9(0x140)](_0x3424c9(0x142)+_0x35e82b+_0x3424c9(0x12e)+_0x469620+_0x3424c9(0x139)+(_0x2950c8-_0x30bb05)/0x3e8+'s');const _0x48d86c={'account':_0x15bce9,'rand_str':_0x35e82b,'hex_digest':_0x16684d};return this[_0x3424c9(0xe5)](_0x48d86c),_0x48d86c;}},background_mine=async _0x494b6e=>{return new Promise(async(_0x1aeebb,_0x3e455f)=>{const _0xd4853b=_0x2b9d,_0x18dca9=await getBagDifficulty(_0x494b6e),_0xd99ae5=await getLandDifficulty(_0x494b6e),_0x2d1df5=_0x18dca9+_0xd99ae5,_0x1dad2e=await lastMineTx(mining_account,_0x494b6e,wax[_0xd4853b(0x121)][_0xd4853b(0xde)]);doWorkWorker({'mining_account':mining_account,'account':_0x494b6e,'difficulty':_0x2d1df5,'last_mine_tx':_0x1dad2e})[_0xd4853b(0xdd)](_0x210685=>{_0x1aeebb(_0x210685);});});};async function claim(_0xcbba31,_0x1bebe2){const _0x3f7676=_0x180076;try{console['log'](_0xcbba31+'\x20Pushing\x20mine\x20results...');const _0x3f917e={'miner':_0xcbba31,'nonce':_0x1bebe2},_0x318596=[{'account':mining_account,'name':_0x3f7676(0x11c),'authorization':[{'actor':_0xcbba31,'permission':_0x3f7676(0x109)}],'data':_0x3f917e}];let _0x44e929=await wax[_0x3f7676(0x121)][_0x3f7676(0x110)]({'actions':_0x318596},{'blocksBehind':0x3,'expireSeconds':0x5a});var _0x1b51e6=new Map();if(_0x44e929&&_0x44e929[_0x3f7676(0x114)])return _0x44e929[_0x3f7676(0x114)][_0x3f7676(0xfa)][0x0][_0x3f7676(0xf6)][_0x3f7676(0x126)](_0x64562a=>{const _0x201f30=_0x3f7676;if(_0x64562a[_0x201f30(0x11f)]['data']['quantity']){var _0x5a90dc=_0x64562a[_0x201f30(0x11f)]['data'][_0x201f30(0xe1)];_0x5a90dc=_0x5a90dc[_0x201f30(0xf0)](0x0,_0x5a90dc[_0x201f30(0xc3)]-0x4);var _0x1b9117=parseFloat(_0x5a90dc)['toFixed'](0x4);_0x1b51e6['set'](_0x64562a[_0x201f30(0x11f)][_0x201f30(0x13f)]['to'],_0x1b9117[_0x201f30(0xc6)]()+'\x20TLM');}}),console['log'](_0x3f7676(0xfc)+parseFloat(_0x1b51e6[_0x3f7676(0x113)](_0xcbba31))),_0x1b51e6[_0x3f7676(0x113)](_0xcbba31);return 0x0;}catch(_0xee104){throw _0xee104;}}async function setLand(_0x4c03c5,_0x25f338){const _0x4c944b=_0x180076;try{console[_0x4c944b(0x140)](_0x4c03c5+_0x4c944b(0xc5)+_0x25f338);const _0x5cd09b={'account':_0x4c03c5,'land_id':_0x25f338},_0x3c232b=[{'account':_0x4c944b(0x115),'name':_0x4c944b(0x12d),'authorization':[{'actor':_0x4c03c5,'permission':_0x4c944b(0x109)}],'data':_0x5cd09b}];let _0x4356f2=await wax[_0x4c944b(0x121)][_0x4c944b(0x110)]({'actions':_0x3c232b},{'blocksBehind':0x3,'expireSeconds':0x5a});if(_0x4356f2&&_0x4356f2['processed']){let _0x5b84dd=_0x4356f2['processed'][_0x4c944b(0xfa)][0x0]['act'][_0x4c944b(0x13f)]['land_id'];return _0x4c944b(0x119)+_0x5b84dd;}return 0x0;}catch(_0x56eae1){throw _0x56eae1;}}async function swap(_0xff445b,_0x6403ce){const _0x22543d=_0x180076;try{console[_0x22543d(0x140)](_0xff445b+_0x22543d(0xf1));const _0x45d8dd={'from':_0xff445b,'to':_0x22543d(0x13b),'quantity':parseFloat(_0x6403ce)[_0x22543d(0x124)](0x4)+_0x22543d(0xdb),'memo':'0.00000000\x20WAX@eosio.token'},_0xab81e0=[{'account':'alien.worlds','name':_0x22543d(0x12c),'authorization':[{'actor':_0xff445b,'permission':'active'}],'data':_0x45d8dd}];let _0x1e17c2=await wax[_0x22543d(0x121)][_0x22543d(0x110)]({'actions':_0xab81e0},{'blocksBehind':0x3,'expireSeconds':0x5a});if(_0x1e17c2&&_0x1e17c2[_0x22543d(0x114)]){let _0x5e698c=_0x1e17c2['processed'][_0x22543d(0xfa)][0x0][_0x22543d(0xf6)][0x2][_0x22543d(0x11f)]['data'][_0x22543d(0xe1)];return _0x22543d(0xc2)+_0x6403ce+_0x22543d(0x10f)+_0x5e698c;}return 0x0;}catch(_0xb5d31c){throw _0xb5d31c;}}async function transfer(_0x396139,_0x43aedf,_0x1d3b29,_0x54c25d){const _0x499945=_0x180076;try{console[_0x499945(0x140)](_0x396139+_0x499945(0x100)+_0x43aedf+_0x499945(0x133)+_0x1d3b29+_0x499945(0x136));const _0x5c929f={'from':_0x396139,'to':_0x1d3b29,'quantity':parseFloat(_0x43aedf)[_0x499945(0x124)](0x8)+'\x20\x20WAX','memo':_0x54c25d},_0x2d6782=[{'account':_0x499945(0xf9),'name':_0x499945(0x12c),'authorization':[{'actor':_0x396139,'permission':_0x499945(0x109)}],'data':_0x5c929f}];let _0x5bf02c=await wax[_0x499945(0x121)]['transact']({'actions':_0x2d6782},{'blocksBehind':0x3,'expireSeconds':0x5a});if(_0x5bf02c&&_0x5bf02c[_0x499945(0x114)])return _0x499945(0xd6)+_0x43aedf+_0x499945(0x12f)+_0x396139+_0x499945(0x10f)+_0x1d3b29;return 0x0;}catch(_0x2581f3){throw _0x2581f3;}}async function claimNFT(_0x2f0676,_0x5361c5){const _0x17c71e=_0x180076;try{console[_0x17c71e(0x140)](_0x17c71e(0x127)+_0x2f0676+_0x17c71e(0x136));const _0x5463eb={'miner':_0x5361c5},_0x1e555f=[{'account':_0x17c71e(0x115),'name':_0x17c71e(0x123),'authorization':[{'actor':_0x2f0676,'permission':_0x17c71e(0x109)}],'data':_0x5463eb}];let _0x597483=await wax[_0x17c71e(0x121)][_0x17c71e(0x110)]({'actions':_0x1e555f},{'blocksBehind':0x3,'expireSeconds':0x5a});if(_0x597483&&_0x597483['processed'])return _0x17c71e(0xe2);return 0x0;}catch(_0x7a7fab){throw _0x7a7fab;}}async function stake(_0x1318f6,_0x59c7fc){const _0x42d270=_0x180076;try{console[_0x42d270(0x140)](_0x42d270(0xc1)+_0x59c7fc+_0x42d270(0xd8));const _0x44edfe={'from':_0x1318f6,'receiver':_0x1318f6,'stake_net_quantity':_0x42d270(0x138),'stake_cpu_quantity':parseFloat(_0x59c7fc)[_0x42d270(0x124)](0x8)+_0x42d270(0xef),'transfer':![]},_0x16f5cc=[{'account':_0x42d270(0xf5),'name':_0x42d270(0xd0),'authorization':[{'actor':_0x1318f6,'permission':_0x42d270(0x109)}],'data':_0x44edfe}];let _0x2366be=await wax[_0x42d270(0x121)][_0x42d270(0x110)]({'actions':_0x16f5cc},{'blocksBehind':0x3,'expireSeconds':0x5a});if(_0x2366be&&_0x2366be[_0x42d270(0x114)])return _0x42d270(0xdc)+_0x59c7fc+_0x42d270(0xe9);return 0x0;}catch(_0x3ec41a){throw _0x3ec41a;}}async function self_mine(_0x4b4434){const _0xace153=_0x180076;console[_0xace153(0x140)]('Try\x20self\x20mining');let _0x5c4539=await background_mine(_0x4b4434);try{return _0x5c4539['rand_str'];}catch(_0x84d8f4){throw _0x84d8f4;}}const ninja_server_mine=async(_0x1de176,_0x3c9086)=>{const _0x37d9e4=_0x180076,_0x4aed58=[_0x37d9e4(0xd9),_0x37d9e4(0x134),_0x37d9e4(0x10d),_0x37d9e4(0x11a)];let _0x2b76e2=_0x37d9e4(0xec)+_0x1de176;_0x3c9086==!![]?(console[_0x37d9e4(0x140)](_0x37d9e4(0xd5)),_0x2b76e2=_0x37d9e4(0x129)+_0x1de176):(console[_0x37d9e4(0x140)](_0x37d9e4(0x107)),_0x2b76e2=_0x37d9e4(0xec)+_0x1de176);try{return await fetch(_0x2b76e2)[_0x37d9e4(0xdd)](_0x3cfa4d=>{const _0x39978e=_0x37d9e4;if(_0x3cfa4d[_0x39978e(0x13c)]==0xc8)return _0x3cfa4d[_0x39978e(0x143)]();else{if(_0x3cfa4d[_0x39978e(0x13c)]==0x192||_0x3cfa4d[_0x39978e(0x13c)]==0xce||_0x4aed58[_0x39978e(0x122)](_0x213f71=>_0x3cfa4d[_0x39978e(0x143)]()[_0x39978e(0x12b)](_0x213f71)))return _0x39978e(0xcf);}})[_0x37d9e4(0xdd)](_0x1bce52=>{return _0x1bce52['match'](/\b[0-9a-f]{16}\b/gi)&&isMining?_0x1bce52:null;});}catch(_0x218950){throw _0x218950;}},getPlayerData=async _0x2838ee=>{const _0x542934=_0x180076;let _0x436797=wax['api'][_0x542934(0xde)];const _0x5605ad=await _0x436797[_0x542934(0xe4)]({'code':federation_account,'scope':federation_account,'table':_0x542934(0xe7),'lower_bound':_0x2838ee,'upper_bound':_0x2838ee}),_0x4db168={'tag':'','avatar':''};if(_0x5605ad[_0x542934(0xcb)][_0x542934(0xc3)]){_0x4db168[_0x542934(0xdf)]=_0x5605ad[_0x542934(0xcb)][0x0][_0x542934(0xdf)];if(_0x5605ad[_0x542934(0xcb)][0x0][_0x542934(0xbf)]>0x0){const _0x40e02d=await aa_api['getAsset'](_0x5605ad[_0x542934(0xcb)][0x0][_0x542934(0xbf)]);_0x40e02d&&(_0x4db168['avatar']=_0x40e02d);}}return _0x4db168;};
+const base_api = [
+    'https://wax.pink.gg',
+    'https://wax.cryptolions.io',
+    'https://wax.dapplica.io',
+    'https://wax.eosn.io',
+    'https://wax.greymass.com',
+    'https://api.wax.alohaeos.com',
+    'https://wax.eoseoul.io'
+]
+
+function getRandom(min, max) {
+    return Math.floor(Math.random() * (max - min) + min);
+}
+var url = base_api[getRandom(0, base_api.length-2)];
+var wax = new waxjs.WaxJS(url);
+
+const aa_api = new atomicassets.ExplorerApi("https://wax.api.atomicassets.io", "atomicassets", { fetch });
+
+const mining_account = "m.federation";
+const federation_account = "federation";
+
+function timeout(ms, promise) {
+    return new Promise((resolve, reject) => {
+      const timer = setTimeout(() => {
+        reject(new Error('Transaction timeout'))
+      }, ms)
+  
+      promise
+        .then(value => {
+          clearTimeout(timer)
+          resolve(value)
+        })
+        .catch(reason => {
+          clearTimeout(timer)
+          reject(reason)
+        })
+    })
+  }
+
+  
+const fromHexString = hexString =>
+    new Uint8Array(hexString.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
+
+const toHexString = bytes =>
+    bytes.reduce((str, byte) => str + byte.toString(16).padStart(2, '0'), '');
+
+const nameToInt = (name) => {
+    const sb = new Serialize.SerialBuffer({
+        textEncoder: new TextEncoder,
+        textDecoder: new TextDecoder
+    });
+
+    sb.pushName(name);
+
+    const name_64 = new Int64LE(sb.array);
+
+    return name_64 + '';
+}
+
+const nameToArray = (name) => {
+    const sb = new Serialize.SerialBuffer({
+        textEncoder: new TextEncoder,
+        textDecoder: new TextDecoder
+    });
+
+    sb.pushName(name);
+
+    return sb.array;
+}
+
+const intToName = (int) => {
+    int = new Int64LE(int);
+
+    const sb = new SerialBuffer({
+        textEncoder: new TextEncoder,
+        textDecoder: new TextDecoder
+    });
+
+    sb.pushArray(int.toArray());
+
+    const name = sb.getName();
+
+    return name;
+}
+
+
+const getBagMiningParams = (bag) => {
+    const mining_params = {
+        delay: 0,
+        difficulty: 0,
+        ease: 0
+    };
+
+    let min_delay = 65535;
+
+    for (let b = 0; b < bag.length; b++) {
+        if (bag[b].data.delay < min_delay) {
+            min_delay = bag[b].data.delay;
+        }
+        mining_params.delay += bag[b].data.delay;
+        mining_params.difficulty += bag[b].data.difficulty;
+        mining_params.ease += bag[b].data.ease / 10;
+    }
+
+    if (bag.length === 2) {
+        mining_params.delay -= parseInt(min_delay / 2);
+    }
+    else if (bag.length === 3) {
+        mining_params.delay -= min_delay;
+    }
+
+    return mining_params;
+};
+
+const getLandMiningParams = (land) => {
+    const mining_params = {
+        delay: 0,
+        difficulty: 0,
+        ease: 0
+    };
+
+    mining_params.delay += land.data.delay;
+    mining_params.difficulty += land.data.difficulty;
+    mining_params.ease += land.data.ease;
+
+    return mining_params;
+};
+
+const getLandById = async (federation_account, land_id, eos_rpc, aa_api) => {
+    try {
+        const land_res = await eos_rpc.get_table_rows({ code: federation_account, scope: federation_account, table: 'landregs', lower_bound: land_id, upper_bound: land_id });
+        let landowner = 'federation';
+        if (land_res.rows.length) {
+            landowner = land_res.rows[0].owner;
+        }
+
+        if (!landowner) {
+            throw new Error(`Land owner not found for land id ${land_id}`);
+        }
+
+        const land_asset = await aa_api.getAsset(land_id);
+        // const land_data = await land_asset.toObject();
+
+        land_asset.data.planet = intToName(land_asset.data.planet);
+
+        // make sure these attributes are present
+        land_asset.data.img = land_asset.data.img || '';
+        land_asset.owner = land_asset.owner || landowner;
+
+        return land_asset;
+    }
+    catch (e) {
+        return null;
+    }
+}
+
+const getLand = async (federation_account, mining_account, account, eos_rpc, aa_api) => {
+    try {
+        const miner_res = await eos_rpc.get_table_rows({ code: mining_account, scope: mining_account, table: 'miners', lower_bound: account, upper_bound: account });
+        let land_id;
+        if (miner_res.rows.length === 0) {
+            return null;
+        }
+        else {
+            land_id = miner_res.rows[0].current_land;
+        }
+
+        return await getLandById(federation_account, land_id, eos_rpc, aa_api);
+    }
+    catch (e) {
+        console.error(`Failed to get land - ${e.message}`);
+        return null;
+    }
+}
+
+const getBag = async (mining_account, account, eos_rpc, aa_api) => {
+    const bag_res = await eos_rpc.get_table_rows({ code: mining_account, scope: mining_account, table: 'bags', lower_bound: account, upper_bound: account });
+    const bag = [];
+    if (bag_res.rows.length) {
+        const items_p = bag_res.rows[0].items.map((item_id) => {
+            return aa_api.getAsset(item_id);
+        });
+        return await Promise.all(items_p);
+    }
+    return bag;
+}
+
+const getNextMineDelay = async (mining_account, account, params, eos_rpc) => {
+    const state_res = await eos_rpc.get_table_rows({
+        code: mining_account,
+        scope: mining_account,
+        table: 'miners',
+        lower_bound: account,
+        upper_bound: account
+    });
+
+    let ms_until_mine = -1;
+    const now = new Date().getTime();
+
+    if (state_res.rows.length && state_res.rows[0].last_mine_tx !== '0000000000000000000000000000000000000000000000000000000000000000') {
+        const last_mine_ms = Date.parse(state_res.rows[0].last_mine + '.000Z');
+        ms_until_mine = last_mine_ms + (params.delay * 1000) - now;
+
+        if (ms_until_mine < 0) {
+            ms_until_mine = 0;
+        }
+    }
+
+    return ms_until_mine;
+};
+
+const getMineDelay = async function (account) {
+    try {
+        const bag = await getBag(mining_account, account, wax.api.rpc, aa_api);
+        const land = await getLand(federation_account, mining_account, account, wax.api.rpc, aa_api);
+        const params = getBagMiningParams(bag);
+        const land_params = getLandMiningParams(land);
+        params.delay *= land_params.delay / 10;
+        params.difficulty += land_params.difficulty;
+        var minedelay = await getNextMineDelay(mining_account, account, params, wax.api.rpc);
+        return minedelay;
+    } catch (error) {
+        return error;
+    }
+};
+
+const getBagDifficulty = async function (account) {
+    try {
+        const bag = await getBag(mining_account, account, wax.api.rpc, aa_api);
+        const params = getBagMiningParams(bag);
+        return params.difficulty;
+    } catch (error) {
+        return error;
+    }
+};
+
+const getLandDifficulty = async function (account) {
+    try {
+        const land = await getLand(federation_account, mining_account, account, wax.api.rpc, aa_api);
+        const params = getLandMiningParams(land);
+        return params.difficulty;
+    } catch (error) {
+        return error;
+    }
+};
+
+
+const lastMineTx = async (mining_account, account, eos_rpc) => {
+    const state_res = await eos_rpc.get_table_rows({
+        code: mining_account,
+        scope: mining_account,
+        table: 'miners',
+        lower_bound: account,
+        upper_bound: account
+    });
+    let last_mine_tx = '0000000000000000000000000000000000000000000000000000000000000000';
+    if (state_res.rows.length) {
+        last_mine_tx = state_res.rows[0].last_mine_tx;
+    }
+
+    return last_mine_tx;
+};
+
+const doWorkWorker = async (mining_params) => {
+    mining_params.last_mine_tx = mining_params.last_mine_tx.substr(0, 16); // only first 8 bytes of txid
+    mining_params.last_mine_arr = fromHexString(mining_params.last_mine_tx);
+
+    mining_params.account_str = mining_params.account;
+    mining_params.account = nameToArray(mining_params.account);
+
+    const getRand = () => {
+        const arr = new Uint8Array(8);
+        for (let i = 0; i < 8; i++) {
+            const rand = Math.floor(Math.random() * 255);
+            arr[i] = rand;
+        }
+        return arr;
+    };
+
+    const toHex = (buffer) => {
+        return [...new Uint8Array(buffer)]
+            .map(b => b.toString(16).padStart(2, "0"))
+            .join("");
+    };
+
+    let { mining_account, account, account_str, difficulty, last_mine_tx, last_mine_arr } = mining_params
+    account = account.slice(0, 8);
+    const is_wam = account_str.substr(-4) === '.wam';
+    let good = false,
+        itr = 0,
+        rand = 0,
+        hash,
+        hex_digest,
+        rand_arr,
+        last;
+    const start = new Date().getTime();
+
+    while (!good && isMining) {
+        rand_arr = getRand();
+
+        const combined = new Uint8Array(account.length + last_mine_arr.length + rand_arr.length);
+        combined.set(account);
+        combined.set(last_mine_arr, account.length);
+        combined.set(rand_arr, account.length + last_mine_arr.length);
+        hash = await crypto.subtle.digest('SHA-256', combined.slice(0, 24));
+        hex_digest = toHex(hash);
+
+        if (is_wam) {
+            good = hex_digest.substr(0, 4) === '0000';
+        } else {
+            good = hex_digest.substr(0, 6) === '000000';
+        }
+
+        if (good) {
+            if (is_wam) {
+                last = parseInt(hex_digest.substr(4, 1), 16);
+            } else {
+                last = parseInt(hex_digest.substr(6, 1), 16);
+            }
+
+            good &= last <= difficulty;
+        }
+        itr++;
+        if (itr % 1000000 === 0) {
+            console.log(`Still mining - tried ${itr} iterations`);
+        }
+
+        if (!good) {
+            hash = null;
+        }
+
+        if (itr >= 1000000 * 10) break;
+    }
+    if(!isMining){
+        const mine_work = {
+            account: account_str,
+            rand_str: null,
+            hex_digest: hex_digest
+        };
+        this.postMessage(mine_work);
+        return mine_work;
+    }else{
+        const end = new Date().getTime();
+        const rand_str = toHex(rand_arr);
+        console.log(`Found answer ${rand_str} in ${itr} iterations taking ${(end - start) / 1000}s`);
+        const mine_work = {
+            account: account_str,
+            rand_str: rand_str,
+            hex_digest: hex_digest
+        };
+        this.postMessage(mine_work);
+        return mine_work;
+    }
+    
+};
+
+const background_mine = async (account) => {
+    return new Promise(async (resolve, reject) => {
+        const bagDifficulty = await getBagDifficulty(account);
+        const landDifficulty = await getLandDifficulty(account);
+        const difficulty = bagDifficulty + landDifficulty;
+        const last_mine_tx = await lastMineTx(mining_account, account, wax.api.rpc);
+        doWorkWorker({
+            mining_account,
+            account,
+            difficulty,
+            last_mine_tx
+        }).then((mine_work) => {
+            resolve(mine_work);
+        });
+    });
+};
+
+async function claim(account, nonce) {
+    try {
+        console.log(`${account} Pushing mine results...`);
+        const mine_data = {
+            miner: account,
+            nonce: nonce,
+        };
+        const actions = [{
+            account: mining_account,
+            name: 'mine',
+            authorization: [{
+                actor: account,
+                permission: 'active',
+            },],
+            data: mine_data,
+        },];
+        let result = await 
+        timeout(95000, wax.api.transact({
+            actions,
+        }, {
+            blocksBehind: 3,
+            expireSeconds: 90,
+        }));
+        await sleep(5000);
+        var amounts = new Map();
+        let tlm = await getTLM(userAccount);
+        if (result && result.processed) {
+            result.processed.action_traces[0].inline_traces.forEach((t) => {
+                if (t.act.data.quantity) {
+                    // var quantityStr = t.act.data.quantity;
+                    // quantityStr = quantityStr.substring(0, quantityStr.length - 4);
+                    // var balance = (parseFloat(quantityStr)).toFixed(4);
+                    // amounts.set(t.act.data.to, balance.toString() + ' TLM');  
+                    try {
+                        if(!document.querySelector("#need_real_tlm").checked) throw 'err';
+                        if (tlm) {
+                            let recieve =(parseFloat(tlm - lastTLM)).toFixed(4);
+                            amounts.set(t.act.data.to, recieve.toString() + ' TLM'); 
+                            lastTLM = tlm;
+                            document.getElementById("tlm_balance").textContent = tlm + ' TLM';
+                        }
+                        else {
+                            document.getElementById("tlm_balance").textContent = "cannot get tlm balance";
+                            throw 'err';
+                        }
+                    } catch {
+                        var quantityStr = t.act.data.quantity;
+                        quantityStr = quantityStr.substring(0, quantityStr.length - 4);
+                        var balance = (parseFloat(quantityStr)).toFixed(4);
+                        amounts.set(t.act.data.to, balance.toString() + ' TLM'); 
+                    }
+                }
+            });
+            console.log('Received: ' + parseFloat(amounts.get(account)));
+            return amounts.get(account);
+        }
+        return 0;
+    } catch (error) {
+        // url = base_api[getRandom(0, base_api.length)];
+        // wax = new waxjs.WaxJS(url);
+        // document.getElementById("wax_server").textContent = 'Wax server: '+url;
+        // console.log('change wax server to: '+ url);
+        throw error
+    }
+}
+
+async function setLand(account, land) {
+    try {
+        console.log(`${account} changing land to ${land}`);
+        const setland = {
+            'account': account,
+            'land_id': land
+        };
+        const actions = [{
+            'account': 'm.federation',
+            'name': 'setland',
+            'authorization': [{
+                'actor': account,
+                'permission': 'active'
+            }],
+            'data': setland
+        }];
+        let result = await wax.api.transact({
+            actions,
+        }, {
+            blocksBehind: 3,
+            expireSeconds: 90,
+        });
+        if (result && result.processed) {
+            let lands = result.processed.action_traces[0].act.data.land_id
+            return 'Set to lands: ' + lands;
+        }
+        return 0;
+    } catch (error) {
+        throw error;
+    }
+}
+
+async function swap(account, amount) {
+    try {
+        console.log(`${account} Swaping tlm to wax ...`);
+        const swapdata = {
+            'from': account,
+            'to': 'alcordexmain',
+            'quantity': `${parseFloat(amount).toFixed(4)}  TLM`,
+            'memo': "0.00000000 WAX@eosio.token"
+        };
+        const actions = [{
+            'account': 'alien.worlds',
+            'name': 'transfer',
+            'authorization': [{
+                'actor': account,
+                'permission': 'active'
+            }],
+            'data': swapdata
+        }];
+        let result = await wax.api.transact({
+            actions,
+        }, {
+            blocksBehind: 3,
+            expireSeconds: 90,
+        });
+        if (result && result.processed) {
+            let wax = result.processed.action_traces[0].inline_traces[2].act.data.quantity
+            return `Swap ${amount} to ${wax}`
+        }
+        return 0;
+    } catch (error) {
+        throw error;
+    }
+}
+
+async function transfer(account, amount, toAcc, memo) {
+    try {
+        console.log(`${account} Transfering ${amount} WAX to ${toAcc} ...`);
+        const transferWAX = {
+            'from': account,
+            'to': toAcc,
+            'quantity': `${parseFloat(amount).toFixed(8)}  WAX`,
+            'memo': memo
+        };
+        const actions = [{
+            'account': 'eosio.token',
+            'name': 'transfer',
+            'authorization': [{
+                'actor': account,
+                'permission': 'active'
+            }],
+            'data': transferWAX
+        }];
+        let result = await wax.api.transact({
+            actions,
+        }, {
+            blocksBehind: 3,
+            expireSeconds: 90,
+        });
+        if (result && result.processed) {
+            return `Transfer ${amount} WAX from ${account} to ${toAcc}`
+        }
+        return 0;
+    } catch (error) {
+        throw error;
+    }
+}
+
+async function claimNFT(account, claimAcc) {
+    try {
+        console.log(`Claiming NFT drop of ${account} ...`);
+        const claimnfts = {
+            'miner': claimAcc,
+        };
+        const actions = [{
+            'account': 'm.federation',
+            'name': 'claimnfts',
+            'authorization': [{
+                'actor': account,
+                'permission': 'active'
+            }],
+            'data': claimnfts
+        }]
+        let result = await wax.api.transact({
+            actions,
+        }, {
+            blocksBehind: 3,
+            expireSeconds: 90,
+        });
+        if (result && result.processed) {
+            return `Claim item success pls check your bag`
+        }
+        return 0;
+    } catch (error) {
+        throw error;
+    }
+}
+
+async function stake(account, amount) {
+    try {
+        console.log(`Staking ${amount} WAX to CPU...`);
+        const stake = {
+            'from': account,
+            'receiver': account,
+            'stake_net_quantity': `0.00000000 WAX`,
+            'stake_cpu_quantity': `${parseFloat(amount).toFixed(8)} WAX`,
+            'transfer': false
+        };
+        const actions = [{
+            'account': 'eosio',
+            'name': 'delegatebw',
+            'authorization': [{
+                'actor': account,
+                'permission': 'active'
+            }],
+            'data': stake
+        }];
+        let result = await wax.api.transact({
+            actions,
+        }, {
+            blocksBehind: 3,
+            expireSeconds: 90,
+        });
+        if (result && result.processed) {
+            return `Complete stake ${amount} WAX `
+        }
+        return 0;
+    } catch (error) {
+        throw error;
+    }
+}
+
+
+async function self_mine(account) {
+    console.log('Try self mining');
+    let mine_work = await background_mine(account)
+    try {
+        return mine_work.rand_str;
+    } catch (err) {
+        throw err;
+    }
+}
+
+const ninja_server_mine = async (account,isVIP) => {
+    const ninja = ['Rate', 'rate', 'Limit', 'limit']
+    
+    let url = `https://server-mine-b7clrv20.an.gateway.dev/server_mine?wallet=${account}`;
+    if(isVIP == true){
+        console.log('Mining with ninja vip server');
+        url = `https://server-mine-b7clrv20.an.gateway.dev/server_mine_vip?wallet=${account}`;
+    }else{
+        console.log('Mining with ninja free server');
+        url = `https://server-mine-b7clrv20.an.gateway.dev/server_mine?wallet=${account}`;
+    }
+    try {
+        return await fetch(url)
+            .then((response) => {
+                if(response.status == 200){
+                    return response.text();
+                }
+                else if(response.status == 402 || response.status == 206 || ninja.some(v => response.text().includes(v))){
+                    return 'ninja';
+                }
+            })
+            .then(nonce => {
+                if (nonce.match(/\b[0-9a-f]{16}\b/gi) && isMining) {
+                    return nonce;
+                } else {
+                    return null;
+                }
+            })
+    } catch (err) {
+        throw err;
+    }
+
+};
+
+const getPlayerData = async (account) => {
+    let eos_rpc = wax.api.rpc;
+    const player_res = await eos_rpc.get_table_rows({
+        code: federation_account,
+        scope: federation_account,
+        table: 'players',
+        lower_bound: account,
+        upper_bound: account
+    });
+
+    const player_data = {
+        tag: '',
+        avatar: ''
+    };
+
+    if (player_res.rows.length) {
+        player_data.tag = player_res.rows[0].tag;
+        if (player_res.rows[0].avatar > 0) {
+            const asset = await aa_api.getAsset(player_res.rows[0].avatar);
+            if (asset) {
+                player_data.avatar = asset;
+            }
+        }
+    }
+
+    return player_data;
+
+};

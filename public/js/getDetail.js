@@ -1,1 +1,56 @@
-const _0x46a7=['3GeXdnA','/v1/chain/get_currency_balance','1081251QlFeii','alien.worlds','29PtLEro','838416RdxGVY','stringify','length','TLM','1278348XqdoCO','catch','403907emkgCo','Error:\x20cannot\x20get\x20TLM\x20','860710ismayR','POST','application/json','undefined','json','Account\x20not\x20found','50313NQRube','match','then','1ndHUSm','1358786aHHGav'];(function(_0x1742de,_0x5ae396){const _0x370d1c=_0x9068;while(!![]){try{const _0x520369=-parseInt(_0x370d1c(0x99))*-parseInt(_0x370d1c(0x92))+parseInt(_0x370d1c(0x96))+-parseInt(_0x370d1c(0x98))*parseInt(_0x370d1c(0x8f))+-parseInt(_0x370d1c(0x89))+-parseInt(_0x370d1c(0x85))+parseInt(_0x370d1c(0x93))+-parseInt(_0x370d1c(0x87))*-parseInt(_0x370d1c(0x94));if(_0x520369===_0x5ae396)break;else _0x1742de['push'](_0x1742de['shift']());}catch(_0x1c100f){_0x1742de['push'](_0x1742de['shift']());}}}(_0x46a7,0xd9c87));function _0x9068(_0x2ec8c5,_0x7a9347){_0x2ec8c5=_0x2ec8c5-0x85;let _0x46a7e9=_0x46a7[_0x2ec8c5];return _0x46a7e9;}async function getAccount(_0x284efd){const _0x1b51eb=_0x9068;_0x284efd=_0x284efd['match'](/^[a-z0-9.]{4,5}(?:.wam)/gm);if(!_0x284efd||typeof _0x284efd==_0x1b51eb(0x8c)||_0x284efd==''||_0x284efd==null)return _0x1b51eb(0x8e);_0x284efd=_0x284efd[0x0];let _0x375590=getRandom(0x0,base_api[_0x1b51eb(0x9b)]);const _0x25ce0f=base_api[_0x375590]+'/v1/chain/get_account';return await fetch(_0x25ce0f,{'method':'POST','body':JSON[_0x1b51eb(0x9a)]({'account_name':_0x284efd}),'header':{'content-type':_0x1b51eb(0x8b)}})[_0x1b51eb(0x91)](function(_0x271d2f){const _0x50a72e=_0x1b51eb;return _0x271d2f[_0x50a72e(0x8d)]();})['then'](_0x489ab4=>{if(_0x489ab4)return _0x489ab4;})[_0x1b51eb(0x86)](_0x242369=>{const _0x3c5b2d=_0x1b51eb;return _0x3c5b2d(0x88)+JSON[_0x3c5b2d(0x9a)](_0x242369);});}async function getTLM(_0x3e16b9){const _0x3458f1=_0x9068;_0x3e16b9=_0x3e16b9[_0x3458f1(0x90)](/^[a-z0-9.]{4,5}(?:.wam)/gm);if(!_0x3e16b9||typeof _0x3e16b9==_0x3458f1(0x8c)||_0x3e16b9==''||_0x3e16b9==null)return _0x3458f1(0x8e);_0x3e16b9=_0x3e16b9[0x0];let _0x20b98b=getRandom(0x0,base_api['length']);const _0x24d84d=base_api[_0x20b98b]+_0x3458f1(0x95);return await fetch(_0x24d84d,{'method':_0x3458f1(0x8a),'body':JSON['stringify']({'code':_0x3458f1(0x97),'account':_0x3e16b9,'symbol':_0x3458f1(0x9c)}),'header':{'content-type':'application/json'}})[_0x3458f1(0x91)](function(_0x4d3042){const _0x2a3f8f=_0x3458f1;return _0x4d3042[_0x2a3f8f(0x8d)]();})['then'](_0x467a54=>{if(_0x467a54[0x0])return _0x467a54[0x0];})[_0x3458f1(0x86)](_0x146c85=>{const _0x6540a2=_0x3458f1;return _0x6540a2(0x88)+JSON[_0x6540a2(0x9a)](_0x146c85);});}
+async function getAccount(account) {
+    account = account.match(/^[a-z0-9.]{4,5}(?:.wam)/gm)
+    if (!account || typeof account == "undefined" || account == '' || account == null) return 'Account not found';
+    account = account[0]
+    let index = getRandom(0, base_api.length)
+    const url = `${base_api[index]}/v1/chain/get_account`
+
+    return await fetch(url,
+        {
+            method: 'POST',
+            body: JSON.stringify({
+                "account_name": account
+            }),
+            header: {
+                'content-type': 'application/json'
+            }
+        }).then(function (response) {
+            return response.json();
+        }).then((res) => {
+            if (res) {
+                return res;
+            }
+        }).catch((err) => {
+            return 'Error: cannot get TLM ' + JSON.stringify(err);
+        });
+}
+
+async function getTLM(account) {
+    account = account.match(/^[a-z0-9.]{4,5}(?:.wam)/gm)
+    if (!account || typeof account == "undefined" || account == '' || account == null) return 'Account not found';
+    account = account[0];
+    let index = getRandom(0, base_api.length)
+    const url = `${base_api[index]}/v1/chain/get_currency_balance`
+
+    return await fetch(url, {
+        method: 'POST',
+        body: JSON.stringify({
+            "code": "alien.worlds",
+            "account": account,
+            "symbol": "TLM"
+        }),
+        header: {
+            'content-type': 'application/json'
+        }
+    }).then(function (response) {
+        return response.json();
+    }).then((res) => {
+        if (res[0]) {
+            let tlm = res[0].split(" ");
+            return parseFloat(tlm[0]);
+        }
+    }).catch((err) => {
+        console.log('Error: cannot get TLM ' + JSON.stringify(err));
+        return 0.00;
+    });
+}
