@@ -1,4 +1,3 @@
-var isWork = false;
 var errorDelay = 5 * (60 * 1000);
 var cpuDelay = 5.0 * (60 * 1000);
 var mineCountdownTime = 5 * (60 * 1000);
@@ -14,10 +13,12 @@ var totalget = 0.0;
 var minedCount = 0;
 let userAccount = "";
 var delay = 0;
+var lastTLM = 0;
 function saveConfig() {
-    console.log('====SAVE CONFIG====');
+    console.log('**SAVE CONFIG**');
     localStorage.setItem('mining_with', document.querySelector('input[name="mining_with"]:checked').value)
-    localStorage.setItem('cpu_time', document.getElementById("cpu_time").value)
+    localStorage.setItem('cpu_time', document.getElementById("cpu_time").value);
+    localStorage.setItem('need_real_tlm', document.querySelector("#need_real_tlm").checked);
 }
 
 function loadConfig() {
@@ -26,6 +27,9 @@ function loadConfig() {
     }
     if (localStorage.getItem('cpu_time') != null) {
         document.getElementById("cpu_time").value = localStorage.getItem('cpu_time');
+    }
+    if (localStorage.getItem('need_real_tlm') != null) {
+        document.querySelector("#need_real_tlm").checked = localStorage.getItem('need_real_tlm');
     }
 }
 
@@ -63,9 +67,9 @@ async function updateAccStatus() {
     }
     try {
         let tlm = await getTLM(userAccount);
-
         if (tlm) {
-            document.getElementById("tlm_balance").textContent = tlm;
+            lastTLM = tlm;
+            document.getElementById("tlm_balance").textContent = tlm + ' TLM';
         }
         else {
             document.getElementById("tlm_balance").textContent = "cannot get tlm balance";
@@ -138,7 +142,7 @@ async function miningCountdownfunction() {
     document.getElementById("countdown").innerHTML = padLeadingZeros(minutes, 2) + 'm ' + padLeadingZeros(seconds, 2) + 's before new mine'
     if (distance < 0) {
         clearTimer();
-        restart();
+        await restart();
         document.getElementById("countdown").innerHTML = "restarting";
     }
 }
@@ -165,6 +169,14 @@ async function login() {
         //         throw err;
         //     }
         // };
+        document.getElementById("update_detail").onclick = async function () {
+            try {
+                let result = await getAccount(userAccount);
+                updateAccStatus(result);
+            } catch (err) {
+                throw err;
+            }
+        };
         document.getElementById("wax_server").textContent = 'Wax server: ' + url;
         document.getElementById("swap_btn").onclick = async function () {
             let result = await swap(userAccount, document.getElementById("swap_tlm").value)
@@ -231,20 +243,19 @@ async function login() {
         }
 
     } catch (err) {
-        console.log('Error:' + err);
+        console.log(err);
         window.location.reload();
     }
 
 }
 
 async function run() {
-    isWork = true;
     clearTimer();
     if (!isMining) {
-        console.log('getting cooldown');
         isMining = true
         //calculate delay
         if(delay == 0){
+            console.log('getting cooldown');
             delay = await getMineDelay(userAccount); 
             let addRandom = Math.floor(Math.random() * 21000) + 4000;
             let totalDelay = 0;
@@ -253,7 +264,7 @@ async function run() {
             } else {
                 totalDelay = addRandom;
             }
-            console.log('Total cooldown: ' + totalDelay / 1000 + 'sec AWCooldown: ' + delay / 1000 + ' Add random time: ' + addRandom / 1000 + 'sec')
+            console.log('Cooldown total: ' + totalDelay / 1000 + 'sec Mine: ' + delay / 1000 + ' Add: ' + addRandom / 1000 + 'sec')
             updateStatus('charging')
             updateNextMine(totalDelay)
             updateAccStatus();
@@ -314,7 +325,7 @@ async function miner(mine_with) {
         } catch (error) {
             updateStatus(error)
             const errorRes = handleError(error)
-            console.log('error: ' + error);
+            console.log(error);
             if (errorRes == 'restart') {
                 updateStatus('Normal error wait: ' + 2 + ' min')
                 nextmine = 120 * 1000;
@@ -397,30 +408,28 @@ function stop() {
     clearTimer();
     delay = 0;
     isMining = false
-    isWork = false;
 }
 
 function onclickRun() {
-    clearTimer();
-    if (isWork) {
+    if (isMining) {
         stop();
         updateStatus('STOPPING')
-        console.log('======== STOPPING ========');
+        console.log('**STOPPING**');
         document.getElementById("run_btn").textContent = "Click to Start"
         document.getElementById("run_btn").className = "btn btn-success"
     } else {
-        isWork = true;
         updateStatus('RUNNING')
-        console.log('======== RUNNING ========');
-        delay = 0;
-        run();
+        console.log('**RUNNING**');
         document.getElementById("run_btn").textContent = "Click to STOP"
         document.getElementById("run_btn").className = "btn btn-danger"
+        delay = 0;
+        run();  
     }
 
 }
 
-function restart() {
+async function restart() {
     stop();
+    await sleep(5000);
     run();
 }

@@ -1,4 +1,4 @@
-var waxjs = function(t) {
+var waxjs = function (t) {
     var e = {};
 
     function r(n) {
@@ -10,18 +10,18 @@ var waxjs = function(t) {
         };
         return t[n].call(i.exports, i, i.exports, r), i.l = !0, i.exports
     }
-    return r.m = t, r.c = e, r.d = function(t, e, n) {
+    return r.m = t, r.c = e, r.d = function (t, e, n) {
         r.o(t, e) || Object.defineProperty(t, e, {
             enumerable: !0,
             get: n
         })
-    }, r.r = function(t) {
+    }, r.r = function (t) {
         "undefined" != typeof Symbol && Symbol.toStringTag && Object.defineProperty(t, Symbol.toStringTag, {
             value: "Module"
         }), Object.defineProperty(t, "__esModule", {
             value: !0
         })
-    }, r.t = function(t, e) {
+    }, r.t = function (t, e) {
         if (1 & e && (t = r(t)), 8 & e) return t;
         if (4 & e && "object" == typeof t && t && t.__esModule) return t;
         var n = Object.create(null);
@@ -29,23 +29,23 @@ var waxjs = function(t) {
                 enumerable: !0,
                 value: t
             }), 2 & e && "string" != typeof t)
-            for (var i in t) r.d(n, i, function(e) {
+            for (var i in t) r.d(n, i, function (e) {
                 return t[e]
             }.bind(null, i));
         return n
-    }, r.n = function(t) {
-        var e = t && t.__esModule ? function() {
+    }, r.n = function (t) {
+        var e = t && t.__esModule ? function () {
             return t.default
-        } : function() {
+        } : function () {
             return t
         };
         return r.d(e, "a", e), e
-    }, r.o = function(t, e) {
+    }, r.o = function (t, e) {
         return Object.prototype.hasOwnProperty.call(t, e)
     }, r.p = "", r(r.s = 3)
-}([function(t, e, r) {
-    
-    var n = this && this.__read || function(t, e) {
+}([function (t, e, r) {
+    "use strict";
+    var n = this && this.__read || function (t, e) {
             var r = "function" == typeof Symbol && t[Symbol.iterator];
             if (!r) return t;
             var n, i, o = r.call(t),
@@ -66,15 +66,15 @@ var waxjs = function(t) {
             }
             return a
         },
-        i = this && this.__spread || function() {
+        i = this && this.__spread || function () {
             for (var t = [], e = 0; e < arguments.length; e++) t = t.concat(n(arguments[e]));
             return t
         },
-        o = this && this.__values || function(t) {
+        o = this && this.__values || function (t) {
             var e = "function" == typeof Symbol && t[Symbol.iterator],
                 r = 0;
             return e ? e.call(t) : {
-                next: function() {
+                next: function () {
                     return t && r >= t.length && (t = void 0), {
                         value: t && t[r++],
                         done: !t
@@ -88,11 +88,11 @@ var waxjs = function(t) {
     var a = r(6).RIPEMD160.hash,
         s = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz",
         u = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-    var c = function() {
+    var c = function () {
         for (var t = Array(256).fill(-1), e = 0; e < s.length; ++e) t[s.charCodeAt(e)] = e;
         return t
     }();
-    var l, f = function() {
+    var l, f = function () {
         for (var t = Array(256).fill(-1), e = 0; e < u.length; ++e) t[u.charCodeAt(e)] = e;
         return t["=".charCodeAt(0)] = 0, t
     }();
@@ -236,7 +236,7 @@ var waxjs = function(t) {
     function x(t) {
         return "EOS" === t.substr(0, 3) ? A(_(t)) : t
     }
-    e.isNegative = h, e.negate = p, e.decimalToBinary = d, e.signedDecimalToBinary = function(t, e) {
+    e.isNegative = h, e.negate = p, e.decimalToBinary = d, e.signedDecimalToBinary = function (t, e) {
             var r = "-" === e[0];
             r && (e = e.substr(1));
             var n = d(t, e);
@@ -244,13 +244,13 @@ var waxjs = function(t) {
                 if (p(n), !h(n)) throw new Error("number is out of range")
             } else if (h(n)) throw new Error("number is out of range");
             return n
-        }, e.binaryToDecimal = y, e.signedBinaryToDecimal = function(t, e) {
+        }, e.binaryToDecimal = y, e.signedBinaryToDecimal = function (t, e) {
             if (void 0 === e && (e = 1), h(t)) {
                 var r = t.slice();
                 return p(r), "-" + y(r, e)
             }
             return y(t, e)
-        }, e.base58ToBinary = v, e.binaryToBase58 = g, e.base64ToBinary = function(t) {
+        }, e.base58ToBinary = v, e.binaryToBase58 = g, e.base64ToBinary = function (t) {
             var e = t.length;
             if (1 == (3 & e) && "=" === t[e - 1] && (e -= 1), 0 != (3 & e)) throw new Error("base-64 value is not padded correctly");
             var r = e >> 2,
@@ -265,37 +265,37 @@ var waxjs = function(t) {
             }
             return i
         },
-        function(t) {
+        function (t) {
             t[t.k1 = 0] = "k1", t[t.r1 = 1] = "r1"
-        }(l = e.KeyType || (e.KeyType = {})), e.publicKeyDataSize = 33, e.privateKeyDataSize = 32, e.signatureDataSize = 65, e.stringToPublicKey = _, e.publicKeyToString = A, e.convertLegacyPublicKey = x, e.convertLegacyPublicKeys = function(t) {
+        }(l = e.KeyType || (e.KeyType = {})), e.publicKeyDataSize = 33, e.privateKeyDataSize = 32, e.signatureDataSize = 65, e.stringToPublicKey = _, e.publicKeyToString = A, e.convertLegacyPublicKey = x, e.convertLegacyPublicKeys = function (t) {
             return t.map(x)
-        }, e.stringToPrivateKey = function(t) {
+        }, e.stringToPrivateKey = function (t) {
             if ("string" != typeof t) throw new Error("expected string containing private key");
             if ("PVT_R1_" === t.substr(0, 7)) return m(t.substr(7), l.r1, e.privateKeyDataSize, "R1");
             throw new Error("unrecognized private key format")
-        }, e.privateKeyToString = function(t) {
+        }, e.privateKeyToString = function (t) {
             if (t.type === l.r1) return w(t, "R1", "PVT_R1_");
             throw new Error("unrecognized private key format")
-        }, e.stringToSignature = function(t) {
+        }, e.stringToSignature = function (t) {
             if ("string" != typeof t) throw new Error("expected string containing signature");
             if ("SIG_K1_" === t.substr(0, 7)) return m(t.substr(7), l.k1, e.signatureDataSize, "K1");
             if ("SIG_R1_" === t.substr(0, 7)) return m(t.substr(7), l.r1, e.signatureDataSize, "R1");
             throw new Error("unrecognized signature format")
-        }, e.signatureToString = function(t) {
+        }, e.signatureToString = function (t) {
             if (t.type === l.k1) return w(t, "K1", "SIG_K1_");
             if (t.type === l.r1) return w(t, "R1", "SIG_R1_");
             throw new Error("unrecognized signature format")
         }
-}, function(t, e, r) {
-    
-    var n = this && this.__assign || function() {
-            return (n = Object.assign || function(t) {
+}, function (t, e, r) {
+    "use strict";
+    var n = this && this.__assign || function () {
+            return (n = Object.assign || function (t) {
                 for (var e, r = 1, n = arguments.length; r < n; r++)
                     for (var i in e = arguments[r]) Object.prototype.hasOwnProperty.call(e, i) && (t[i] = e[i]);
                 return t
             }).apply(this, arguments)
         },
-        i = this && this.__read || function(t, e) {
+        i = this && this.__read || function (t, e) {
             var r = "function" == typeof Symbol && t[Symbol.iterator];
             if (!r) return t;
             var n, i, o = r.call(t),
@@ -316,15 +316,15 @@ var waxjs = function(t) {
             }
             return a
         },
-        o = this && this.__spread || function() {
+        o = this && this.__spread || function () {
             for (var t = [], e = 0; e < arguments.length; e++) t = t.concat(i(arguments[e]));
             return t
         },
-        a = this && this.__values || function(t) {
+        a = this && this.__values || function (t) {
             var e = "function" == typeof Symbol && t[Symbol.iterator],
                 r = 0;
             return e ? e.call(t) : {
-                next: function() {
+                next: function () {
                     return t && r >= t.length && (t = void 0), {
                         value: t && t[r++],
                         done: !t
@@ -336,11 +336,11 @@ var waxjs = function(t) {
         value: !0
     });
     var s = r(0),
-        u = function(t) {
+        u = function (t) {
             void 0 === t && (t = {}), this.skippedBinaryExtension = !1, this.options = t
         };
     e.SerializerState = u;
-    var c = function() {
+    var c = function () {
         function t(t) {
             var e = void 0 === t ? {} : t,
                 r = e.textEncoder,
@@ -350,49 +350,49 @@ var waxjs = function(t) {
                 fatal: !0
             })
         }
-        return t.prototype.reserve = function(t) {
+        return t.prototype.reserve = function (t) {
             if (!(this.length + t <= this.array.length)) {
                 for (var e = this.array.length; this.length + t > e;) e = Math.ceil(1.5 * e);
                 var r = new Uint8Array(e);
                 r.set(this.array), this.array = r
             }
-        }, t.prototype.haveReadData = function() {
+        }, t.prototype.haveReadData = function () {
             return this.readPos < this.length
-        }, t.prototype.restartRead = function() {
+        }, t.prototype.restartRead = function () {
             this.readPos = 0
-        }, t.prototype.asUint8Array = function() {
+        }, t.prototype.asUint8Array = function () {
             return new Uint8Array(this.array.buffer, this.array.byteOffset, this.length)
-        }, t.prototype.pushArray = function(t) {
+        }, t.prototype.pushArray = function (t) {
             this.reserve(t.length), this.array.set(t, this.length), this.length += t.length
-        }, t.prototype.push = function() {
+        }, t.prototype.push = function () {
             for (var t = [], e = 0; e < arguments.length; e++) t[e] = arguments[e];
             this.pushArray(t)
-        }, t.prototype.get = function() {
+        }, t.prototype.get = function () {
             if (this.readPos < this.length) return this.array[this.readPos++];
             throw new Error("Read past end of buffer")
-        }, t.prototype.pushUint8ArrayChecked = function(t, e) {
+        }, t.prototype.pushUint8ArrayChecked = function (t, e) {
             if (t.length !== e) throw new Error("Binary data has incorrect size");
             this.pushArray(t)
-        }, t.prototype.getUint8Array = function(t) {
+        }, t.prototype.getUint8Array = function (t) {
             if (this.readPos + t > this.length) throw new Error("Read past end of buffer");
             var e = new Uint8Array(this.array.buffer, this.array.byteOffset + this.readPos, t);
             return this.readPos += t, e
-        }, t.prototype.pushUint16 = function(t) {
+        }, t.prototype.pushUint16 = function (t) {
             this.push(t >> 0 & 255, t >> 8 & 255)
-        }, t.prototype.getUint16 = function() {
+        }, t.prototype.getUint16 = function () {
             var t = 0;
             return t |= this.get() << 0, t |= this.get() << 8
-        }, t.prototype.pushUint32 = function(t) {
+        }, t.prototype.pushUint32 = function (t) {
             this.push(t >> 0 & 255, t >> 8 & 255, t >> 16 & 255, t >> 24 & 255)
-        }, t.prototype.getUint32 = function() {
+        }, t.prototype.getUint32 = function () {
             var t = 0;
             return t |= this.get() << 0, t |= this.get() << 8, t |= this.get() << 16, (t |= this.get() << 24) >>> 0
-        }, t.prototype.pushNumberAsUint64 = function(t) {
+        }, t.prototype.pushNumberAsUint64 = function (t) {
             this.pushUint32(t >>> 0), this.pushUint32(Math.floor(t / 4294967296) >>> 0)
-        }, t.prototype.getUint64AsNumber = function() {
+        }, t.prototype.getUint64AsNumber = function () {
             var t = this.getUint32();
             return 4294967296 * (this.getUint32() >>> 0) + (t >>> 0)
-        }, t.prototype.pushVaruint32 = function(t) {
+        }, t.prototype.pushVaruint32 = function (t) {
             for (;;) {
                 if (!(t >>> 7)) {
                     this.push(t);
@@ -400,26 +400,26 @@ var waxjs = function(t) {
                 }
                 this.push(128 | 127 & t), t >>>= 7
             }
-        }, t.prototype.getVaruint32 = function() {
+        }, t.prototype.getVaruint32 = function () {
             for (var t = 0, e = 0;;) {
                 var r = this.get();
                 if (t |= (127 & r) << e, e += 7, !(128 & r)) break
             }
             return t >>> 0
-        }, t.prototype.pushVarint32 = function(t) {
+        }, t.prototype.pushVarint32 = function (t) {
             this.pushVaruint32(t << 1 ^ t >> 31)
-        }, t.prototype.getVarint32 = function() {
+        }, t.prototype.getVarint32 = function () {
             var t = this.getVaruint32();
             return 1 & t ? ~t >> 1 | 2147483648 : t >>> 1
-        }, t.prototype.pushFloat32 = function(t) {
+        }, t.prototype.pushFloat32 = function (t) {
             this.pushArray(new Uint8Array(new Float32Array([t]).buffer))
-        }, t.prototype.getFloat32 = function() {
+        }, t.prototype.getFloat32 = function () {
             return new Float32Array(this.getUint8Array(4).slice().buffer)[0]
-        }, t.prototype.pushFloat64 = function(t) {
+        }, t.prototype.pushFloat64 = function (t) {
             this.pushArray(new Uint8Array(new Float64Array([t]).buffer))
-        }, t.prototype.getFloat64 = function() {
+        }, t.prototype.getFloat64 = function () {
             return new Float64Array(this.getUint8Array(8).slice().buffer)[0]
-        }, t.prototype.pushName = function(t) {
+        }, t.prototype.pushName = function (t) {
             if ("string" != typeof t) throw new Error("Expected string containing name");
 
             function e(t) {
@@ -431,36 +431,36 @@ var waxjs = function(t) {
                 for (var a = 4; a >= 0; --a) n >= 0 && (r[Math.floor(n / 8)] |= (o >> a & 1) << n % 8, --n)
             }
             this.pushArray(r)
-        }, t.prototype.getName = function() {
+        }, t.prototype.getName = function () {
             for (var t = this.getUint8Array(8), e = "", r = 63; r >= 0;) {
                 for (var n = 0, i = 0; i < 5; ++i) r >= 0 && (n = n << 1 | t[Math.floor(r / 8)] >> r % 8 & 1, --r);
                 e += n >= 6 ? String.fromCharCode(n + "a".charCodeAt(0) - 6) : n >= 1 ? String.fromCharCode(n + "1".charCodeAt(0) - 1) : "."
             }
             for (; e.endsWith(".");) e = e.substr(0, e.length - 1);
             return e
-        }, t.prototype.pushBytes = function(t) {
+        }, t.prototype.pushBytes = function (t) {
             this.pushVaruint32(t.length), this.pushArray(t)
-        }, t.prototype.getBytes = function() {
+        }, t.prototype.getBytes = function () {
             return this.getUint8Array(this.getVaruint32())
-        }, t.prototype.pushString = function(t) {
+        }, t.prototype.pushString = function (t) {
             this.pushBytes(this.textEncoder.encode(t))
-        }, t.prototype.getString = function() {
+        }, t.prototype.getString = function () {
             return this.textDecoder.decode(this.getBytes())
-        }, t.prototype.pushSymbolCode = function(t) {
+        }, t.prototype.pushSymbolCode = function (t) {
             if ("string" != typeof t) throw new Error("Expected string containing symbol_code");
             var e = [];
             for (e.push.apply(e, o(this.textEncoder.encode(t))); e.length < 8;) e.push(0);
             this.pushArray(e.slice(0, 8))
-        }, t.prototype.getSymbolCode = function() {
+        }, t.prototype.getSymbolCode = function () {
             var t, e = this.getUint8Array(8);
             for (t = 0; t < e.length && e[t]; ++t);
             return this.textDecoder.decode(new Uint8Array(e.buffer, e.byteOffset, t))
-        }, t.prototype.pushSymbol = function(t) {
+        }, t.prototype.pushSymbol = function (t) {
             var e = t.name,
                 r = [255 & t.precision];
             for (r.push.apply(r, o(this.textEncoder.encode(e))); r.length < 8;) r.push(0);
             this.pushArray(r.slice(0, 8))
-        }, t.prototype.getSymbol = function() {
+        }, t.prototype.getSymbol = function () {
             var t, e = this.get(),
                 r = this.getUint8Array(7);
             for (t = 0; t < r.length && r[t]; ++t);
@@ -468,7 +468,7 @@ var waxjs = function(t) {
                 name: this.textDecoder.decode(new Uint8Array(r.buffer, r.byteOffset, t)),
                 precision: e
             }
-        }, t.prototype.pushAsset = function(t) {
+        }, t.prototype.pushAsset = function (t) {
             if ("string" != typeof t) throw new Error("Expected string containing asset");
             var e = 0,
                 r = "",
@@ -483,37 +483,37 @@ var waxjs = function(t) {
                 name: o,
                 precision: n
             })
-        }, t.prototype.getAsset = function() {
+        }, t.prototype.getAsset = function () {
             var t = this.getUint8Array(8),
                 e = this.getSymbol(),
                 r = e.name,
                 n = e.precision,
                 i = s.signedBinaryToDecimal(t, n + 1);
             return n && (i = i.substr(0, i.length - n) + "." + i.substr(i.length - n)), i + " " + r
-        }, t.prototype.pushPublicKey = function(t) {
+        }, t.prototype.pushPublicKey = function (t) {
             var e = s.stringToPublicKey(t);
             this.push(e.type), this.pushArray(e.data)
-        }, t.prototype.getPublicKey = function() {
+        }, t.prototype.getPublicKey = function () {
             var t = this.get(),
                 e = this.getUint8Array(s.publicKeyDataSize);
             return s.publicKeyToString({
                 type: t,
                 data: e
             })
-        }, t.prototype.pushPrivateKey = function(t) {
+        }, t.prototype.pushPrivateKey = function (t) {
             var e = s.stringToPrivateKey(t);
             this.push(e.type), this.pushArray(e.data)
-        }, t.prototype.getPrivateKey = function() {
+        }, t.prototype.getPrivateKey = function () {
             var t = this.get(),
                 e = this.getUint8Array(s.privateKeyDataSize);
             return s.privateKeyToString({
                 type: t,
                 data: e
             })
-        }, t.prototype.pushSignature = function(t) {
+        }, t.prototype.pushSignature = function (t) {
             var e = s.stringToSignature(t);
             this.push(e.type), this.pushArray(e.data)
-        }, t.prototype.getSignature = function() {
+        }, t.prototype.getSignature = function () {
             var t = this.get(),
                 e = this.getUint8Array(s.signatureDataSize);
             return s.signatureToString({
@@ -662,7 +662,7 @@ var waxjs = function(t) {
 
     function z(t, e, r, n) {
         if (!Array.isArray(e) || 2 !== e.length || "string" != typeof e[0]) throw new Error('expected variant: ["type", value]');
-        var i = this.fields.findIndex((function(t) {
+        var i = this.fields.findIndex((function (t) {
             return t.name === e[0]
         }));
         if (i < 0) throw new Error('type "' + e[0] + '" is not valid for variant');
@@ -783,287 +783,287 @@ var waxjs = function(t) {
         });
         return s.pushArray(n), a.deserialize(s)
     }
-    e.SerialBuffer = c, e.supportedAbiVersion = function(t) {
+    e.SerialBuffer = c, e.supportedAbiVersion = function (t) {
         return t.startsWith("eosio::abi/1.")
-    }, e.dateToTimePoint = f, e.timePointToDate = h, e.dateToTimePointSec = p, e.timePointSecToDate = d, e.dateToBlockTimestamp = y, e.blockTimestampToDate = v, e.stringToSymbol = g, e.symbolToString = b, e.arrayToHex = m, e.hexToUint8Array = w, e.createInitialTypes = function() {
+    }, e.dateToTimePoint = f, e.timePointToDate = h, e.dateToTimePointSec = p, e.timePointSecToDate = d, e.dateToBlockTimestamp = y, e.blockTimestampToDate = v, e.stringToSymbol = g, e.symbolToString = b, e.arrayToHex = m, e.hexToUint8Array = w, e.createInitialTypes = function () {
         var t = new Map(Object.entries({
             bool: D({
                 name: "bool",
-                serialize: function(t, e) {
+                serialize: function (t, e) {
                     if ("boolean" != typeof e) throw new Error("Expected true or false");
                     t.push(e ? 1 : 0)
                 },
-                deserialize: function(t) {
+                deserialize: function (t) {
                     return !!t.get()
                 }
             }),
             uint8: D({
                 name: "uint8",
-                serialize: function(t, e) {
+                serialize: function (t, e) {
                     t.push(K(e, 255 & e))
                 },
-                deserialize: function(t) {
+                deserialize: function (t) {
                     return t.get()
                 }
             }),
             int8: D({
                 name: "int8",
-                serialize: function(t, e) {
+                serialize: function (t, e) {
                     t.push(K(e, e << 24 >> 24))
                 },
-                deserialize: function(t) {
+                deserialize: function (t) {
                     return t.get() << 24 >> 24
                 }
             }),
             uint16: D({
                 name: "uint16",
-                serialize: function(t, e) {
+                serialize: function (t, e) {
                     t.pushUint16(K(e, 65535 & e))
                 },
-                deserialize: function(t) {
+                deserialize: function (t) {
                     return t.getUint16()
                 }
             }),
             int16: D({
                 name: "int16",
-                serialize: function(t, e) {
+                serialize: function (t, e) {
                     t.pushUint16(K(e, e << 16 >> 16))
                 },
-                deserialize: function(t) {
+                deserialize: function (t) {
                     return t.getUint16() << 16 >> 16
                 }
             }),
             uint32: D({
                 name: "uint32",
-                serialize: function(t, e) {
+                serialize: function (t, e) {
                     t.pushUint32(K(e, e >>> 0))
                 },
-                deserialize: function(t) {
+                deserialize: function (t) {
                     return t.getUint32()
                 }
             }),
             uint64: D({
                 name: "uint64",
-                serialize: function(t, e) {
+                serialize: function (t, e) {
                     t.pushArray(s.decimalToBinary(8, "" + e))
                 },
-                deserialize: function(t) {
+                deserialize: function (t) {
                     return s.binaryToDecimal(t.getUint8Array(8))
                 }
             }),
             int64: D({
                 name: "int64",
-                serialize: function(t, e) {
+                serialize: function (t, e) {
                     t.pushArray(s.signedDecimalToBinary(8, "" + e))
                 },
-                deserialize: function(t) {
+                deserialize: function (t) {
                     return s.signedBinaryToDecimal(t.getUint8Array(8))
                 }
             }),
             int32: D({
                 name: "int32",
-                serialize: function(t, e) {
+                serialize: function (t, e) {
                     t.pushUint32(K(e, 0 | e))
                 },
-                deserialize: function(t) {
+                deserialize: function (t) {
                     return 0 | t.getUint32()
                 }
             }),
             varuint32: D({
                 name: "varuint32",
-                serialize: function(t, e) {
+                serialize: function (t, e) {
                     t.pushVaruint32(K(e, e >>> 0))
                 },
-                deserialize: function(t) {
+                deserialize: function (t) {
                     return t.getVaruint32()
                 }
             }),
             varint32: D({
                 name: "varint32",
-                serialize: function(t, e) {
+                serialize: function (t, e) {
                     t.pushVarint32(K(e, 0 | e))
                 },
-                deserialize: function(t) {
+                deserialize: function (t) {
                     return t.getVarint32()
                 }
             }),
             uint128: D({
                 name: "uint128",
-                serialize: function(t, e) {
+                serialize: function (t, e) {
                     t.pushArray(s.decimalToBinary(16, "" + e))
                 },
-                deserialize: function(t) {
+                deserialize: function (t) {
                     return s.binaryToDecimal(t.getUint8Array(16))
                 }
             }),
             int128: D({
                 name: "int128",
-                serialize: function(t, e) {
+                serialize: function (t, e) {
                     t.pushArray(s.signedDecimalToBinary(16, "" + e))
                 },
-                deserialize: function(t) {
+                deserialize: function (t) {
                     return s.signedBinaryToDecimal(t.getUint8Array(16))
                 }
             }),
             float32: D({
                 name: "float32",
-                serialize: function(t, e) {
+                serialize: function (t, e) {
                     t.pushFloat32(e)
                 },
-                deserialize: function(t) {
+                deserialize: function (t) {
                     return t.getFloat32()
                 }
             }),
             float64: D({
                 name: "float64",
-                serialize: function(t, e) {
+                serialize: function (t, e) {
                     t.pushFloat64(e)
                 },
-                deserialize: function(t) {
+                deserialize: function (t) {
                     return t.getFloat64()
                 }
             }),
             float128: D({
                 name: "float128",
-                serialize: function(t, e) {
+                serialize: function (t, e) {
                     t.pushUint8ArrayChecked(w(e), 16)
                 },
-                deserialize: function(t) {
+                deserialize: function (t) {
                     return m(t.getUint8Array(16))
                 }
             }),
             bytes: D({
                 name: "bytes",
-                serialize: function(t, e) {
+                serialize: function (t, e) {
                     e instanceof Uint8Array || Array.isArray(e) ? t.pushBytes(e) : t.pushBytes(w(e))
                 },
-                deserialize: function(t, e) {
+                deserialize: function (t, e) {
                     return e && e.options.bytesAsUint8Array ? t.getBytes() : m(t.getBytes())
                 }
             }),
             string: D({
                 name: "string",
-                serialize: function(t, e) {
+                serialize: function (t, e) {
                     t.pushString(e)
                 },
-                deserialize: function(t) {
+                deserialize: function (t) {
                     return t.getString()
                 }
             }),
             name: D({
                 name: "name",
-                serialize: function(t, e) {
+                serialize: function (t, e) {
                     t.pushName(e)
                 },
-                deserialize: function(t) {
+                deserialize: function (t) {
                     return t.getName()
                 }
             }),
             time_point: D({
                 name: "time_point",
-                serialize: function(t, e) {
+                serialize: function (t, e) {
                     t.pushNumberAsUint64(f(e))
                 },
-                deserialize: function(t) {
+                deserialize: function (t) {
                     return h(t.getUint64AsNumber())
                 }
             }),
             time_point_sec: D({
                 name: "time_point_sec",
-                serialize: function(t, e) {
+                serialize: function (t, e) {
                     t.pushUint32(p(e))
                 },
-                deserialize: function(t) {
+                deserialize: function (t) {
                     return d(t.getUint32())
                 }
             }),
             block_timestamp_type: D({
                 name: "block_timestamp_type",
-                serialize: function(t, e) {
+                serialize: function (t, e) {
                     t.pushUint32(y(e))
                 },
-                deserialize: function(t) {
+                deserialize: function (t) {
                     return v(t.getUint32())
                 }
             }),
             symbol_code: D({
                 name: "symbol_code",
-                serialize: function(t, e) {
+                serialize: function (t, e) {
                     t.pushSymbolCode(e)
                 },
-                deserialize: function(t) {
+                deserialize: function (t) {
                     return t.getSymbolCode()
                 }
             }),
             symbol: D({
                 name: "symbol",
-                serialize: function(t, e) {
+                serialize: function (t, e) {
                     t.pushSymbol(g(e))
                 },
-                deserialize: function(t) {
+                deserialize: function (t) {
                     return b(t.getSymbol())
                 }
             }),
             asset: D({
                 name: "asset",
-                serialize: function(t, e) {
+                serialize: function (t, e) {
                     t.pushAsset(e)
                 },
-                deserialize: function(t) {
+                deserialize: function (t) {
                     return t.getAsset()
                 }
             }),
             checksum160: D({
                 name: "checksum160",
-                serialize: function(t, e) {
+                serialize: function (t, e) {
                     t.pushUint8ArrayChecked(w(e), 20)
                 },
-                deserialize: function(t) {
+                deserialize: function (t) {
                     return m(t.getUint8Array(20))
                 }
             }),
             checksum256: D({
                 name: "checksum256",
-                serialize: function(t, e) {
+                serialize: function (t, e) {
                     t.pushUint8ArrayChecked(w(e), 32)
                 },
-                deserialize: function(t) {
+                deserialize: function (t) {
                     return m(t.getUint8Array(32))
                 }
             }),
             checksum512: D({
                 name: "checksum512",
-                serialize: function(t, e) {
+                serialize: function (t, e) {
                     t.pushUint8ArrayChecked(w(e), 64)
                 },
-                deserialize: function(t) {
+                deserialize: function (t) {
                     return m(t.getUint8Array(64))
                 }
             }),
             public_key: D({
                 name: "public_key",
-                serialize: function(t, e) {
+                serialize: function (t, e) {
                     t.pushPublicKey(e)
                 },
-                deserialize: function(t) {
+                deserialize: function (t) {
                     return t.getPublicKey()
                 }
             }),
             private_key: D({
                 name: "private_key",
-                serialize: function(t, e) {
+                serialize: function (t, e) {
                     t.pushPrivateKey(e)
                 },
-                deserialize: function(t) {
+                deserialize: function (t) {
                     return t.getPrivateKey()
                 }
             }),
             signature: D({
                 name: "signature",
-                serialize: function(t, e) {
+                serialize: function (t, e) {
                     t.pushSignature(e)
                 },
-                deserialize: function(t) {
+                deserialize: function (t) {
                     return t.getSignature()
                 }
             })
@@ -1083,7 +1083,7 @@ var waxjs = function(t) {
             serialize: x,
             deserialize: S
         })), t
-    }, e.getType = R, e.getTypesFromAbi = function(t, e) {
+    }, e.getType = R, e.getTypesFromAbi = function (t, e) {
         var r, n, o, s, u, c, l, f, h, p, d = new Map(t);
         if (e.types) try {
             for (var y = a(e.types), v = y.next(); !v.done; v = y.next()) {
@@ -1115,7 +1115,7 @@ var waxjs = function(t) {
                 d.set(k, D({
                     name: k,
                     baseName: U,
-                    fields: T.map((function(t) {
+                    fields: T.map((function (t) {
                         return {
                             name: t.name,
                             typeName: t.type,
@@ -1144,7 +1144,7 @@ var waxjs = function(t) {
                     N = C.types;
                 d.set(K, D({
                     name: K,
-                    fields: N.map((function(t) {
+                    fields: N.map((function (t) {
                         return {
                             name: t,
                             typeName: t,
@@ -1200,20 +1200,20 @@ var waxjs = function(t) {
             }
         }
         return d
-    }, e.transactionHeader = function(t, e) {
+    }, e.transactionHeader = function (t, e) {
         return {
             expiration: d(p(t.timestamp) + e),
             ref_block_num: 65535 & t.block_num,
             ref_block_prefix: t.ref_block_prefix
         }
-    }, e.serializeActionData = N, e.serializeAction = function(t, e, r, n, i, o, a) {
+    }, e.serializeActionData = N, e.serializeAction = function (t, e, r, n, i, o, a) {
         return {
             account: e,
             name: r,
             authorization: n,
             data: N(t, e, r, i, o, a)
         }
-    }, e.deserializeActionData = j, e.deserializeAction = function(t, e, r, n, i, o, a) {
+    }, e.deserializeActionData = j, e.deserializeAction = function (t, e, r, n, i, o, a) {
         return {
             account: e,
             name: r,
@@ -1221,18 +1221,18 @@ var waxjs = function(t) {
             data: j(t, e, r, i, o, a)
         }
     }
-}, function(t, e, r) {
-    
-    var n, i = this && this.__extends || (n = function(t, e) {
+}, function (t, e, r) {
+    "use strict";
+    var n, i = this && this.__extends || (n = function (t, e) {
         return (n = Object.setPrototypeOf || {
                 __proto__: []
             }
-            instanceof Array && function(t, e) {
+            instanceof Array && function (t, e) {
                 t.__proto__ = e
-            } || function(t, e) {
+            } || function (t, e) {
                 for (var r in e) e.hasOwnProperty(r) && (t[r] = e[r])
             })(t, e)
-    }, function(t, e) {
+    }, function (t, e) {
         function r() {
             this.constructor = t
         }
@@ -1241,7 +1241,7 @@ var waxjs = function(t) {
     Object.defineProperty(e, "__esModule", {
         value: !0
     });
-    var o = function(t) {
+    var o = function (t) {
         function e(r) {
             var n = this;
             return n = r.error && r.error.details && r.error.details.length && r.error.details[0].message ? t.call(this, r.error.details[0].message) || this : r.processed && r.processed.except && r.processed.except.message ? t.call(this, r.processed.except.message) || this : t.call(this, r.message) || this, Object.setPrototypeOf(n, e.prototype), n.json = r, n
@@ -1249,10 +1249,10 @@ var waxjs = function(t) {
         return i(e, t), e
     }(Error);
     e.RpcError = o
-}, function(t, e, r) {
-    
-    var n = this && this.__awaiter || function(t, e, r, n) {
-            return new(r || (r = Promise))((function(i, o) {
+}, function (t, e, r) {
+    "use strict";
+    var n = this && this.__awaiter || function (t, e, r, n) {
+            return new(r || (r = Promise))((function (i, o) {
                 function a(t) {
                     try {
                         u(n.next(t))
@@ -1271,17 +1271,17 @@ var waxjs = function(t) {
 
                 function u(t) {
                     var e;
-                    t.done ? i(t.value) : (e = t.value, e instanceof r ? e : new r((function(t) {
+                    t.done ? i(t.value) : (e = t.value, e instanceof r ? e : new r((function (t) {
                         t(e)
                     }))).then(a, s)
                 }
                 u((n = n.apply(t, e || [])).next())
             }))
         },
-        i = this && this.__generator || function(t, e) {
+        i = this && this.__generator || function (t, e) {
             var r, n, i, o, a = {
                 label: 0,
-                sent: function() {
+                sent: function () {
                     if (1 & i[0]) throw i[1];
                     return i[1]
                 },
@@ -1292,51 +1292,51 @@ var waxjs = function(t) {
                 next: s(0),
                 throw: s(1),
                 return: s(2)
-            }, "function" == typeof Symbol && (o[Symbol.iterator] = function() {
+            }, "function" == typeof Symbol && (o[Symbol.iterator] = function () {
                 return this
             }), o;
 
             function s(o) {
-                return function(s) {
-                    return function(o) {
+                return function (s) {
+                    return function (o) {
                         if (r) throw new TypeError("Generator is already executing.");
                         for (; a;) try {
                             if (r = 1, n && (i = 2 & o[0] ? n.return : o[0] ? n.throw || ((i = n.return) && i.call(n), 0) : n.next) && !(i = i.call(n, o[1])).done) return i;
                             switch (n = 0, i && (o = [2 & o[0], i.value]), o[0]) {
-                                case 0:
-                                case 1:
-                                    i = o;
-                                    break;
-                                case 4:
-                                    return a.label++, {
-                                        value: o[1],
-                                        done: !1
-                                    };
-                                case 5:
-                                    a.label++, n = o[1], o = [0];
-                                    continue;
-                                case 7:
-                                    o = a.ops.pop(), a.trys.pop();
-                                    continue;
-                                default:
-                                    if (!(i = (i = a.trys).length > 0 && i[i.length - 1]) && (6 === o[0] || 2 === o[0])) {
-                                        a = 0;
-                                        continue
-                                    }
-                                    if (3 === o[0] && (!i || o[1] > i[0] && o[1] < i[3])) {
-                                        a.label = o[1];
-                                        break
-                                    }
-                                    if (6 === o[0] && a.label < i[1]) {
-                                        a.label = i[1], i = o;
-                                        break
-                                    }
-                                    if (i && a.label < i[2]) {
-                                        a.label = i[2], a.ops.push(o);
-                                        break
-                                    }
-                                    i[2] && a.ops.pop(), a.trys.pop();
+                            case 0:
+                            case 1:
+                                i = o;
+                                break;
+                            case 4:
+                                return a.label++, {
+                                    value: o[1],
+                                    done: !1
+                                };
+                            case 5:
+                                a.label++, n = o[1], o = [0];
+                                continue;
+                            case 7:
+                                o = a.ops.pop(), a.trys.pop();
+                                continue;
+                            default:
+                                if (!(i = (i = a.trys).length > 0 && i[i.length - 1]) && (6 === o[0] || 2 === o[0])) {
+                                    a = 0;
                                     continue
+                                }
+                                if (3 === o[0] && (!i || o[1] > i[0] && o[1] < i[3])) {
+                                    a.label = o[1];
+                                    break
+                                }
+                                if (6 === o[0] && a.label < i[1]) {
+                                    a.label = i[1], i = o;
+                                    break
+                                }
+                                if (i && a.label < i[2]) {
+                                    a.label = i[2], a.ops.push(o);
+                                    break
+                                }
+                                i[2] && a.ops.pop(), a.trys.pop();
+                                continue
                             }
                             o = e.call(t, a)
                         } catch (t) {
@@ -1353,7 +1353,7 @@ var waxjs = function(t) {
                 }
             }
         },
-        o = this && this.__read || function(t, e) {
+        o = this && this.__read || function (t, e) {
             var r = "function" == typeof Symbol && t[Symbol.iterator];
             if (!r) return t;
             var n, i, o = r.call(t),
@@ -1374,7 +1374,7 @@ var waxjs = function(t) {
             }
             return a
         },
-        a = this && this.__spread || function() {
+        a = this && this.__spread || function () {
             for (var t = [], e = 0; e < arguments.length; e++) t = t.concat(o(arguments[e]));
             return t
         };
@@ -1383,7 +1383,7 @@ var waxjs = function(t) {
     });
     var s = r(4),
         u = r(13),
-        c = function() {
+        c = function () {
             function t(t, e, r, n, i, o, a) {
                 if (void 0 === e && (e = null), void 0 === r && (r = null), void 0 === n && (n = !0), void 0 === i && (i = null), void 0 === o && (o = "https://all-access.wax.io"), void 0 === a && (a = "https://api-idm.wax.io/v1/accounts/auto-accept/"), this.apiSigner = i, this.waxSigningURL = o, this.waxAutoSigningURL = a, this.waxEventSource = new u.WaxEventSource(o), this.rpc = new s.JsonRpc(t), e && Array.isArray(r)) {
                     var c = {
@@ -1396,99 +1396,99 @@ var waxjs = function(t) {
                     })
                 } else n && this.loginViaEndpoint()
             }
-            return t.prototype.login = function() {
-                return n(this, void 0, void 0, (function() {
-                    return i(this, (function(t) {
+            return t.prototype.login = function () {
+                return n(this, void 0, void 0, (function () {
+                    return i(this, (function (t) {
                         return this.userAccount && Array.isArray(this.pubKeys) ? [2, this.userAccount] : [2, this.loginViaWindow()]
                     }))
                 }))
-            }, t.prototype.isAutoLoginAvailable = function() {
-                return n(this, void 0, void 0, (function() {
-                    return i(this, (function(t) {
+            }, t.prototype.isAutoLoginAvailable = function () {
+                return n(this, void 0, void 0, (function () {
+                    return i(this, (function (t) {
                         switch (t.label) {
-                            case 0:
-                                return this.userAccount && Array.isArray(this.pubKeys) ? [2, !0] : [3, 1];
-                            case 1:
-                                return t.trys.push([1, 3, , 4]), [4, this.loginViaEndpoint()];
-                            case 2:
-                                return t.sent(), [2, !0];
-                            case 3:
-                                return t.sent(), [2, !1];
-                            case 4:
-                                return [2, !1]
+                        case 0:
+                            return this.userAccount && Array.isArray(this.pubKeys) ? [2, !0] : [3, 1];
+                        case 1:
+                            return t.trys.push([1, 3, , 4]), [4, this.loginViaEndpoint()];
+                        case 2:
+                            return t.sent(), [2, !0];
+                        case 3:
+                            return t.sent(), [2, !1];
+                        case 4:
+                            return [2, !1]
                         }
                     }))
                 }))
-            }, t.prototype.loginViaWindow = function() {
-                return n(this, void 0, void 0, (function() {
+            }, t.prototype.loginViaWindow = function () {
+                return n(this, void 0, void 0, (function () {
                     var t;
-                    return i(this, (function(e) {
+                    return i(this, (function (e) {
                         switch (e.label) {
-                            case 0:
-                                return [4, this.waxEventSource.openEventSource(this.waxSigningURL + "/cloud-wallet/login/")];
-                            case 1:
-                                return t = e.sent(), [2, this.waxEventSource.onceEvent(t, this.waxSigningURL, this.receiveLogin.bind(this))]
+                        case 0:
+                            return [4, this.waxEventSource.openEventSource(this.waxSigningURL + "/cloud-wallet/login/")];
+                        case 1:
+                            return t = e.sent(), [2, this.waxEventSource.onceEvent(t, this.waxSigningURL, this.receiveLogin.bind(this))]
                         }
                     }))
                 }))
-            }, t.prototype.loginViaEndpoint = function() {
-                return n(this, void 0, void 0, (function() {
+            }, t.prototype.loginViaEndpoint = function () {
+                return n(this, void 0, void 0, (function () {
                     var t, e;
-                    return i(this, (function(r) {
+                    return i(this, (function (r) {
                         switch (r.label) {
-                            case 0:
-                                return [4, fetch(this.waxAutoSigningURL + "login", {
-                                    credentials: "include",
-                                    method: "get"
-                                })];
-                            case 1:
-                                if (!(t = r.sent()).ok) throw new Error("Login Endpoint Error " + t.status + " " + t.statusText);
-                                return [4, t.json()];
-                            case 2:
-                                if ((e = r.sent()).processed && e.processed.except) throw new Error(e);
-                                return [2, this.receiveLogin({
-                                    data: e
-                                })]
+                        case 0:
+                            return [4, fetch(this.waxAutoSigningURL + "login", {
+                                credentials: "include",
+                                method: "get"
+                            })];
+                        case 1:
+                            if (!(t = r.sent()).ok) throw new Error("Login Endpoint Error " + t.status + " " + t.statusText);
+                            return [4, t.json()];
+                        case 2:
+                            if ((e = r.sent()).processed && e.processed.except) throw new Error(e);
+                            return [2, this.receiveLogin({
+                                data: e
+                            })]
                         }
                     }))
                 }))
-            }, t.prototype.receiveLogin = function(t) {
-                return n(this, void 0, void 0, (function() {
+            }, t.prototype.receiveLogin = function (t) {
+                return n(this, void 0, void 0, (function () {
                     var e, r, o, u, c, l, f, h, p, d = this;
-                    return i(this, (function(y) {
+                    return i(this, (function (y) {
                         if (e = t.data, r = e.verified, o = e.userAccount, u = e.pubKeys, c = e.whitelistedContracts, l = e.autoLogin, !r) throw new Error("User declined to share their user account");
                         if (null == o || null == u) throw new Error("User does not have a blockchain account");
                         return localStorage.setItem("autoLogin", l), this.whitelistedContracts = c || [], this.userAccount = o, this.pubKeys = u, f = {
-                            getAvailableKeys: function() {
-                                return n(d, void 0, void 0, (function() {
+                            getAvailableKeys: function () {
+                                return n(d, void 0, void 0, (function () {
                                     var t, e;
-                                    return i(this, (function(r) {
+                                    return i(this, (function (r) {
                                         switch (r.label) {
-                                            case 0:
-                                                return t = [this.pubKeys], (e = this.apiSigner) ? [4, this.apiSigner.getAvailableKeys()] : [3, 2];
-                                            case 1:
-                                                e = r.sent(), r.label = 2;
-                                            case 2:
-                                                return [2, a.apply(void 0, t.concat([e || []]))]
+                                        case 0:
+                                            return t = [this.pubKeys], (e = this.apiSigner) ? [4, this.apiSigner.getAvailableKeys()] : [3, 2];
+                                        case 1:
+                                            e = r.sent(), r.label = 2;
+                                        case 2:
+                                            return [2, a.apply(void 0, t.concat([e || []]))]
                                         }
                                     }))
                                 }))
                             },
-                            sign: function(t) {
-                                return n(d, void 0, void 0, (function() {
+                            sign: function (t) {
+                                return n(d, void 0, void 0, (function () {
                                     var e, r, n;
-                                    return i(this, (function(i) {
+                                    return i(this, (function (i) {
                                         switch (i.label) {
-                                            case 0:
-                                                return e = {
-                                                    serializedTransaction: t.serializedTransaction
-                                                }, [4, this.signing(t.serializedTransaction)];
-                                            case 1:
-                                                return r = [i.sent()], (n = this.apiSigner) ? [4, this.apiSigner.sign(t)] : [3, 3];
-                                            case 2:
-                                                n = i.sent().signatures, i.label = 3;
-                                            case 3:
-                                                return [2, (e.signatures = a.apply(void 0, r.concat([n || []])), e)]
+                                        case 0:
+                                            return e = {
+                                                serializedTransaction: t.serializedTransaction
+                                            }, [4, this.signing(t.serializedTransaction)];
+                                        case 1:
+                                            return r = [i.sent()], (n = this.apiSigner) ? [4, this.apiSigner.sign(t)] : [3, 3];
+                                        case 2:
+                                            n = i.sent().signatures, i.label = 3;
+                                        case 3:
+                                            return [2, (e.signatures = a.apply(void 0, r.concat([n || []])), e)]
                                         }
                                     }))
                                 }))
@@ -1496,113 +1496,113 @@ var waxjs = function(t) {
                         }, this.api = new s.Api({
                             rpc: this.rpc,
                             signatureProvider: f
-                        }), h = this.api.transact.bind(this.api), p = this.waxSigningURL + "/cloud-wallet/signing/", this.api.transact = function(t, e) {
-                            return n(d, void 0, void 0, (function() {
+                        }), h = this.api.transact.bind(this.api), p = this.waxSigningURL + "/cloud-wallet/signing/", this.api.transact = function (t, e) {
+                            return n(d, void 0, void 0, (function () {
                                 var r;
-                                return i(this, (function(n) {
+                                return i(this, (function (n) {
                                     switch (n.label) {
-                                        case 0:
-                                            return [4, this.canAutoSign(t)];
-                                        case 1:
-                                            return n.sent() ? [3, 3] : (r = this, [4, window.open(p, "WaxPopup", "height=800,width=600")]);
-                                        case 2:
-                                            r.signingWindow = n.sent(), n.label = 3;
-                                        case 3:
-                                            return [4, h(t, e)];
-                                        case 4:
-                                            return [2, n.sent()]
+                                    case 0:
+                                        return [4, this.canAutoSign(t)];
+                                    case 1:
+                                        return n.sent() ? [3, 3] : (r = this, [4, window.open(p, "WaxPopup", "height=800,width=600")]);
+                                    case 2:
+                                        r.signingWindow = n.sent(), n.label = 3;
+                                    case 3:
+                                        return [4, h(t, e)];
+                                    case 4:
+                                        return [2, n.sent()]
                                     }
                                 }))
                             }))
                         }, [2, this.userAccount]
                     }))
                 }))
-            }, t.prototype.canAutoSign = function(t) {
-                return n(this, void 0, void 0, (function() {
+            }, t.prototype.canAutoSign = function (t) {
+                return n(this, void 0, void 0, (function () {
                     var e, r = this;
-                    return i(this, (function(n) {
+                    return i(this, (function (n) {
                         switch (n.label) {
-                            case 0:
-                                return t.actions ? (e = t, [3, 3]) : [3, 1];
-                            case 1:
-                                return [4, this.api.deserializeTransactionWithActions(t)];
-                            case 2:
-                                e = n.sent(), n.label = 3;
-                            case 3:
-                                return [2, !e.actions.find((function(t) {
-                                    return !r.isWhitelisted(t)
-                                }))]
+                        case 0:
+                            return t.actions ? (e = t, [3, 3]) : [3, 1];
+                        case 1:
+                            return [4, this.api.deserializeTransactionWithActions(t)];
+                        case 2:
+                            e = n.sent(), n.label = 3;
+                        case 3:
+                            return [2, !e.actions.find((function (t) {
+                                return !r.isWhitelisted(t)
+                            }))]
                         }
                     }))
                 }))
-            }, t.prototype.isWhitelisted = function(t) {
-                return !!this.whitelistedContracts.find((function(e) {
+            }, t.prototype.isWhitelisted = function (t) {
+                return !!this.whitelistedContracts.find((function (e) {
                     return e.contract === t.account && ("eosio.token" !== t.account || "transfer" !== t.name || e.recipients.includes(t.data.to))
                 }))
-            }, t.prototype.signing = function(t) {
-                return n(this, void 0, void 0, (function() {
+            }, t.prototype.signing = function (t) {
+                return n(this, void 0, void 0, (function () {
                     var e = this;
-                    return i(this, (function(r) {
+                    return i(this, (function (r) {
                         switch (r.label) {
-                            case 0:
-                                return [4, this.canAutoSign(t)];
-                            case 1:
-                                return r.sent() ? [2, this.signViaEndpoint(t).catch((function() {
-                                    return e.signViaWindow(void 0, t)
-                                }))] : [2, this.signViaWindow(this.signingWindow, t)]
+                        case 0:
+                            return [4, this.canAutoSign(t)];
+                        case 1:
+                            return r.sent() ? [2, this.signViaEndpoint(t).catch((function () {
+                                return e.signViaWindow(void 0, t)
+                            }))] : [2, this.signViaWindow(this.signingWindow, t)]
                         }
                     }))
                 }))
-            }, t.prototype.signViaEndpoint = function(t) {
-                return n(this, void 0, void 0, (function() {
+            }, t.prototype.signViaEndpoint = function (t) {
+                return n(this, void 0, void 0, (function () {
                     var e, r, n;
-                    return i(this, (function(i) {
+                    return i(this, (function (i) {
                         switch (i.label) {
-                            case 0:
-                                return i.trys.push([0, 3, , 4]), [4, fetch(this.waxAutoSigningURL + "signing", {
-                                    body: JSON.stringify({
-                                        transaction: Object.values(t)
-                                    }),
-                                    credentials: "include",
-                                    headers: {
-                                        "Content-Type": "application/json"
-                                    },
-                                    method: "POST"
-                                })];
-                            case 1:
-                                if (!(e = i.sent()).ok) throw new Error("Signing Endpoint Error " + e.status + " " + e.statusText);
-                                return [4, e.json()];
-                            case 2:
-                                if ((r = i.sent()).processed && r.processed.except) throw new Error(r);
-                                return [2, this.receiveSignatures({
-                                    data: r
-                                })];
-                            case 3:
-                                throw n = i.sent(), this.whitelistedContracts = [], n;
-                            case 4:
-                                return [2]
+                        case 0:
+                            return i.trys.push([0, 3, , 4]), [4, fetch(this.waxAutoSigningURL + "signing", {
+                                body: JSON.stringify({
+                                    transaction: Object.values(t)
+                                }),
+                                credentials: "include",
+                                headers: {
+                                    "Content-Type": "application/json"
+                                },
+                                method: "POST"
+                            })];
+                        case 1:
+                            if (!(e = i.sent()).ok) throw new Error("Signing Endpoint Error " + e.status + " " + e.statusText);
+                            return [4, e.json()];
+                        case 2:
+                            if ((r = i.sent()).processed && r.processed.except) throw new Error(r);
+                            return [2, this.receiveSignatures({
+                                data: r
+                            })];
+                        case 3:
+                            throw n = i.sent(), this.whitelistedContracts = [], n;
+                        case 4:
+                            return [2]
                         }
                     }))
                 }))
-            }, t.prototype.signViaWindow = function(t, e) {
-                return n(this, void 0, void 0, (function() {
+            }, t.prototype.signViaWindow = function (t, e) {
+                return n(this, void 0, void 0, (function () {
                     var r;
-                    return i(this, (function(n) {
+                    return i(this, (function (n) {
                         switch (n.label) {
-                            case 0:
-                                return [4, this.waxEventSource.openEventSource(this.waxSigningURL + "/cloud-wallet/signing/", {
-                                    type: "TRANSACTION",
-                                    transaction: e
-                                }, t)];
-                            case 1:
-                                return r = n.sent(), [2, this.waxEventSource.onceEvent(r, this.waxSigningURL, this.receiveSignatures.bind(this))]
+                        case 0:
+                            return [4, this.waxEventSource.openEventSource(this.waxSigningURL + "/cloud-wallet/signing/", {
+                                type: "TRANSACTION",
+                                transaction: e
+                            }, t)];
+                        case 1:
+                            return r = n.sent(), [2, this.waxEventSource.onceEvent(r, this.waxSigningURL, this.receiveSignatures.bind(this))]
                         }
                     }))
                 }))
-            }, t.prototype.receiveSignatures = function(t) {
-                return n(this, void 0, void 0, (function() {
+            }, t.prototype.receiveSignatures = function (t) {
+                return n(this, void 0, void 0, (function () {
                     var e, r, n, o;
-                    return i(this, (function(i) {
+                    return i(this, (function (i) {
                         if ("TX_SIGNED" === t.data.type) {
                             if (e = t.data, r = e.verified, n = e.signatures, o = e.whitelistedContracts, !r || null == n) throw new Error("User declined to sign the transaction");
                             return this.whitelistedContracts = o || [], [2, n]
@@ -1613,8 +1613,8 @@ var waxjs = function(t) {
             }, t
         }();
     e.WaxJS = c
-}, function(t, e, r) {
-    
+}, function (t, e, r) {
+    "use strict";
     Object.defineProperty(e, "__esModule", {
         value: !0
     });
@@ -1632,17 +1632,17 @@ var waxjs = function(t) {
     e.RpcError = u.RpcError;
     var c = r(1);
     e.Serialize = c
-}, function(t, e, r) {
-    
-    var n = this && this.__assign || function() {
-            return (n = Object.assign || function(t) {
+}, function (t, e, r) {
+    "use strict";
+    var n = this && this.__assign || function () {
+            return (n = Object.assign || function (t) {
                 for (var e, r = 1, n = arguments.length; r < n; r++)
                     for (var i in e = arguments[r]) Object.prototype.hasOwnProperty.call(e, i) && (t[i] = e[i]);
                 return t
             }).apply(this, arguments)
         },
-        i = this && this.__awaiter || function(t, e, r, n) {
-            return new(r || (r = Promise))((function(i, o) {
+        i = this && this.__awaiter || function (t, e, r, n) {
+            return new(r || (r = Promise))((function (i, o) {
                 function a(t) {
                     try {
                         u(n.next(t))
@@ -1660,17 +1660,17 @@ var waxjs = function(t) {
                 }
 
                 function u(t) {
-                    t.done ? i(t.value) : new r((function(e) {
+                    t.done ? i(t.value) : new r((function (e) {
                         e(t.value)
                     })).then(a, s)
                 }
                 u((n = n.apply(t, e || [])).next())
             }))
         },
-        o = this && this.__generator || function(t, e) {
+        o = this && this.__generator || function (t, e) {
             var r, n, i, o, a = {
                 label: 0,
-                sent: function() {
+                sent: function () {
                     if (1 & i[0]) throw i[1];
                     return i[1]
                 },
@@ -1681,51 +1681,51 @@ var waxjs = function(t) {
                 next: s(0),
                 throw: s(1),
                 return: s(2)
-            }, "function" == typeof Symbol && (o[Symbol.iterator] = function() {
+            }, "function" == typeof Symbol && (o[Symbol.iterator] = function () {
                 return this
             }), o;
 
             function s(o) {
-                return function(s) {
-                    return function(o) {
+                return function (s) {
+                    return function (o) {
                         if (r) throw new TypeError("Generator is already executing.");
                         for (; a;) try {
                             if (r = 1, n && (i = 2 & o[0] ? n.return : o[0] ? n.throw || ((i = n.return) && i.call(n), 0) : n.next) && !(i = i.call(n, o[1])).done) return i;
                             switch (n = 0, i && (o = [2 & o[0], i.value]), o[0]) {
-                                case 0:
-                                case 1:
-                                    i = o;
-                                    break;
-                                case 4:
-                                    return a.label++, {
-                                        value: o[1],
-                                        done: !1
-                                    };
-                                case 5:
-                                    a.label++, n = o[1], o = [0];
-                                    continue;
-                                case 7:
-                                    o = a.ops.pop(), a.trys.pop();
-                                    continue;
-                                default:
-                                    if (!(i = (i = a.trys).length > 0 && i[i.length - 1]) && (6 === o[0] || 2 === o[0])) {
-                                        a = 0;
-                                        continue
-                                    }
-                                    if (3 === o[0] && (!i || o[1] > i[0] && o[1] < i[3])) {
-                                        a.label = o[1];
-                                        break
-                                    }
-                                    if (6 === o[0] && a.label < i[1]) {
-                                        a.label = i[1], i = o;
-                                        break
-                                    }
-                                    if (i && a.label < i[2]) {
-                                        a.label = i[2], a.ops.push(o);
-                                        break
-                                    }
-                                    i[2] && a.ops.pop(), a.trys.pop();
+                            case 0:
+                            case 1:
+                                i = o;
+                                break;
+                            case 4:
+                                return a.label++, {
+                                    value: o[1],
+                                    done: !1
+                                };
+                            case 5:
+                                a.label++, n = o[1], o = [0];
+                                continue;
+                            case 7:
+                                o = a.ops.pop(), a.trys.pop();
+                                continue;
+                            default:
+                                if (!(i = (i = a.trys).length > 0 && i[i.length - 1]) && (6 === o[0] || 2 === o[0])) {
+                                    a = 0;
                                     continue
+                                }
+                                if (3 === o[0] && (!i || o[1] > i[0] && o[1] < i[3])) {
+                                    a.label = o[1];
+                                    break
+                                }
+                                if (6 === o[0] && a.label < i[1]) {
+                                    a.label = i[1], i = o;
+                                    break
+                                }
+                                if (i && a.label < i[2]) {
+                                    a.label = i[2], a.ops.push(o);
+                                    break
+                                }
+                                i[2] && a.ops.pop(), a.trys.pop();
+                                continue
                             }
                             o = e.call(t, a)
                         } catch (t) {
@@ -1742,7 +1742,7 @@ var waxjs = function(t) {
                 }
             }
         },
-        a = this && this.__rest || function(t, e) {
+        a = this && this.__rest || function (t, e) {
             var r = {};
             for (var n in t) Object.prototype.hasOwnProperty.call(t, n) && e.indexOf(n) < 0 && (r[n] = t[n]);
             if (null != t && "function" == typeof Object.getOwnPropertySymbols) {
@@ -1751,7 +1751,7 @@ var waxjs = function(t) {
             }
             return r
         },
-        s = this && this.__read || function(t, e) {
+        s = this && this.__read || function (t, e) {
             var r = "function" == typeof Symbol && t[Symbol.iterator];
             if (!r) return t;
             var n, i, o = r.call(t),
@@ -1772,15 +1772,15 @@ var waxjs = function(t) {
             }
             return a
         },
-        u = this && this.__spread || function() {
+        u = this && this.__spread || function () {
             for (var t = [], e = 0; e < arguments.length; e++) t = t.concat(s(arguments[e]));
             return t
         },
-        c = this && this.__values || function(t) {
+        c = this && this.__values || function (t) {
             var e = "function" == typeof Symbol && t[Symbol.iterator],
                 r = 0;
             return e ? e.call(t) : {
-                next: function() {
+                next: function () {
                     return t && r >= t.length && (t = void 0), {
                         value: t && t[r++],
                         done: !t
@@ -1794,11 +1794,11 @@ var waxjs = function(t) {
     var l = r(1),
         f = r(7),
         h = r(8),
-        p = function() {
+        p = function () {
             function t(t) {
                 this.contracts = new Map, this.cachedAbis = new Map, this.rpc = t.rpc, this.authorityProvider = t.authorityProvider || t.rpc, this.abiProvider = t.abiProvider || t.rpc, this.signatureProvider = t.signatureProvider, this.chainId = t.chainId, this.textEncoder = t.textEncoder, this.textDecoder = t.textDecoder, this.abiTypes = l.getTypesFromAbi(l.createInitialTypes(), f), this.transactionTypes = l.getTypesFromAbi(l.createInitialTypes(), h)
             }
-            return t.prototype.rawAbiToJson = function(t) {
+            return t.prototype.rawAbiToJson = function (t) {
                 var e = new l.SerialBuffer({
                     textEncoder: this.textEncoder,
                     textDecoder: this.textDecoder,
@@ -1806,97 +1806,97 @@ var waxjs = function(t) {
                 });
                 if (!l.supportedAbiVersion(e.getString())) throw new Error("Unsupported abi version");
                 return e.restartRead(), this.abiTypes.get("abi_def").deserialize(e)
-            }, t.prototype.getCachedAbi = function(t, e) {
-                return void 0 === e && (e = !1), i(this, void 0, void 0, (function() {
+            }, t.prototype.getCachedAbi = function (t, e) {
+                return void 0 === e && (e = !1), i(this, void 0, void 0, (function () {
                     var r, n, i, a;
-                    return o(this, (function(o) {
+                    return o(this, (function (o) {
                         switch (o.label) {
-                            case 0:
-                                if (!e && this.cachedAbis.get(t)) return [2, this.cachedAbis.get(t)];
-                                o.label = 1;
-                            case 1:
-                                return o.trys.push([1, 3, , 4]), [4, this.abiProvider.getRawAbi(t)];
-                            case 2:
-                                return n = o.sent().abi, i = this.rawAbiToJson(n), r = {
-                                    rawAbi: n,
-                                    abi: i
-                                }, [3, 4];
-                            case 3:
-                                throw (a = o.sent()).message = "fetching abi for " + t + ": " + a.message, a;
-                            case 4:
-                                if (!r) throw new Error("Missing abi for " + t);
-                                return this.cachedAbis.set(t, r), [2, r]
+                        case 0:
+                            if (!e && this.cachedAbis.get(t)) return [2, this.cachedAbis.get(t)];
+                            o.label = 1;
+                        case 1:
+                            return o.trys.push([1, 3, , 4]), [4, this.abiProvider.getRawAbi(t)];
+                        case 2:
+                            return n = o.sent().abi, i = this.rawAbiToJson(n), r = {
+                                rawAbi: n,
+                                abi: i
+                            }, [3, 4];
+                        case 3:
+                            throw (a = o.sent()).message = "fetching abi for " + t + ": " + a.message, a;
+                        case 4:
+                            if (!r) throw new Error("Missing abi for " + t);
+                            return this.cachedAbis.set(t, r), [2, r]
                         }
                     }))
                 }))
-            }, t.prototype.getAbi = function(t, e) {
-                return void 0 === e && (e = !1), i(this, void 0, void 0, (function() {
-                    return o(this, (function(r) {
+            }, t.prototype.getAbi = function (t, e) {
+                return void 0 === e && (e = !1), i(this, void 0, void 0, (function () {
+                    return o(this, (function (r) {
                         switch (r.label) {
-                            case 0:
-                                return [4, this.getCachedAbi(t, e)];
-                            case 1:
-                                return [2, r.sent().abi]
+                        case 0:
+                            return [4, this.getCachedAbi(t, e)];
+                        case 1:
+                            return [2, r.sent().abi]
                         }
                     }))
                 }))
-            }, t.prototype.getTransactionAbis = function(t, e) {
-                return void 0 === e && (e = !1), i(this, void 0, void 0, (function() {
+            }, t.prototype.getTransactionAbis = function (t, e) {
+                return void 0 === e && (e = !1), i(this, void 0, void 0, (function () {
                     var r, n, a, s = this;
-                    return o(this, (function(c) {
-                        return r = t.actions.map((function(t) {
+                    return o(this, (function (c) {
+                        return r = t.actions.map((function (t) {
                             return t.account
-                        })), n = new Set(r), a = u(n).map((function(t) {
-                            return i(s, void 0, void 0, (function() {
+                        })), n = new Set(r), a = u(n).map((function (t) {
+                            return i(s, void 0, void 0, (function () {
                                 var r;
-                                return o(this, (function(n) {
+                                return o(this, (function (n) {
                                     switch (n.label) {
-                                        case 0:
-                                            return r = {
-                                                accountName: t
-                                            }, [4, this.getCachedAbi(t, e)];
-                                        case 1:
-                                            return [2, (r.abi = n.sent().rawAbi, r)]
+                                    case 0:
+                                        return r = {
+                                            accountName: t
+                                        }, [4, this.getCachedAbi(t, e)];
+                                    case 1:
+                                        return [2, (r.abi = n.sent().rawAbi, r)]
                                     }
                                 }))
                             }))
                         })), [2, Promise.all(a)]
                     }))
                 }))
-            }, t.prototype.getContract = function(t, e) {
-                return void 0 === e && (e = !1), i(this, void 0, void 0, (function() {
+            }, t.prototype.getContract = function (t, e) {
+                return void 0 === e && (e = !1), i(this, void 0, void 0, (function () {
                     var r, n, i, a, s, u, f, h, p, d, y;
-                    return o(this, (function(o) {
+                    return o(this, (function (o) {
                         switch (o.label) {
-                            case 0:
-                                return !e && this.contracts.get(t) ? [2, this.contracts.get(t)] : [4, this.getAbi(t, e)];
-                            case 1:
-                                i = o.sent(), a = l.getTypesFromAbi(l.createInitialTypes(), i), s = new Map;
-                                try {
-                                    for (u = c(i.actions), f = u.next(); !f.done; f = u.next()) h = f.value, p = h.name, d = h.type, s.set(p, l.getType(a, d))
-                                } catch (t) {
-                                    r = {
-                                        error: t
-                                    }
-                                } finally {
-                                    try {
-                                        f && !f.done && (n = u.return) && n.call(u)
-                                    } finally {
-                                        if (r) throw r.error
-                                    }
+                        case 0:
+                            return !e && this.contracts.get(t) ? [2, this.contracts.get(t)] : [4, this.getAbi(t, e)];
+                        case 1:
+                            i = o.sent(), a = l.getTypesFromAbi(l.createInitialTypes(), i), s = new Map;
+                            try {
+                                for (u = c(i.actions), f = u.next(); !f.done; f = u.next()) h = f.value, p = h.name, d = h.type, s.set(p, l.getType(a, d))
+                            } catch (t) {
+                                r = {
+                                    error: t
                                 }
-                                return y = {
-                                    types: a,
-                                    actions: s
-                                }, this.contracts.set(t, y), [2, y]
+                            } finally {
+                                try {
+                                    f && !f.done && (n = u.return) && n.call(u)
+                                } finally {
+                                    if (r) throw r.error
+                                }
+                            }
+                            return y = {
+                                types: a,
+                                actions: s
+                            }, this.contracts.set(t, y), [2, y]
                         }
                     }))
                 }))
-            }, t.prototype.serialize = function(t, e, r) {
+            }, t.prototype.serialize = function (t, e, r) {
                 this.transactionTypes.get(e).serialize(t, r)
-            }, t.prototype.deserialize = function(t, e) {
+            }, t.prototype.deserialize = function (t, e) {
                 return this.transactionTypes.get(e).deserialize(t)
-            }, t.prototype.serializeTransaction = function(t) {
+            }, t.prototype.serializeTransaction = function (t) {
                 var e = new l.SerialBuffer({
                     textEncoder: this.textEncoder,
                     textDecoder: this.textDecoder
@@ -1909,83 +1909,83 @@ var waxjs = function(t) {
                     actions: [],
                     transaction_extensions: []
                 }, t)), e.asUint8Array()
-            }, t.prototype.deserializeTransaction = function(t) {
+            }, t.prototype.deserializeTransaction = function (t) {
                 var e = new l.SerialBuffer({
                     textEncoder: this.textEncoder,
                     textDecoder: this.textDecoder
                 });
                 return e.pushArray(t), this.deserialize(e, "transaction")
-            }, t.prototype.serializeActions = function(t) {
-                return i(this, void 0, void 0, (function() {
+            }, t.prototype.serializeActions = function (t) {
+                return i(this, void 0, void 0, (function () {
                     var e = this;
-                    return o(this, (function(r) {
+                    return o(this, (function (r) {
                         switch (r.label) {
-                            case 0:
-                                return [4, Promise.all(t.map((function(t) {
-                                    var r = t.account,
-                                        n = t.name,
-                                        a = t.authorization,
-                                        s = t.data;
-                                    return i(e, void 0, void 0, (function() {
-                                        var t;
-                                        return o(this, (function(e) {
-                                            switch (e.label) {
-                                                case 0:
-                                                    return [4, this.getContract(r)];
-                                                case 1:
-                                                    return t = e.sent(), [2, l.serializeAction(t, r, n, a, s, this.textEncoder, this.textDecoder)]
-                                            }
-                                        }))
+                        case 0:
+                            return [4, Promise.all(t.map((function (t) {
+                                var r = t.account,
+                                    n = t.name,
+                                    a = t.authorization,
+                                    s = t.data;
+                                return i(e, void 0, void 0, (function () {
+                                    var t;
+                                    return o(this, (function (e) {
+                                        switch (e.label) {
+                                        case 0:
+                                            return [4, this.getContract(r)];
+                                        case 1:
+                                            return t = e.sent(), [2, l.serializeAction(t, r, n, a, s, this.textEncoder, this.textDecoder)]
+                                        }
                                     }))
-                                })))];
-                            case 1:
-                                return [2, r.sent()]
+                                }))
+                            })))];
+                        case 1:
+                            return [2, r.sent()]
                         }
                     }))
                 }))
-            }, t.prototype.deserializeActions = function(t) {
-                return i(this, void 0, void 0, (function() {
+            }, t.prototype.deserializeActions = function (t) {
+                return i(this, void 0, void 0, (function () {
                     var e = this;
-                    return o(this, (function(r) {
+                    return o(this, (function (r) {
                         switch (r.label) {
-                            case 0:
-                                return [4, Promise.all(t.map((function(t) {
-                                    var r = t.account,
-                                        n = t.name,
-                                        a = t.authorization,
-                                        s = t.data;
-                                    return i(e, void 0, void 0, (function() {
-                                        var t;
-                                        return o(this, (function(e) {
-                                            switch (e.label) {
-                                                case 0:
-                                                    return [4, this.getContract(r)];
-                                                case 1:
-                                                    return t = e.sent(), [2, l.deserializeAction(t, r, n, a, s, this.textEncoder, this.textDecoder)]
-                                            }
-                                        }))
+                        case 0:
+                            return [4, Promise.all(t.map((function (t) {
+                                var r = t.account,
+                                    n = t.name,
+                                    a = t.authorization,
+                                    s = t.data;
+                                return i(e, void 0, void 0, (function () {
+                                    var t;
+                                    return o(this, (function (e) {
+                                        switch (e.label) {
+                                        case 0:
+                                            return [4, this.getContract(r)];
+                                        case 1:
+                                            return t = e.sent(), [2, l.deserializeAction(t, r, n, a, s, this.textEncoder, this.textDecoder)]
+                                        }
                                     }))
-                                })))];
-                            case 1:
-                                return [2, r.sent()]
+                                }))
+                            })))];
+                        case 1:
+                            return [2, r.sent()]
                         }
                     }))
                 }))
-            }, t.prototype.deserializeTransactionWithActions = function(t) {
-                return i(this, void 0, void 0, (function() {
+            }, t.prototype.deserializeTransactionWithActions = function (t) {
+                return i(this, void 0, void 0, (function () {
                     var e, r;
-                    return o(this, (function(i) {
+                    return o(this, (function (i) {
                         switch (i.label) {
-                            case 0:
-                                return "string" == typeof t && (t = l.hexToUint8Array(t)), e = this.deserializeTransaction(t), [4, this.deserializeActions(e.actions)];
-                            case 1:
-                                return r = i.sent(), [2, n({}, e, {
-                                    actions: r
-                                })]
+                        case 0:
+                            return "string" == typeof t && (t = l.hexToUint8Array(t)), e = this.deserializeTransaction(t), [4, this.deserializeActions(e.actions)];
+                        case 1:
+                            return r = i.sent(), [2, n({}, e, {
+                                actions: r
+                            })]
                         }
                     }))
                 }))
-            }, t.prototype.transact = function(t, e) {
+            }, t.prototype.transact = function (t, e) {
                 var r = void 0 === e ? {} : e,
                     a = r.broadcast,
                     s = void 0 === a || a,
@@ -1993,63 +1993,63 @@ var waxjs = function(t) {
                     c = void 0 === u || u,
                     f = r.blocksBehind,
                     h = r.expireSeconds;
-                return i(this, void 0, void 0, (function() {
+                return i(this, void 0, void 0, (function () {
                     var e, r, i, a, u, p, d, y, v;
-                    return o(this, (function(o) {
+                    return o(this, (function (o) {
                         switch (o.label) {
-                            case 0:
-                                return this.chainId ? [3, 2] : [4, this.rpc.get_info()];
-                            case 1:
-                                e = o.sent(), this.chainId = e.chain_id, o.label = 2;
-                            case 2:
-                                return "number" == typeof f && h ? e ? [3, 4] : [4, this.rpc.get_info()] : [3, 6];
-                            case 3:
-                                e = o.sent(), o.label = 4;
-                            case 4:
-                                return [4, this.rpc.get_block(e.head_block_num - f)];
-                            case 5:
-                                r = o.sent(), t = n({}, l.transactionHeader(r, h), t), o.label = 6;
-                            case 6:
-                                if (!this.hasRequiredTaposFields(t)) throw new Error("Required configuration or TAPOS fields are not present");
-                                return [4, this.getTransactionAbis(t)];
-                            case 7:
-                                return i = o.sent(), a = [{}, t], u = {}, [4, this.serializeActions(t.actions)];
-                            case 8:
-                                return t = n.apply(void 0, a.concat([(u.actions = o.sent(), u)])), p = this.serializeTransaction(t), d = {
-                                    serializedTransaction: p,
-                                    signatures: []
-                                }, c ? [4, this.signatureProvider.getAvailableKeys()] : [3, 12];
-                            case 9:
-                                return y = o.sent(), [4, this.authorityProvider.getRequiredKeys({
-                                    transaction: t,
-                                    availableKeys: y
-                                })];
-                            case 10:
-                                return v = o.sent(), [4, this.signatureProvider.sign({
-                                    chainId: this.chainId,
-                                    requiredKeys: v,
-                                    serializedTransaction: p,
-                                    abis: i
-                                })];
-                            case 11:
-                                d = o.sent(), o.label = 12;
-                            case 12:
-                                return s ? [2, this.pushSignedTransaction(d)] : [2, d]
+                        case 0:
+                            return this.chainId ? [3, 2] : [4, this.rpc.get_info()];
+                        case 1:
+                            e = o.sent(), this.chainId = e.chain_id, o.label = 2;
+                        case 2:
+                            return "number" == typeof f && h ? e ? [3, 4] : [4, this.rpc.get_info()] : [3, 6];
+                        case 3:
+                            e = o.sent(), o.label = 4;
+                        case 4:
+                            return [4, this.rpc.get_block(e.head_block_num - f)];
+                        case 5:
+                            r = o.sent(), t = n({}, l.transactionHeader(r, h), t), o.label = 6;
+                        case 6:
+                            if (!this.hasRequiredTaposFields(t)) throw new Error("Required configuration or TAPOS fields are not present");
+                            return [4, this.getTransactionAbis(t)];
+                        case 7:
+                            return i = o.sent(), a = [{}, t], u = {}, [4, this.serializeActions(t.actions)];
+                        case 8:
+                            return t = n.apply(void 0, a.concat([(u.actions = o.sent(), u)])), p = this.serializeTransaction(t), d = {
+                                serializedTransaction: p,
+                                signatures: []
+                            }, c ? [4, this.signatureProvider.getAvailableKeys()] : [3, 12];
+                        case 9:
+                            return y = o.sent(), [4, this.authorityProvider.getRequiredKeys({
+                                transaction: t,
+                                availableKeys: y
+                            })];
+                        case 10:
+                            return v = o.sent(), [4, this.signatureProvider.sign({
+                                chainId: this.chainId,
+                                requiredKeys: v,
+                                serializedTransaction: p,
+                                abis: i
+                            })];
+                        case 11:
+                            d = o.sent(), o.label = 12;
+                        case 12:
+                            return s ? [2, this.pushSignedTransaction(d)] : [2, d]
                         }
                     }))
                 }))
-            }, t.prototype.pushSignedTransaction = function(t) {
+            }, t.prototype.pushSignedTransaction = function (t) {
                 var e = t.signatures,
                     r = t.serializedTransaction;
-                return i(this, void 0, void 0, (function() {
-                    return o(this, (function(t) {
+                return i(this, void 0, void 0, (function () {
+                    return o(this, (function (t) {
                         return [2, this.rpc.push_transaction({
                             signatures: e,
                             serializedTransaction: r
                         })]
                     }))
                 }))
-            }, t.prototype.hasRequiredTaposFields = function(t) {
+            }, t.prototype.hasRequiredTaposFields = function (t) {
                 var e = t.expiration,
                     r = t.ref_block_num,
                     n = t.ref_block_prefix;
@@ -2058,11 +2058,11 @@ var waxjs = function(t) {
             }, t
         }();
     e.Api = p
-}, function(t, e, r) {
-    
-    var n = function(t, e) {
+}, function (t, e, r) {
+    "use strict";
+    var n = function (t, e) {
             if (Array.isArray(t)) return t;
-            if (Symbol.iterator in Object(t)) return function(t, e) {
+            if (Symbol.iterator in Object(t)) return function (t, e) {
                 var r = [],
                     n = !0,
                     i = !1,
@@ -2082,34 +2082,34 @@ var waxjs = function(t) {
             }(t, e);
             throw new TypeError("Invalid attempt to destructure non-iterable instance")
         },
-        i = function() {
+        i = function () {
             function t(t, e) {
                 for (var r = 0; r < e.length; r++) {
                     var n = e[r];
                     n.enumerable = n.enumerable || !1, n.configurable = !0, "value" in n && (n.writable = !0), Object.defineProperty(t, n.key, n)
                 }
             }
-            return function(e, r, n) {
+            return function (e, r, n) {
                 return r && t(e.prototype, r), n && t(e, n), e
             }
         }();
-    var o = function() {
+    var o = function () {
         function t() {
-            ! function(t, e) {
+            ! function (t, e) {
                 if (!(t instanceof e)) throw new TypeError("Cannot call a class as a function")
             }(this, t)
         }
         return i(t, null, [{
             key: "get_n_pad_bytes",
-            value: function(t) {
+            value: function (t) {
                 return 64 - (t + 8 & 63)
             }
         }, {
             key: "pad",
-            value: function(e) {
+            value: function (e) {
                 var r, i, o = e.byteLength,
                     a = t.get_n_pad_bytes(o),
-                    s = (r = o, i = 536870912, [Math.floor(r / i), r % i]).map((function(t, e) {
+                    s = (r = o, i = 536870912, [Math.floor(r / i), r % i]).map((function (t, e) {
                         return e ? 8 * t : t
                     })),
                     u = n(s, 2),
@@ -2122,36 +2122,36 @@ var waxjs = function(t) {
             }
         }, {
             key: "f",
-            value: function(t, e, r, n) {
+            value: function (t, e, r, n) {
                 return 0 <= t && t <= 15 ? e ^ r ^ n : 16 <= t && t <= 31 ? e & r | ~e & n : 32 <= t && t <= 47 ? (e | ~r) ^ n : 48 <= t && t <= 63 ? e & n | r & ~n : 64 <= t && t <= 79 ? e ^ (r | ~n) : void 0
             }
         }, {
             key: "K",
-            value: function(t) {
+            value: function (t) {
                 return 0 <= t && t <= 15 ? 0 : 16 <= t && t <= 31 ? 1518500249 : 32 <= t && t <= 47 ? 1859775393 : 48 <= t && t <= 63 ? 2400959708 : 64 <= t && t <= 79 ? 2840853838 : void 0
             }
         }, {
             key: "KP",
-            value: function(t) {
+            value: function (t) {
                 return 0 <= t && t <= 15 ? 1352829926 : 16 <= t && t <= 31 ? 1548603684 : 32 <= t && t <= 47 ? 1836072691 : 48 <= t && t <= 63 ? 2053994217 : 64 <= t && t <= 79 ? 0 : void 0
             }
         }, {
             key: "add_modulo32",
-            value: function() {
-                return 0 | Array.from(arguments).reduce((function(t, e) {
+            value: function () {
+                return 0 | Array.from(arguments).reduce((function (t, e) {
                     return t + e
                 }), 0)
             }
         }, {
             key: "rol32",
-            value: function(t, e) {
+            value: function (t, e) {
                 return t << e | t >>> 32 - e
             }
         }, {
             key: "hash",
-            value: function(e) {
-                for (var r = t.pad(e), n = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 7, 4, 13, 1, 10, 6, 15, 3, 12, 0, 9, 5, 2, 14, 11, 8, 3, 10, 14, 4, 9, 15, 8, 1, 2, 7, 0, 6, 13, 11, 5, 12, 1, 9, 11, 10, 0, 8, 12, 4, 13, 3, 7, 15, 14, 5, 6, 2, 4, 0, 5, 9, 7, 12, 2, 10, 14, 1, 3, 8, 11, 6, 15, 13], i = [5, 14, 7, 0, 9, 2, 11, 4, 13, 6, 15, 8, 1, 10, 3, 12, 6, 11, 3, 7, 0, 13, 5, 10, 14, 15, 8, 12, 4, 9, 1, 2, 15, 5, 1, 3, 7, 14, 6, 9, 11, 8, 12, 2, 10, 0, 4, 13, 8, 6, 4, 1, 3, 11, 15, 0, 5, 12, 2, 13, 9, 7, 10, 14, 12, 15, 10, 4, 1, 5, 8, 7, 6, 2, 13, 14, 0, 3, 9, 11], o = [11, 14, 15, 12, 5, 8, 7, 9, 11, 13, 14, 15, 6, 7, 9, 8, 7, 6, 8, 13, 11, 9, 7, 15, 7, 12, 15, 9, 11, 7, 13, 12, 11, 13, 6, 7, 14, 9, 13, 15, 14, 8, 13, 6, 5, 12, 7, 5, 11, 12, 14, 15, 14, 15, 9, 8, 9, 14, 5, 6, 8, 6, 5, 12, 9, 15, 5, 11, 6, 8, 13, 12, 5, 12, 13, 14, 11, 8, 5, 6], a = [8, 9, 9, 11, 13, 15, 15, 5, 7, 7, 8, 11, 14, 14, 12, 6, 9, 13, 15, 7, 12, 8, 9, 11, 7, 7, 12, 7, 6, 15, 13, 11, 9, 7, 15, 11, 8, 6, 6, 14, 12, 13, 5, 14, 13, 13, 7, 5, 15, 5, 8, 11, 14, 14, 6, 14, 6, 9, 12, 9, 12, 5, 15, 8, 8, 5, 12, 9, 12, 5, 14, 6, 8, 13, 6, 5, 15, 13, 11, 11], s = r.byteLength / 64, u = new Array(s).fill(void 0).map((function(t, e) {
-                        return function(t) {
+            value: function (e) {
+                for (var r = t.pad(e), n = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 7, 4, 13, 1, 10, 6, 15, 3, 12, 0, 9, 5, 2, 14, 11, 8, 3, 10, 14, 4, 9, 15, 8, 1, 2, 7, 0, 6, 13, 11, 5, 12, 1, 9, 11, 10, 0, 8, 12, 4, 13, 3, 7, 15, 14, 5, 6, 2, 4, 0, 5, 9, 7, 12, 2, 10, 14, 1, 3, 8, 11, 6, 15, 13], i = [5, 14, 7, 0, 9, 2, 11, 4, 13, 6, 15, 8, 1, 10, 3, 12, 6, 11, 3, 7, 0, 13, 5, 10, 14, 15, 8, 12, 4, 9, 1, 2, 15, 5, 1, 3, 7, 14, 6, 9, 11, 8, 12, 2, 10, 0, 4, 13, 8, 6, 4, 1, 3, 11, 15, 0, 5, 12, 2, 13, 9, 7, 10, 14, 12, 15, 10, 4, 1, 5, 8, 7, 6, 2, 13, 14, 0, 3, 9, 11], o = [11, 14, 15, 12, 5, 8, 7, 9, 11, 13, 14, 15, 6, 7, 9, 8, 7, 6, 8, 13, 11, 9, 7, 15, 7, 12, 15, 9, 11, 7, 13, 12, 11, 13, 6, 7, 14, 9, 13, 15, 14, 8, 13, 6, 5, 12, 7, 5, 11, 12, 14, 15, 14, 15, 9, 8, 9, 14, 5, 6, 8, 6, 5, 12, 9, 15, 5, 11, 6, 8, 13, 12, 5, 12, 13, 14, 11, 8, 5, 6], a = [8, 9, 9, 11, 13, 15, 15, 5, 7, 7, 8, 11, 14, 14, 12, 6, 9, 13, 15, 7, 12, 8, 9, 11, 7, 7, 12, 7, 6, 15, 13, 11, 9, 7, 15, 11, 8, 6, 6, 14, 12, 13, 5, 14, 13, 13, 7, 5, 15, 5, 8, 11, 14, 14, 6, 14, 6, 9, 12, 9, 12, 5, 15, 8, 8, 5, 12, 9, 12, 5, 14, 6, 8, 13, 6, 5, 15, 13, 11, 11], s = r.byteLength / 64, u = new Array(s).fill(void 0).map((function (t, e) {
+                        return function (t) {
                             return new DataView(r, 64 * e, 64).getUint32(4 * t, !0)
                         }
                     })), c = [1732584193, 4023233417, 2562383102, 271733878, 3285377520], l = 0; l < s; ++l) {
@@ -2164,7 +2164,7 @@ var waxjs = function(t) {
                 }
                 var S = new ArrayBuffer(20),
                     z = new DataView(S);
-                return c.forEach((function(t, e) {
+                return c.forEach((function (t, e) {
                     return z.setUint32(4 * e, t, !0)
                 })), S
             }
@@ -2173,20 +2173,20 @@ var waxjs = function(t) {
     t.exports = {
         RIPEMD160: o
     }
-}, function(t) {
+}, function (t) {
     t.exports = JSON.parse('{"version":"eosio::abi/1.1","structs":[{"name":"extensions_entry","base":"","fields":[{"name":"tag","type":"uint16"},{"name":"value","type":"bytes"}]},{"name":"type_def","base":"","fields":[{"name":"new_type_name","type":"string"},{"name":"type","type":"string"}]},{"name":"field_def","base":"","fields":[{"name":"name","type":"string"},{"name":"type","type":"string"}]},{"name":"struct_def","base":"","fields":[{"name":"name","type":"string"},{"name":"base","type":"string"},{"name":"fields","type":"field_def[]"}]},{"name":"action_def","base":"","fields":[{"name":"name","type":"name"},{"name":"type","type":"string"},{"name":"ricardian_contract","type":"string"}]},{"name":"table_def","base":"","fields":[{"name":"name","type":"name"},{"name":"index_type","type":"string"},{"name":"key_names","type":"string[]"},{"name":"key_types","type":"string[]"},{"name":"type","type":"string"}]},{"name":"clause_pair","base":"","fields":[{"name":"id","type":"string"},{"name":"body","type":"string"}]},{"name":"error_message","base":"","fields":[{"name":"error_code","type":"uint64"},{"name":"error_msg","type":"string"}]},{"name":"variant_def","base":"","fields":[{"name":"name","type":"string"},{"name":"types","type":"string[]"}]},{"name":"abi_def","base":"","fields":[{"name":"version","type":"string"},{"name":"types","type":"type_def[]"},{"name":"structs","type":"struct_def[]"},{"name":"actions","type":"action_def[]"},{"name":"tables","type":"table_def[]"},{"name":"ricardian_clauses","type":"clause_pair[]"},{"name":"error_messages","type":"error_message[]"},{"name":"abi_extensions","type":"extensions_entry[]"},{"name":"variants","type":"variant_def[]$"}]}]}')
-}, function(t) {
+}, function (t) {
     t.exports = JSON.parse('{"version":"eosio::abi/1.0","types":[{"new_type_name":"account_name","type":"name"},{"new_type_name":"action_name","type":"name"},{"new_type_name":"permission_name","type":"name"}],"structs":[{"name":"permission_level","base":"","fields":[{"name":"actor","type":"account_name"},{"name":"permission","type":"permission_name"}]},{"name":"action","base":"","fields":[{"name":"account","type":"account_name"},{"name":"name","type":"action_name"},{"name":"authorization","type":"permission_level[]"},{"name":"data","type":"bytes"}]},{"name":"extension","base":"","fields":[{"name":"type","type":"uint16"},{"name":"data","type":"bytes"}]},{"name":"transaction_header","base":"","fields":[{"name":"expiration","type":"time_point_sec"},{"name":"ref_block_num","type":"uint16"},{"name":"ref_block_prefix","type":"uint32"},{"name":"max_net_usage_words","type":"varuint32"},{"name":"max_cpu_usage_ms","type":"uint8"},{"name":"delay_sec","type":"varuint32"}]},{"name":"transaction","base":"transaction_header","fields":[{"name":"context_free_actions","type":"action[]"},{"name":"actions","type":"action[]"},{"name":"transaction_extensions","type":"extension[]"}]}]}')
-}, function(t, e, r) {
-    
+}, function (t, e, r) {
+    "use strict";
     Object.defineProperty(e, "__esModule", {
         value: !0
     })
-}, function(t, e, r) {
-    
-    (function(t) {
-        var n = this && this.__awaiter || function(t, e, r, n) {
-                return new(r || (r = Promise))((function(i, o) {
+}, function (t, e, r) {
+    "use strict";
+    (function (t) {
+        var n = this && this.__awaiter || function (t, e, r, n) {
+                return new(r || (r = Promise))((function (i, o) {
                     function a(t) {
                         try {
                             u(n.next(t))
@@ -2204,17 +2204,17 @@ var waxjs = function(t) {
                     }
 
                     function u(t) {
-                        t.done ? i(t.value) : new r((function(e) {
+                        t.done ? i(t.value) : new r((function (e) {
                             e(t.value)
                         })).then(a, s)
                     }
                     u((n = n.apply(t, e || [])).next())
                 }))
             },
-            i = this && this.__generator || function(t, e) {
+            i = this && this.__generator || function (t, e) {
                 var r, n, i, o, a = {
                     label: 0,
-                    sent: function() {
+                    sent: function () {
                         if (1 & i[0]) throw i[1];
                         return i[1]
                     },
@@ -2225,51 +2225,51 @@ var waxjs = function(t) {
                     next: s(0),
                     throw: s(1),
                     return: s(2)
-                }, "function" == typeof Symbol && (o[Symbol.iterator] = function() {
+                }, "function" == typeof Symbol && (o[Symbol.iterator] = function () {
                     return this
                 }), o;
 
                 function s(o) {
-                    return function(s) {
-                        return function(o) {
+                    return function (s) {
+                        return function (o) {
                             if (r) throw new TypeError("Generator is already executing.");
                             for (; a;) try {
                                 if (r = 1, n && (i = 2 & o[0] ? n.return : o[0] ? n.throw || ((i = n.return) && i.call(n), 0) : n.next) && !(i = i.call(n, o[1])).done) return i;
                                 switch (n = 0, i && (o = [2 & o[0], i.value]), o[0]) {
-                                    case 0:
-                                    case 1:
-                                        i = o;
-                                        break;
-                                    case 4:
-                                        return a.label++, {
-                                            value: o[1],
-                                            done: !1
-                                        };
-                                    case 5:
-                                        a.label++, n = o[1], o = [0];
-                                        continue;
-                                    case 7:
-                                        o = a.ops.pop(), a.trys.pop();
-                                        continue;
-                                    default:
-                                        if (!(i = (i = a.trys).length > 0 && i[i.length - 1]) && (6 === o[0] || 2 === o[0])) {
-                                            a = 0;
-                                            continue
-                                        }
-                                        if (3 === o[0] && (!i || o[1] > i[0] && o[1] < i[3])) {
-                                            a.label = o[1];
-                                            break
-                                        }
-                                        if (6 === o[0] && a.label < i[1]) {
-                                            a.label = i[1], i = o;
-                                            break
-                                        }
-                                        if (i && a.label < i[2]) {
-                                            a.label = i[2], a.ops.push(o);
-                                            break
-                                        }
-                                        i[2] && a.ops.pop(), a.trys.pop();
+                                case 0:
+                                case 1:
+                                    i = o;
+                                    break;
+                                case 4:
+                                    return a.label++, {
+                                        value: o[1],
+                                        done: !1
+                                    };
+                                case 5:
+                                    a.label++, n = o[1], o = [0];
+                                    continue;
+                                case 7:
+                                    o = a.ops.pop(), a.trys.pop();
+                                    continue;
+                                default:
+                                    if (!(i = (i = a.trys).length > 0 && i[i.length - 1]) && (6 === o[0] || 2 === o[0])) {
+                                        a = 0;
                                         continue
+                                    }
+                                    if (3 === o[0] && (!i || o[1] > i[0] && o[1] < i[3])) {
+                                        a.label = o[1];
+                                        break
+                                    }
+                                    if (6 === o[0] && a.label < i[1]) {
+                                        a.label = i[1], i = o;
+                                        break
+                                    }
+                                    if (i && a.label < i[2]) {
+                                        a.label = i[2], a.ops.push(o);
+                                        break
+                                    }
+                                    i[2] && a.ops.pop(), a.trys.pop();
+                                    continue
                                 }
                                 o = e.call(t, a)
                             } catch (t) {
@@ -2286,11 +2286,11 @@ var waxjs = function(t) {
                     }
                 }
             },
-            o = this && this.__values || function(t) {
+            o = this && this.__values || function (t) {
                 var e = "function" == typeof Symbol && t[Symbol.iterator],
                     r = 0;
                 return e ? e.call(t) : {
-                    next: function() {
+                    next: function () {
                         return t && r >= t.length && (t = void 0), {
                             value: t && t[r++],
                             done: !t
@@ -2323,193 +2323,193 @@ var waxjs = function(t) {
             }
             return n
         }
-        var c = function() {
+        var c = function () {
             function e(e, r) {
                 void 0 === r && (r = {}), this.endpoint = e, r.fetch ? this.fetchBuiltin = r.fetch : this.fetchBuiltin = t.fetch
             }
-            return e.prototype.fetch = function(t, e) {
-                return n(this, void 0, void 0, (function() {
+            return e.prototype.fetch = function (t, e) {
+                return n(this, void 0, void 0, (function () {
                     var r, n, o;
-                    return i(this, (function(i) {
+                    return i(this, (function (i) {
                         switch (i.label) {
-                            case 0:
-                                return i.trys.push([0, 3, , 4]), [4, (0, this.fetchBuiltin)(this.endpoint + t, {
-                                    body: JSON.stringify(e),
-                                    method: "POST"
-                                })];
-                            case 1:
-                                return [4, (r = i.sent()).json()];
-                            case 2:
-                                if ((n = i.sent()).processed && n.processed.except) throw new s.RpcError(n);
-                                return [3, 4];
-                            case 3:
-                                throw (o = i.sent()).isFetchError = !0, o;
-                            case 4:
-                                if (!r.ok) throw new s.RpcError(n);
-                                return [2, n]
+                        case 0:
+                            return i.trys.push([0, 3, , 4]), [4, (0, this.fetchBuiltin)(this.endpoint + t, {
+                                body: JSON.stringify(e),
+                                method: "POST"
+                            })];
+                        case 1:
+                            return [4, (r = i.sent()).json()];
+                        case 2:
+                            if ((n = i.sent()).processed && n.processed.except) throw new s.RpcError(n);
+                            return [3, 4];
+                        case 3:
+                            throw (o = i.sent()).isFetchError = !0, o;
+                        case 4:
+                            if (!r.ok) throw new s.RpcError(n);
+                            return [2, n]
                         }
                     }))
                 }))
-            }, e.prototype.get_abi = function(t) {
-                return n(this, void 0, void 0, (function() {
-                    return i(this, (function(e) {
+            }, e.prototype.get_abi = function (t) {
+                return n(this, void 0, void 0, (function () {
+                    return i(this, (function (e) {
                         switch (e.label) {
-                            case 0:
-                                return [4, this.fetch("/v1/chain/get_abi", {
-                                    account_name: t
-                                })];
-                            case 1:
-                                return [2, e.sent()]
+                        case 0:
+                            return [4, this.fetch("/v1/chain/get_abi", {
+                                account_name: t
+                            })];
+                        case 1:
+                            return [2, e.sent()]
                         }
                     }))
                 }))
-            }, e.prototype.get_account = function(t) {
-                return n(this, void 0, void 0, (function() {
-                    return i(this, (function(e) {
+            }, e.prototype.get_account = function (t) {
+                return n(this, void 0, void 0, (function () {
+                    return i(this, (function (e) {
                         switch (e.label) {
-                            case 0:
-                                return [4, this.fetch("/v1/chain/get_account", {
-                                    account_name: t
-                                })];
-                            case 1:
-                                return [2, e.sent()]
+                        case 0:
+                            return [4, this.fetch("/v1/chain/get_account", {
+                                account_name: t
+                            })];
+                        case 1:
+                            return [2, e.sent()]
                         }
                     }))
                 }))
-            }, e.prototype.get_block_header_state = function(t) {
-                return n(this, void 0, void 0, (function() {
-                    return i(this, (function(e) {
+            }, e.prototype.get_block_header_state = function (t) {
+                return n(this, void 0, void 0, (function () {
+                    return i(this, (function (e) {
                         switch (e.label) {
-                            case 0:
-                                return [4, this.fetch("/v1/chain/get_block_header_state", {
-                                    block_num_or_id: t
-                                })];
-                            case 1:
-                                return [2, e.sent()]
+                        case 0:
+                            return [4, this.fetch("/v1/chain/get_block_header_state", {
+                                block_num_or_id: t
+                            })];
+                        case 1:
+                            return [2, e.sent()]
                         }
                     }))
                 }))
-            }, e.prototype.get_block = function(t) {
-                return n(this, void 0, void 0, (function() {
-                    return i(this, (function(e) {
+            }, e.prototype.get_block = function (t) {
+                return n(this, void 0, void 0, (function () {
+                    return i(this, (function (e) {
                         switch (e.label) {
-                            case 0:
-                                return [4, this.fetch("/v1/chain/get_block", {
-                                    block_num_or_id: t
-                                })];
-                            case 1:
-                                return [2, e.sent()]
+                        case 0:
+                            return [4, this.fetch("/v1/chain/get_block", {
+                                block_num_or_id: t
+                            })];
+                        case 1:
+                            return [2, e.sent()]
                         }
                     }))
                 }))
-            }, e.prototype.get_code = function(t) {
-                return n(this, void 0, void 0, (function() {
-                    return i(this, (function(e) {
+            }, e.prototype.get_code = function (t) {
+                return n(this, void 0, void 0, (function () {
+                    return i(this, (function (e) {
                         switch (e.label) {
-                            case 0:
-                                return [4, this.fetch("/v1/chain/get_code", {
-                                    account_name: t
-                                })];
-                            case 1:
-                                return [2, e.sent()]
+                        case 0:
+                            return [4, this.fetch("/v1/chain/get_code", {
+                                account_name: t
+                            })];
+                        case 1:
+                            return [2, e.sent()]
                         }
                     }))
                 }))
-            }, e.prototype.get_currency_balance = function(t, e, r) {
-                return void 0 === r && (r = null), n(this, void 0, void 0, (function() {
-                    return i(this, (function(n) {
+            }, e.prototype.get_currency_balance = function (t, e, r) {
+                return void 0 === r && (r = null), n(this, void 0, void 0, (function () {
+                    return i(this, (function (n) {
                         switch (n.label) {
-                            case 0:
-                                return [4, this.fetch("/v1/chain/get_currency_balance", {
-                                    code: t,
-                                    account: e,
-                                    symbol: r
-                                })];
-                            case 1:
-                                return [2, n.sent()]
+                        case 0:
+                            return [4, this.fetch("/v1/chain/get_currency_balance", {
+                                code: t,
+                                account: e,
+                                symbol: r
+                            })];
+                        case 1:
+                            return [2, n.sent()]
                         }
                     }))
                 }))
-            }, e.prototype.get_currency_stats = function(t, e) {
-                return n(this, void 0, void 0, (function() {
-                    return i(this, (function(r) {
+            }, e.prototype.get_currency_stats = function (t, e) {
+                return n(this, void 0, void 0, (function () {
+                    return i(this, (function (r) {
                         switch (r.label) {
-                            case 0:
-                                return [4, this.fetch("/v1/chain/get_currency_stats", {
-                                    code: t,
-                                    symbol: e
-                                })];
-                            case 1:
-                                return [2, r.sent()]
+                        case 0:
+                            return [4, this.fetch("/v1/chain/get_currency_stats", {
+                                code: t,
+                                symbol: e
+                            })];
+                        case 1:
+                            return [2, r.sent()]
                         }
                     }))
                 }))
-            }, e.prototype.get_info = function() {
-                return n(this, void 0, void 0, (function() {
-                    return i(this, (function(t) {
+            }, e.prototype.get_info = function () {
+                return n(this, void 0, void 0, (function () {
+                    return i(this, (function (t) {
                         switch (t.label) {
-                            case 0:
-                                return [4, this.fetch("/v1/chain/get_info", {})];
-                            case 1:
-                                return [2, t.sent()]
+                        case 0:
+                            return [4, this.fetch("/v1/chain/get_info", {})];
+                        case 1:
+                            return [2, t.sent()]
                         }
                     }))
                 }))
-            }, e.prototype.get_producer_schedule = function() {
-                return n(this, void 0, void 0, (function() {
-                    return i(this, (function(t) {
+            }, e.prototype.get_producer_schedule = function () {
+                return n(this, void 0, void 0, (function () {
+                    return i(this, (function (t) {
                         switch (t.label) {
-                            case 0:
-                                return [4, this.fetch("/v1/chain/get_producer_schedule", {})];
-                            case 1:
-                                return [2, t.sent()]
+                        case 0:
+                            return [4, this.fetch("/v1/chain/get_producer_schedule", {})];
+                        case 1:
+                            return [2, t.sent()]
                         }
                     }))
                 }))
-            }, e.prototype.get_producers = function(t, e, r) {
-                return void 0 === t && (t = !0), void 0 === e && (e = ""), void 0 === r && (r = 50), n(this, void 0, void 0, (function() {
-                    return i(this, (function(n) {
+            }, e.prototype.get_producers = function (t, e, r) {
+                return void 0 === t && (t = !0), void 0 === e && (e = ""), void 0 === r && (r = 50), n(this, void 0, void 0, (function () {
+                    return i(this, (function (n) {
                         switch (n.label) {
-                            case 0:
-                                return [4, this.fetch("/v1/chain/get_producers", {
-                                    json: t,
-                                    lower_bound: e,
-                                    limit: r
-                                })];
-                            case 1:
-                                return [2, n.sent()]
+                        case 0:
+                            return [4, this.fetch("/v1/chain/get_producers", {
+                                json: t,
+                                lower_bound: e,
+                                limit: r
+                            })];
+                        case 1:
+                            return [2, n.sent()]
                         }
                     }))
                 }))
-            }, e.prototype.get_raw_code_and_abi = function(t) {
-                return n(this, void 0, void 0, (function() {
-                    return i(this, (function(e) {
+            }, e.prototype.get_raw_code_and_abi = function (t) {
+                return n(this, void 0, void 0, (function () {
+                    return i(this, (function (e) {
                         switch (e.label) {
-                            case 0:
-                                return [4, this.fetch("/v1/chain/get_raw_code_and_abi", {
-                                    account_name: t
-                                })];
-                            case 1:
-                                return [2, e.sent()]
+                        case 0:
+                            return [4, this.fetch("/v1/chain/get_raw_code_and_abi", {
+                                account_name: t
+                            })];
+                        case 1:
+                            return [2, e.sent()]
                         }
                     }))
                 }))
-            }, e.prototype.getRawAbi = function(t) {
-                return n(this, void 0, void 0, (function() {
+            }, e.prototype.getRawAbi = function (t) {
+                return n(this, void 0, void 0, (function () {
                     var e, r;
-                    return i(this, (function(n) {
+                    return i(this, (function (n) {
                         switch (n.label) {
-                            case 0:
-                                return [4, this.get_raw_code_and_abi(t)];
-                            case 1:
-                                return e = n.sent(), r = a.base64ToBinary(e.abi), [2, {
-                                    accountName: e.account_name,
-                                    abi: r
-                                }]
+                        case 0:
+                            return [4, this.get_raw_code_and_abi(t)];
+                        case 1:
+                            return e = n.sent(), r = a.base64ToBinary(e.abi), [2, {
+                                accountName: e.account_name,
+                                abi: r
+                            }]
                         }
                     }))
                 }))
-            }, e.prototype.get_table_rows = function(t) {
+            }, e.prototype.get_table_rows = function (t) {
                 var e = t.json,
                     r = void 0 === e || e,
                     o = t.code,
@@ -2531,30 +2531,30 @@ var waxjs = function(t) {
                     _ = void 0 !== w && w,
                     A = t.show_payer,
                     x = void 0 !== A && A;
-                return n(this, void 0, void 0, (function() {
-                    return i(this, (function(t) {
+                return n(this, void 0, void 0, (function () {
+                    return i(this, (function (t) {
                         switch (t.label) {
-                            case 0:
-                                return [4, this.fetch("/v1/chain/get_table_rows", {
-                                    json: r,
-                                    code: o,
-                                    scope: a,
-                                    table: s,
-                                    table_key: c,
-                                    lower_bound: f,
-                                    upper_bound: p,
-                                    index_position: y,
-                                    key_type: g,
-                                    limit: m,
-                                    reverse: _,
-                                    show_payer: x
-                                })];
-                            case 1:
-                                return [2, t.sent()]
+                        case 0:
+                            return [4, this.fetch("/v1/chain/get_table_rows", {
+                                json: r,
+                                code: o,
+                                scope: a,
+                                table: s,
+                                table_key: c,
+                                lower_bound: f,
+                                upper_bound: p,
+                                index_position: y,
+                                key_type: g,
+                                limit: m,
+                                reverse: _,
+                                show_payer: x
+                            })];
+                        case 1:
+                            return [2, t.sent()]
                         }
                     }))
                 }))
-            }, e.prototype.get_table_by_scope = function(t) {
+            }, e.prototype.get_table_by_scope = function (t) {
                 var e = t.code,
                     r = t.table,
                     o = t.lower_bound,
@@ -2563,118 +2563,118 @@ var waxjs = function(t) {
                     u = void 0 === s ? "" : s,
                     c = t.limit,
                     l = void 0 === c ? 10 : c;
-                return n(this, void 0, void 0, (function() {
-                    return i(this, (function(t) {
+                return n(this, void 0, void 0, (function () {
+                    return i(this, (function (t) {
                         switch (t.label) {
-                            case 0:
-                                return [4, this.fetch("/v1/chain/get_table_by_scope", {
-                                    code: e,
-                                    table: r,
-                                    lower_bound: a,
-                                    upper_bound: u,
-                                    limit: l
-                                })];
-                            case 1:
-                                return [2, t.sent()]
+                        case 0:
+                            return [4, this.fetch("/v1/chain/get_table_by_scope", {
+                                code: e,
+                                table: r,
+                                lower_bound: a,
+                                upper_bound: u,
+                                limit: l
+                            })];
+                        case 1:
+                            return [2, t.sent()]
                         }
                     }))
                 }))
-            }, e.prototype.getRequiredKeys = function(t) {
-                return n(this, void 0, void 0, (function() {
+            }, e.prototype.getRequiredKeys = function (t) {
+                return n(this, void 0, void 0, (function () {
                     var e;
-                    return i(this, (function(r) {
+                    return i(this, (function (r) {
                         switch (r.label) {
-                            case 0:
-                                return e = a.convertLegacyPublicKeys, [4, this.fetch("/v1/chain/get_required_keys", {
-                                    transaction: t.transaction,
-                                    available_keys: t.availableKeys
-                                })];
-                            case 1:
-                                return [2, e.apply(void 0, [r.sent().required_keys])]
+                        case 0:
+                            return e = a.convertLegacyPublicKeys, [4, this.fetch("/v1/chain/get_required_keys", {
+                                transaction: t.transaction,
+                                available_keys: t.availableKeys
+                            })];
+                        case 1:
+                            return [2, e.apply(void 0, [r.sent().required_keys])]
                         }
                     }))
                 }))
-            }, e.prototype.push_transaction = function(t) {
+            }, e.prototype.push_transaction = function (t) {
                 var e = t.signatures,
                     r = t.serializedTransaction;
-                return n(this, void 0, void 0, (function() {
-                    return i(this, (function(t) {
+                return n(this, void 0, void 0, (function () {
+                    return i(this, (function (t) {
                         switch (t.label) {
-                            case 0:
-                                return [4, this.fetch("/v1/chain/push_transaction", {
-                                    signatures: e,
-                                    compression: 0,
-                                    packed_context_free_data: "",
-                                    packed_trx: u(r)
-                                })];
-                            case 1:
-                                return [2, t.sent()]
+                        case 0:
+                            return [4, this.fetch("/v1/chain/push_transaction", {
+                                signatures: e,
+                                compression: 0,
+                                packed_context_free_data: "",
+                                packed_trx: u(r)
+                            })];
+                        case 1:
+                            return [2, t.sent()]
                         }
                     }))
                 }))
-            }, e.prototype.db_size_get = function() {
-                return n(this, void 0, void 0, (function() {
-                    return i(this, (function(t) {
+            }, e.prototype.db_size_get = function () {
+                return n(this, void 0, void 0, (function () {
+                    return i(this, (function (t) {
                         switch (t.label) {
-                            case 0:
-                                return [4, this.fetch("/v1/db_size/get", {})];
-                            case 1:
-                                return [2, t.sent()]
+                        case 0:
+                            return [4, this.fetch("/v1/db_size/get", {})];
+                        case 1:
+                            return [2, t.sent()]
                         }
                     }))
                 }))
-            }, e.prototype.history_get_actions = function(t, e, r) {
-                return void 0 === e && (e = null), void 0 === r && (r = null), n(this, void 0, void 0, (function() {
-                    return i(this, (function(n) {
+            }, e.prototype.history_get_actions = function (t, e, r) {
+                return void 0 === e && (e = null), void 0 === r && (r = null), n(this, void 0, void 0, (function () {
+                    return i(this, (function (n) {
                         switch (n.label) {
-                            case 0:
-                                return [4, this.fetch("/v1/history/get_actions", {
-                                    account_name: t,
-                                    pos: e,
-                                    offset: r
-                                })];
-                            case 1:
-                                return [2, n.sent()]
+                        case 0:
+                            return [4, this.fetch("/v1/history/get_actions", {
+                                account_name: t,
+                                pos: e,
+                                offset: r
+                            })];
+                        case 1:
+                            return [2, n.sent()]
                         }
                     }))
                 }))
-            }, e.prototype.history_get_transaction = function(t, e) {
-                return void 0 === e && (e = null), n(this, void 0, void 0, (function() {
-                    return i(this, (function(r) {
+            }, e.prototype.history_get_transaction = function (t, e) {
+                return void 0 === e && (e = null), n(this, void 0, void 0, (function () {
+                    return i(this, (function (r) {
                         switch (r.label) {
-                            case 0:
-                                return [4, this.fetch("/v1/history/get_transaction", {
-                                    id: t,
-                                    block_num_hint: e
-                                })];
-                            case 1:
-                                return [2, r.sent()]
+                        case 0:
+                            return [4, this.fetch("/v1/history/get_transaction", {
+                                id: t,
+                                block_num_hint: e
+                            })];
+                        case 1:
+                            return [2, r.sent()]
                         }
                     }))
                 }))
-            }, e.prototype.history_get_key_accounts = function(t) {
-                return n(this, void 0, void 0, (function() {
-                    return i(this, (function(e) {
+            }, e.prototype.history_get_key_accounts = function (t) {
+                return n(this, void 0, void 0, (function () {
+                    return i(this, (function (e) {
                         switch (e.label) {
-                            case 0:
-                                return [4, this.fetch("/v1/history/get_key_accounts", {
-                                    public_key: t
-                                })];
-                            case 1:
-                                return [2, e.sent()]
+                        case 0:
+                            return [4, this.fetch("/v1/history/get_key_accounts", {
+                                public_key: t
+                            })];
+                        case 1:
+                            return [2, e.sent()]
                         }
                     }))
                 }))
-            }, e.prototype.history_get_controlled_accounts = function(t) {
-                return n(this, void 0, void 0, (function() {
-                    return i(this, (function(e) {
+            }, e.prototype.history_get_controlled_accounts = function (t) {
+                return n(this, void 0, void 0, (function () {
+                    return i(this, (function (e) {
                         switch (e.label) {
-                            case 0:
-                                return [4, this.fetch("/v1/history/get_controlled_accounts", {
-                                    controlling_account: t
-                                })];
-                            case 1:
-                                return [2, e.sent()]
+                        case 0:
+                            return [4, this.fetch("/v1/history/get_controlled_accounts", {
+                                controlling_account: t
+                            })];
+                        case 1:
+                            return [2, e.sent()]
                         }
                     }))
                 }))
@@ -2682,9 +2682,9 @@ var waxjs = function(t) {
         }();
         e.JsonRpc = c
     }).call(this, r(11))
-}, function(t, e) {
+}, function (t, e) {
     var r;
-    r = function() {
+    r = function () {
         return this
     }();
     try {
@@ -2693,15 +2693,15 @@ var waxjs = function(t) {
         "object" == typeof window && (r = window)
     }
     t.exports = r
-}, function(t, e, r) {
-    
+}, function (t, e, r) {
+    "use strict";
     Object.defineProperty(e, "__esModule", {
         value: !0
     })
-}, function(t, e, r) {
-    
-    var n = this && this.__awaiter || function(t, e, r, n) {
-            return new(r || (r = Promise))((function(i, o) {
+}, function (t, e, r) {
+    "use strict";
+    var n = this && this.__awaiter || function (t, e, r, n) {
+            return new(r || (r = Promise))((function (i, o) {
                 function a(t) {
                     try {
                         u(n.next(t))
@@ -2720,17 +2720,17 @@ var waxjs = function(t) {
 
                 function u(t) {
                     var e;
-                    t.done ? i(t.value) : (e = t.value, e instanceof r ? e : new r((function(t) {
+                    t.done ? i(t.value) : (e = t.value, e instanceof r ? e : new r((function (t) {
                         t(e)
                     }))).then(a, s)
                 }
                 u((n = n.apply(t, e || [])).next())
             }))
         },
-        i = this && this.__generator || function(t, e) {
+        i = this && this.__generator || function (t, e) {
             var r, n, i, o, a = {
                 label: 0,
-                sent: function() {
+                sent: function () {
                     if (1 & i[0]) throw i[1];
                     return i[1]
                 },
@@ -2741,51 +2741,51 @@ var waxjs = function(t) {
                 next: s(0),
                 throw: s(1),
                 return: s(2)
-            }, "function" == typeof Symbol && (o[Symbol.iterator] = function() {
+            }, "function" == typeof Symbol && (o[Symbol.iterator] = function () {
                 return this
             }), o;
 
             function s(o) {
-                return function(s) {
-                    return function(o) {
+                return function (s) {
+                    return function (o) {
                         if (r) throw new TypeError("Generator is already executing.");
                         for (; a;) try {
                             if (r = 1, n && (i = 2 & o[0] ? n.return : o[0] ? n.throw || ((i = n.return) && i.call(n), 0) : n.next) && !(i = i.call(n, o[1])).done) return i;
                             switch (n = 0, i && (o = [2 & o[0], i.value]), o[0]) {
-                                case 0:
-                                case 1:
-                                    i = o;
-                                    break;
-                                case 4:
-                                    return a.label++, {
-                                        value: o[1],
-                                        done: !1
-                                    };
-                                case 5:
-                                    a.label++, n = o[1], o = [0];
-                                    continue;
-                                case 7:
-                                    o = a.ops.pop(), a.trys.pop();
-                                    continue;
-                                default:
-                                    if (!(i = (i = a.trys).length > 0 && i[i.length - 1]) && (6 === o[0] || 2 === o[0])) {
-                                        a = 0;
-                                        continue
-                                    }
-                                    if (3 === o[0] && (!i || o[1] > i[0] && o[1] < i[3])) {
-                                        a.label = o[1];
-                                        break
-                                    }
-                                    if (6 === o[0] && a.label < i[1]) {
-                                        a.label = i[1], i = o;
-                                        break
-                                    }
-                                    if (i && a.label < i[2]) {
-                                        a.label = i[2], a.ops.push(o);
-                                        break
-                                    }
-                                    i[2] && a.ops.pop(), a.trys.pop();
+                            case 0:
+                            case 1:
+                                i = o;
+                                break;
+                            case 4:
+                                return a.label++, {
+                                    value: o[1],
+                                    done: !1
+                                };
+                            case 5:
+                                a.label++, n = o[1], o = [0];
+                                continue;
+                            case 7:
+                                o = a.ops.pop(), a.trys.pop();
+                                continue;
+                            default:
+                                if (!(i = (i = a.trys).length > 0 && i[i.length - 1]) && (6 === o[0] || 2 === o[0])) {
+                                    a = 0;
                                     continue
+                                }
+                                if (3 === o[0] && (!i || o[1] > i[0] && o[1] < i[3])) {
+                                    a.label = o[1];
+                                    break
+                                }
+                                if (6 === o[0] && a.label < i[1]) {
+                                    a.label = i[1], i = o;
+                                    break
+                                }
+                                if (i && a.label < i[2]) {
+                                    a.label = i[2], a.ops.push(o);
+                                    break
+                                }
+                                i[2] && a.ops.pop(), a.trys.pop();
+                                continue
                             }
                             o = e.call(t, a)
                         } catch (t) {
@@ -2805,66 +2805,66 @@ var waxjs = function(t) {
     Object.defineProperty(e, "__esModule", {
         value: !0
     });
-    var o = function() {
+    var o = function () {
         function t(t) {
-            void 0 === t && (t = "http://localhost:3000"), this.waxSigningURL = t, this.timeout = function() {
-                return new Promise((function(t, e) {
-                    var r = setTimeout((function() {
+            void 0 === t && (t = "http://localhost:3000"), this.waxSigningURL = t, this.timeout = function () {
+                return new Promise((function (t, e) {
+                    var r = setTimeout((function () {
                         clearTimeout(r), e(new Error("Timeout"))
                     }), 5e3)
                 }))
             }, this.openEventSource = this.openEventSource.bind(this), this.onceEvent = this.onceEvent.bind(this)
         }
-        return t.prototype.openEventSource = function(t, e, r) {
-            return n(this, void 0, void 0, (function() {
+        return t.prototype.openEventSource = function (t, e, r) {
+            return n(this, void 0, void 0, (function () {
                 var o, a, s, u, c = this;
-                return i(this, (function(l) {
+                return i(this, (function (l) {
                     switch (l.label) {
-                        case 0:
-                            return r ? (a = r, [3, 3]) : [3, 1];
-                        case 1:
-                            return [4, window.open(t, "WaxPopup", "height=800,width=600")];
-                        case 2:
-                            a = l.sent(), l.label = 3;
-                        case 3:
-                            if (!(o = a)) throw new Error("Unable to open a popup window");
-                            return void 0 === e ? [2, o] : (s = function(t) {
-                                return n(c, void 0, void 0, (function() {
-                                    return i(this, (function(r) {
-                                        return "READY" === t.data.type && o.postMessage(e, this.waxSigningURL), [2]
-                                    }))
+                    case 0:
+                        return r ? (a = r, [3, 3]) : [3, 1];
+                    case 1:
+                        return [4, window.open(t, "WaxPopup", "height=800,width=600")];
+                    case 2:
+                        a = l.sent(), l.label = 3;
+                    case 3:
+                        if (!(o = a)) throw new Error("Unable to open a popup window");
+                        return void 0 === e ? [2, o] : (s = function (t) {
+                            return n(c, void 0, void 0, (function () {
+                                return i(this, (function (r) {
+                                    return "READY" === t.data.type && o.postMessage(e, this.waxSigningURL), [2]
                                 }))
-                            }, u = this.onceEvent(o, this.waxSigningURL, s), [4, Promise.race([u, this.timeout()]).catch((function(t) {
-                                if ("Timeout" !== t.message) throw t;
-                                o.postMessage(e, c.waxSigningURL)
-                            }))]);
-                        case 4:
-                            return l.sent(), [2, o]
+                            }))
+                        }, u = this.onceEvent(o, this.waxSigningURL, s), [4, Promise.race([u, this.timeout()]).catch((function (t) {
+                            if ("Timeout" !== t.message) throw t;
+                            o.postMessage(e, c.waxSigningURL)
+                        }))]);
+                    case 4:
+                        return l.sent(), [2, o]
                     }
                 }))
             }))
-        }, t.prototype.onceEvent = function(t, e, r) {
-            return n(this, void 0, void 0, (function() {
-                return i(this, (function(o) {
-                    return [2, new Promise((function(o, a) {
+        }, t.prototype.onceEvent = function (t, e, r) {
+            return n(this, void 0, void 0, (function () {
+                return i(this, (function (o) {
+                    return [2, new Promise((function (o, a) {
                         window.addEventListener("message", (function s(u) {
-                            return n(this, void 0, void 0, (function() {
+                            return n(this, void 0, void 0, (function () {
                                 var n, c;
-                                return i(this, (function(i) {
+                                return i(this, (function (i) {
                                     switch (i.label) {
-                                        case 0:
-                                            if (u.origin !== e) return [2];
-                                            if (u.source !== t) return [2];
-                                            if ("object" != typeof u.data) return [2];
-                                            i.label = 1;
-                                        case 1:
-                                            return i.trys.push([1, 3, , 4]), [4, r(u)];
-                                        case 2:
-                                            return n = i.sent(), o(n), [3, 4];
-                                        case 3:
-                                            return c = i.sent(), a(c), [3, 4];
-                                        case 4:
-                                            return window.removeEventListener("message", s, !1), [2]
+                                    case 0:
+                                        if (u.origin !== e) return [2];
+                                        if (u.source !== t) return [2];
+                                        if ("object" != typeof u.data) return [2];
+                                        i.label = 1;
+                                    case 1:
+                                        return i.trys.push([1, 3, , 4]), [4, r(u)];
+                                    case 2:
+                                        return n = i.sent(), o(n), [3, 4];
+                                    case 3:
+                                        return c = i.sent(), a(c), [3, 4];
+                                    case 4:
+                                        return window.removeEventListener("message", s, !1), [2]
                                     }
                                 }))
                             }))

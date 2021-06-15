@@ -515,4 +515,3 @@ numeric.signatureToString = function (signature) {
         throw new Error('unrecognized signature format');
     }
 };
-//# sourceMappingURL=eosjs-numeric.js.map

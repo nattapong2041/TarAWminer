@@ -46,7 +46,8 @@ async function getTLM(account) {
         return response.json();
     }).then((res) => {
         if (res[0]) {
-            return res[0];
+            let tlm = res[0].split(" ");
+            return parseFloat(tlm[0]);
         }
     }).catch((err) => {
         return 'Error: cannot get TLM ' + JSON.stringify(err);

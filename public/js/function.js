@@ -3,15 +3,15 @@ const base_api = [
     'https://wax.cryptolions.io',
     'https://wax.dapplica.io',
     'https://wax.eosn.io',
-    'https://api.wax.alohaeos.com',
     'https://wax.greymass.com',
+    'https://api.wax.alohaeos.com',
     'https://wax.eoseoul.io'
 ]
 
 function getRandom(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
 }
-var url = base_api[getRandom(0, base_api.length)];
+var url = base_api[getRandom(0, base_api.length-2)];
 var wax = new waxjs.WaxJS(url);
 
 const aa_api = new atomicassets.ExplorerApi("https://wax.api.atomicassets.io", "atomicassets", { fetch });
@@ -19,6 +19,25 @@ const aa_api = new atomicassets.ExplorerApi("https://wax.api.atomicassets.io", "
 const mining_account = "m.federation";
 const federation_account = "federation";
 
+function timeout(ms, promise) {
+    return new Promise((resolve, reject) => {
+      const timer = setTimeout(() => {
+        reject(new Error('Transacion timeout'))
+      }, ms)
+  
+      promise
+        .then(value => {
+          clearTimeout(timer)
+          resolve(value)
+        })
+        .catch(reason => {
+          clearTimeout(timer)
+          reject(reason)
+        })
+    })
+  }
+
+  
 const fromHexString = hexString =>
     new Uint8Array(hexString.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
 
@@ -368,20 +387,42 @@ async function claim(account, nonce) {
             },],
             data: mine_data,
         },];
-        let result = await wax.api.transact({
+        let result = await 
+        timeout(95000, wax.api.transact({
             actions,
         }, {
             blocksBehind: 3,
             expireSeconds: 90,
-        })
+        }));
+        await sleep(3000);
         var amounts = new Map();
+        let tlm = await getTLM(userAccount);
+        if(tlm.includes('Error')) tlm = lastTLM;
         if (result && result.processed) {
             result.processed.action_traces[0].inline_traces.forEach((t) => {
                 if (t.act.data.quantity) {
-                    var quantityStr = t.act.data.quantity;
-                    quantityStr = quantityStr.substring(0, quantityStr.length - 4);
-                    var balance = (parseFloat(quantityStr)).toFixed(4);
-                    amounts.set(t.act.data.to, balance.toString() + ' TLM');  
+                    // var quantityStr = t.act.data.quantity;
+                    // quantityStr = quantityStr.substring(0, quantityStr.length - 4);
+                    // var balance = (parseFloat(quantityStr)).toFixed(4);
+                    // amounts.set(t.act.data.to, balance.toString() + ' TLM');  
+                    try {
+                        if(document.querySelector("#need_real_tlm").checked) throw 'err';
+                        if (tlm) {
+                            let recieve =(parseFloat(tlm - lastTLM)).toFixed(4);
+                            amounts.set(t.act.data.to, recieve.toString() + ' TLM'); 
+                            lastTLM = tlm;
+                            document.getElementById("tlm_balance").textContent = tlm + ' TLM';
+                        }
+                        else {
+                            document.getElementById("tlm_balance").textContent = "cannot get tlm balance";
+                            throw 'err';
+                        }
+                    } catch {
+                        var quantityStr = t.act.data.quantity;
+                        quantityStr = quantityStr.substring(0, quantityStr.length - 4);
+                        var balance = (parseFloat(quantityStr)).toFixed(4);
+                        amounts.set(t.act.data.to, balance.toString() + ' TLM'); 
+                    }
                 }
             });
             console.log('Received: ' + parseFloat(amounts.get(account)));
