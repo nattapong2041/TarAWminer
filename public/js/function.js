@@ -219,7 +219,8 @@ const getMineDelay = async function (account) {
         var minedelay = await getNextMineDelay(mining_account, account, params, wax.api.rpc);
         return minedelay;
     } catch (error) {
-        return error;
+        console.log('Cannnot get cooldown: '+error);
+        return -1;
     }
 };
 
@@ -386,8 +387,7 @@ async function claim(account, nonce) {
             },],
             data: mine_data,
         },];
-        let result = await 
-        timeout(95000, wax.api.transact({
+        let result = await timeout(95000, wax.api.transact({
             actions,
         }, {
             blocksBehind: 3,
@@ -436,13 +436,12 @@ async function claim(account, nonce) {
         }
         return 0.00;
     } catch (error) {
+        delete(wax)
         url = base_api[getRandom(0, base_api.length-2)];
-        wax = new waxjs.WaxJS(url);
+        wax = await new waxjs.WaxJS(url);
         document.getElementById("wax_server").textContent = 'Wax server: '+url;
         console.log('change wax server to: '+ url);
-        if(error.message)
-            throw error.message
-
+        console.log(error.message); 
         throw error
     }
 }

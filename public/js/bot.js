@@ -4,6 +4,7 @@ var mineCountdownTime = 5 * (60 * 1000);
 var loginCountdownTime = 3 * (60 * 1000);
 var mineCountdownFinishTime = new Date().getTime();
 var loginCountdownFinishTime = new Date().getTime();
+var claimCountdownFinishTime = new Date().getTime();
 var nextmine = 0;
 var mineInterval;
 var newMineInterval;
@@ -40,7 +41,7 @@ function loadConfig() {
     }
     //AutoUpdateWax
     if (localStorage.getItem('auto_update') != null && localStorage.getItem('auto_update') == 'false') {
-        console.log('WTF: '+ localStorage.getItem('auto_update'));
+        console.log('WTF: ' + localStorage.getItem('auto_update'));
         document.querySelector("#auto_update").checked = false;
     }
     //AutoClaim
@@ -53,20 +54,26 @@ function loadConfig() {
 }
 
 async function autoClaimNFT() {
-    clearInterval(nftInterval);
-    let check = false;
-    console.log('Checking NFTs drop');
-    check =  await checkNFT(userAccount);
-    if(check){
-        let result = await claimNFT(userAccount, userAccount);
-        if (result != 0 && result != null) {
-            console.log('Complete: ' + result);
-        } else {
-            console.log('Error: Claimed NFT.');
+    var now = new Date().getTime();
+    var distance = mineCountdownFinishTime - now;
+    //var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    //var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    //document.getElementById("countdown").innerHTML = padLeadingZeros(minutes, 2) + 'm ' + padLeadingZeros(seconds, 2) + 's before mine'
+    if (distance < 0) {
+        clearInterval(nftInterval);
+        let check = false;
+        console.log('Checking NFTs drop');
+        check = await checkNFT(userAccount);
+        if (check) {
+            let result = await claimNFT(userAccount, userAccount);
+            if (result != 0 && result != null) {
+                console.log('Complete: ' + result);
+            } else {
+                console.log('Error: Claimed NFT.');
+            }
         }
     }
 }
-
 function updateStatus(status) {
     document.getElementById("status").textContent = status;
     document.title = status + ': ' + userAccount;
@@ -297,7 +304,8 @@ async function run() {
                 if (response == -1) throw 'Cannot get cooldown'
                 return response;
             }).catch((err) => {
-                url = base_api[getRandom(0, base_api.length - 2)];
+                delete(wax)
+                url = base_api[getRandom(0, base_api.length-2)];
                 wax = new waxjs.WaxJS(url);
                 document.getElementById("wax_server").textContent = 'Wax server: ' + url;
                 console.log('change wax server to: ' + url);
@@ -310,15 +318,16 @@ async function run() {
             } else {
                 totalDelay = addRandom;
             }
-            if ( document.getElementById("auto_claim").checked) {
+            if (document.getElementById("auto_claim").checked) {
                 if (document.getElementById("auto_claim_time").value >= 0) {
-                    nftInterval = setTimeout(autoClaimNFT(), document.getElementById("auto_claim_time").value * 60 * 1000);
+                    claimCountdownFinishTime = new Date().getTime() + (document.getElementById("auto_claim_time").value * 60 * 1000);
+                    nftInterval = setInterval(autoClaimNFT,  1000);
                 }
             }
             console.log('Cooldown total: ' + totalDelay / 1000 + 'sec Mine: ' + delay / 1000 + ' Add: ' + addRandom / 1000 + 'sec')
             updateStatus('charging')
             updateNextMine(totalDelay)
-            if ( document.getElementById("auto_update").checked) {
+            if (document.getElementById("auto_update").checked) {
                 updateAccStatus();
             }
             updateTLM();
