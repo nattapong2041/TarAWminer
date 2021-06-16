@@ -1,11 +1,9 @@
 const base_api = [
     'https://wax.pink.gg',
+    'https://wax.greymass.com',
+    'https://api.waxsweden.org',
     'https://wax.cryptolions.io',
     'https://wax.dapplica.io',
-    'https://wax.eosn.io',
-    'https://wax.greymass.com',
-    'https://api.wax.alohaeos.com',
-    'https://wax.eoseoul.io'
 ]
 
 function getRandom(min, max) {
@@ -22,9 +20,8 @@ const federation_account = "federation";
 function timeout(ms, promise) {
     return new Promise((resolve, reject) => {
       const timer = setTimeout(() => {
-        reject(new Error('Transaction timeout'))
+        reject(new Error('Transaction timeout!'))
       }, ms)
-  
       promise
         .then(value => {
           clearTimeout(timer)
@@ -205,8 +202,10 @@ const getNextMineDelay = async (mining_account, account, params, eos_rpc) => {
             ms_until_mine = 0;
         }
     }
+    if(ms_until_mine>=0)
+        return ms_until_mine;
 
-    return ms_until_mine;
+    return -1
 };
 
 const getMineDelay = async function (account) {
@@ -220,7 +219,8 @@ const getMineDelay = async function (account) {
         var minedelay = await getNextMineDelay(mining_account, account, params, wax.api.rpc);
         return minedelay;
     } catch (error) {
-        return error;
+        console.log('Cannnot get cooldown: '+error);
+        return -1;
     }
 };
 
@@ -387,23 +387,30 @@ async function claim(account, nonce) {
             },],
             data: mine_data,
         },];
-        let result = await 
-        timeout(95000, wax.api.transact({
+        let result = await timeout(95000, wax.api.transact({
             actions,
         }, {
             blocksBehind: 3,
             expireSeconds: 90,
-        }));
-        await sleep(5000);
+        })).then(function (response) {
+            return response;
+        }).catch((err) => {
+            throw err;
+        });
+
+        await sleep(2000);
         var amounts = new Map();
-        let tlm = await getTLM(userAccount);
+        let tlm=0.0;
+        try{
+            tlm = await getTLM(userAccount);
+            if(!parseFloat(tlm)) throw err;
+        }catch{
+            tlm=0.0;
+        }
+         
         if (result && result.processed) {
             result.processed.action_traces[0].inline_traces.forEach((t) => {
                 if (t.act.data.quantity) {
-                    // var quantityStr = t.act.data.quantity;
-                    // quantityStr = quantityStr.substring(0, quantityStr.length - 4);
-                    // var balance = (parseFloat(quantityStr)).toFixed(4);
-                    // amounts.set(t.act.data.to, balance.toString() + ' TLM');  
                     try {
                         if(!document.querySelector("#need_real_tlm").checked) throw 'err';
                         if (tlm) {
@@ -427,12 +434,15 @@ async function claim(account, nonce) {
             console.log('Received: ' + parseFloat(amounts.get(account)));
             return amounts.get(account);
         }
-        return 0;
+        return 0.00;
     } catch (error) {
-        // url = base_api[getRandom(0, base_api.length)];
+        // delete(wax)
+        // url = base_api[getRandom(0, base_api.length-2)];
         // wax = new waxjs.WaxJS(url);
+        // await sleep(3000);
         // document.getElementById("wax_server").textContent = 'Wax server: '+url;
         // console.log('change wax server to: '+ url);
+        console.log(error.message); 
         throw error
     }
 }

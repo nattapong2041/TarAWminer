@@ -21,7 +21,7 @@ async function getAccount(account) {
                 return res;
             }
         }).catch((err) => {
-            return 'Error: cannot get TLM ' + JSON.stringify(err);
+            return 'Error: cannot get Wax account detail ' + err.message;
         });
 }
 
@@ -50,7 +50,43 @@ async function getTLM(account) {
             return parseFloat(tlm[0]);
         }
     }).catch((err) => {
-        console.log('Error: cannot get TLM ' + JSON.stringify(err));
-        return 0.00;
+        console.log('Error: cannot get TLM ' + err.message);
+        return parseFloat(0.00);
+    });
+}
+
+async function checkNFT(account) {
+    account = account.match(/^[a-z0-9.]{4,5}(?:.wam)/gm)
+    if (!account || typeof account == "undefined" || account == '' || account == null) return 'Account not found';
+    account = account[0];
+    let index = getRandom(0, base_api.length)
+    const url = `${base_api[index]}/v1/chain/get_table_rows`
+
+    return await fetch(url, {
+        method: 'POST',
+        body: JSON.stringify({ 
+            "json": true, 
+            "code": "m.federation", 
+            "scope": "m.federation", 
+            "table": "claims", 
+            "lower_bound": account, 
+            "upper_bound": account }),
+        header: {
+            'content-type': 'application/json'
+        }
+    }).then(function (response) {
+        return response.json();
+    }).then((res) => {
+        if (Array.isArray(res.rows) && res.rows.length ) {
+            console.log('You got '+res.rows.length+' NFTs');
+            return true;
+        }
+        else{
+            console.log('You got 0 NFTs');
+            return false
+        }
+    }).catch((err) => {
+        console.log('Error: cannot check NFTS ' + err.message);
+        return false;
     });
 }
