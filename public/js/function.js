@@ -9,7 +9,7 @@ const base_api = [
 function getRandom(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
 }
-var url = base_api[getRandom(0, base_api.length)];
+var url = base_api[getRandom(0, base_api.length-2)];
 var wax = new waxjs.WaxJS(url);
 
 const aa_api = new atomicassets.ExplorerApi("https://wax.api.atomicassets.io", "atomicassets", { fetch });
@@ -440,7 +440,7 @@ async function claim(account, nonce) {
         }
         return 0.00;
     } catch (error) {
-        url = base_api[getRandom(0, base_api.length)];
+        url = base_api[getRandom(0, base_api.length-2)];
         wax = new waxjs.WaxJS(url);
         document.getElementById("wax_server").textContent = 'Wax server: '+url;
         console.log('change wax server to: '+ url);
