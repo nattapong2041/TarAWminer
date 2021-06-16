@@ -305,12 +305,12 @@ async function run() {
                 return response;
             }).catch((err) => {
                 url = base_api[getRandom(0, base_api.length-2)];
-                wax = new waxjs.WaxJS(url);
-                await sleep(5000);
+                wax = waxjs.WaxJS(url);
                 document.getElementById("wax_server").textContent = 'Wax server: ' + url;
                 console.log('change wax server to: ' + url);
                 return 0;
             });
+            await sleep(3000);
             let addRandom = Math.floor(Math.random() * 21000) + 4000;
             let totalDelay = 0;
             if (Number.isInteger(delay)) {

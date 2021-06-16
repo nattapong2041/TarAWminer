@@ -438,8 +438,8 @@ async function claim(account, nonce) {
     } catch (error) {
         delete(wax)
         url = base_api[getRandom(0, base_api.length-2)];
-        wax = await new waxjs.WaxJS(url);
-        await sleep(5000);
+        wax = waxjs.WaxJS(url);
+        await sleep(3000);
         document.getElementById("wax_server").textContent = 'Wax server: '+url;
         console.log('change wax server to: '+ url);
         console.log(error.message); 
