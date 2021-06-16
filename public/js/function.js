@@ -411,10 +411,6 @@ async function claim(account, nonce) {
         if (result && result.processed) {
             result.processed.action_traces[0].inline_traces.forEach((t) => {
                 if (t.act.data.quantity) {
-                    // var quantityStr = t.act.data.quantity;
-                    // quantityStr = quantityStr.substring(0, quantityStr.length - 4);
-                    // var balance = (parseFloat(quantityStr)).toFixed(4);
-                    // amounts.set(t.act.data.to, balance.toString() + ' TLM');  
                     try {
                         if(!document.querySelector("#need_real_tlm").checked) throw 'err';
                         if (tlm) {
@@ -444,6 +440,9 @@ async function claim(account, nonce) {
         wax = new waxjs.WaxJS(url);
         document.getElementById("wax_server").textContent = 'Wax server: '+url;
         console.log('change wax server to: '+ url);
+        if(error.message)
+            throw error.message
+
         throw error
     }
 }
