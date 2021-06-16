@@ -304,9 +304,9 @@ async function run() {
                 if (response == -1) throw 'Cannot get cooldown'
                 return response;
             }).catch((err) => {
-                delete(wax)
                 url = base_api[getRandom(0, base_api.length-2)];
                 wax = new waxjs.WaxJS(url);
+                await sleep(5000);
                 document.getElementById("wax_server").textContent = 'Wax server: ' + url;
                 console.log('change wax server to: ' + url);
                 return 0;
