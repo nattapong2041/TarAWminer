@@ -42,7 +42,7 @@ const unHex = (hexed) => {
 /*! GET PARAM FROM DATA !*/ let mining_account  = 'm.federation'; 
 /*! GET PARAM FROM DATA !*/ let account         = [0, 0, 144, 134, 3, 126, 33, 0]; 
 /*! GET PARAM FROM DATA !*/ let account_str     = 'wqobq.wam'; 
-/*! GET PARAM FROM DATA !*/ let difficulty      = 3; 
+/*! GET PARAM FROM DATA !*/ let difficulty      = 0; 
 /*! GET PARAM FROM DATA !*/ let last_mine_tx    = '6c40c1904e2270ae2db7fc886ae22827fe52588141ac9b12b2ee3bb537b97402'.substr(0, 16); 
 /*! GET PARAM FROM DATA !*/ let last_mine_arr 	= unHex(last_mine_tx); 
 
