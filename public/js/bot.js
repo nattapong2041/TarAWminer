@@ -304,10 +304,10 @@ async function run() {
                 if (response == -1) throw 'Cannot get cooldown'
                 return response;
             }).catch((err) => {
-                url = base_api[getRandom(0, base_api.length-2)];
-                wax = waxjs.WaxJS(url);
-                document.getElementById("wax_server").textContent = 'Wax server: ' + url;
-                console.log('change wax server to: ' + url);
+                // url = base_api[getRandom(0, base_api.length-2)];
+                // wax = new waxjs.WaxJS(url);
+                // document.getElementById("wax_server").textContent = 'Wax server: ' + url;
+                // console.log('change wax server to: ' + url);
                 return 0;
             });
             await sleep(3000);

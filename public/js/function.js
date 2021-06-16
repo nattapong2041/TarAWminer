@@ -436,12 +436,12 @@ async function claim(account, nonce) {
         }
         return 0.00;
     } catch (error) {
-        delete(wax)
-        url = base_api[getRandom(0, base_api.length-2)];
-        wax = waxjs.WaxJS(url);
-        await sleep(3000);
-        document.getElementById("wax_server").textContent = 'Wax server: '+url;
-        console.log('change wax server to: '+ url);
+        // delete(wax)
+        // url = base_api[getRandom(0, base_api.length-2)];
+        // wax = new waxjs.WaxJS(url);
+        // await sleep(3000);
+        // document.getElementById("wax_server").textContent = 'Wax server: '+url;
+        // console.log('change wax server to: '+ url);
         console.log(error.message); 
         throw error
     }
