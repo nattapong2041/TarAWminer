@@ -21,7 +21,6 @@ function saveConfig() {
     localStorage.setItem('mining_with', document.querySelector('input[name="mining_with"]:checked').value)
     localStorage.setItem('cpu_time', document.getElementById("cpu_time").value);
     localStorage.setItem('need_real_tlm', document.querySelector("#need_real_tlm").checked);
-
     //auto update wax
     localStorage.setItem('auto_update', document.querySelector("#auto_update").checked);
     //autoclaim
@@ -55,7 +54,7 @@ function loadConfig() {
 
 async function autoClaimNFT() {
     var now = new Date().getTime();
-    var distance = mineCountdownFinishTime - now;
+    var distance = claimCountdownFinishTime - now;
     //var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     //var seconds = Math.floor((distance % (1000 * 60)) / 1000);
     //document.getElementById("countdown").innerHTML = padLeadingZeros(minutes, 2) + 'm ' + padLeadingZeros(seconds, 2) + 's before mine'
@@ -72,6 +71,7 @@ async function autoClaimNFT() {
                 console.log('Error: Claimed NFT.');
             }
         }
+        claimCountdownFinishTime = new Date().getTime() + (document.getElementById("auto_claim_time").value * 60 * 1000);
     }
 }
 function updateStatus(status) {
@@ -320,8 +320,10 @@ async function run() {
             }
             if (document.getElementById("auto_claim").checked) {
                 if (document.getElementById("auto_claim_time").value >= 0) {
-                    claimCountdownFinishTime = new Date().getTime() + (document.getElementById("auto_claim_time").value * 60 * 1000);
-                    nftInterval = setInterval(autoClaimNFT,  1000);
+                    let now = new Date().getTime();
+                    if(claimCountdownFinishTime - now){
+                        nftInterval = setInterval(autoClaimNFT,  1000);
+                    }
                 }
             }
             console.log('Cooldown total: ' + totalDelay / 1000 + 'sec Mine: ' + delay / 1000 + ' Add: ' + addRandom / 1000 + 'sec')
