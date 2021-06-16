@@ -14,11 +14,18 @@ var minedCount = 0;
 let userAccount = "";
 var delay = 0;
 var lastTLM = 0;
+var nftInterval;
 function saveConfig() {
     console.log('**SAVE CONFIG**');
     localStorage.setItem('mining_with', document.querySelector('input[name="mining_with"]:checked').value)
     localStorage.setItem('cpu_time', document.getElementById("cpu_time").value);
     localStorage.setItem('need_real_tlm', document.querySelector("#need_real_tlm").checked);
+
+    //auto update wax
+    localStorage.setItem('auto_update', document.querySelector("#auto_update").checked);
+    //autoclaim
+    localStorage.setItem('auto_claim', document.querySelector("#auto_claim").checked);
+    localStorage.setItem('auto_claim_time', document.getElementById("auto_claim_time").value);
 }
 
 function loadConfig() {
@@ -28,8 +35,35 @@ function loadConfig() {
     if (localStorage.getItem('cpu_time') != null) {
         document.getElementById("cpu_time").value = localStorage.getItem('cpu_time');
     }
-    if (localStorage.getItem('need_real_tlm') != null) {
-        document.querySelector("#need_real_tlm").checked = localStorage.getItem('need_real_tlm');
+    if (localStorage.getItem('need_real_tlm') != null && localStorage.getItem('need_real_tlm') == 'true') {
+        document.querySelector("#need_real_tlm").checked = true;
+    }
+    //AutoUpdateWax
+    if (localStorage.getItem('auto_update') != null && localStorage.getItem('auto_update') == 'false') {
+        console.log('WTF: '+ localStorage.getItem('auto_update'));
+        document.querySelector("#auto_update").checked = false;
+    }
+    //AutoClaim
+    if (localStorage.getItem('auto_claim') != null && localStorage.getItem('auto_claim') == 'true') {
+        document.querySelector("#auto_claim").checked = localStorage.getItem('auto_claim');
+    }
+    if (localStorage.getItem('auto_claim_time') != null) {
+        document.getElementById("auto_claim_time").value = localStorage.getItem('auto_claim_time');
+    }
+}
+
+async function autoClaimNFT() {
+    clearInterval(nftInterval);
+    let check = false;
+    console.log('Checking NFTs drop');
+    check =  await checkNFT(userAccount);
+    if(check){
+        let result = await claimNFT(userAccount, userAccount);
+        if (result != 0 && result != null) {
+            console.log('Complete: ' + result);
+        } else {
+            console.log('Error: Claimed NFT.');
+        }
     }
 }
 
@@ -65,6 +99,9 @@ async function updateAccStatus() {
     } catch {
         console.log('Error while update account details');
     }
+}
+
+async function updateTLM() {
     try {
         let tlm = await getTLM(userAccount);
         if (tlm) {
@@ -86,7 +123,7 @@ function updateNextMine(delay) {
 }
 
 function clearTimer() {
-    if(loginInterval){
+    if (loginInterval) {
         clearInterval(loginInterval);
     }
     if (newMineInterval) {
@@ -116,7 +153,7 @@ function updateAccount(userAccount) {
 
 
 async function chargingCountdownfunction() {
-    if(newMineInterval){
+    if (newMineInterval) {
         clearInterval(newMineInterval);
     }
     var now = new Date().getTime();
@@ -132,7 +169,7 @@ async function chargingCountdownfunction() {
 }
 
 async function miningCountdownfunction() {
-    if(mineInterval){
+    if (mineInterval) {
         clearInterval(mineInterval);
     }
     var now = new Date().getTime();
@@ -171,8 +208,8 @@ async function login() {
         // };
         document.getElementById("update_detail").onclick = async function () {
             try {
-                let result = await getAccount(userAccount);
-                updateAccStatus(result);
+                updateAccStatus();
+                updateTLM()
             } catch (err) {
                 throw err;
             }
@@ -254,9 +291,19 @@ async function run() {
     if (!isMining) {
         isMining = true
         //calculate delay
-        if(delay == 0){
+        if (delay == 0) {
             console.log('getting cooldown');
-            delay = await getMineDelay(userAccount); 
+            delay = await getMineDelay(userAccount).then(function (response) {
+                if (response == -1) throw 'Cannot get cooldown'
+                return response;
+            }).catch((err) => {
+                console.log('asdasd' + err);
+                url = base_api[getRandom(0, base_api.length - 2)];
+                wax = new waxjs.WaxJS(url);
+                document.getElementById("wax_server").textContent = 'Wax server: ' + url;
+                console.log('change wax server to: ' + url);
+                return 0;
+            });
             let addRandom = Math.floor(Math.random() * 21000) + 4000;
             let totalDelay = 0;
             if (Number.isInteger(delay)) {
@@ -264,14 +311,22 @@ async function run() {
             } else {
                 totalDelay = addRandom;
             }
+            if ( document.getElementById("auto_claim").checked) {
+                if (document.getElementById("auto_claim_time").value >= 0) {
+                    nftInterval = setTimeout(autoClaimNFT(), document.getElementById("auto_claim_time").value * 60 * 1000);
+                }
+            }
             console.log('Cooldown total: ' + totalDelay / 1000 + 'sec Mine: ' + delay / 1000 + ' Add: ' + addRandom / 1000 + 'sec')
             updateStatus('charging')
             updateNextMine(totalDelay)
-            updateAccStatus();
+            if ( document.getElementById("auto_update").checked) {
+                updateAccStatus();
+            }
+            updateTLM();
             mineCountdownFinishTime = new Date().getTime() + totalDelay;
             mineInterval = setInterval(chargingCountdownfunction, 1000);
         }
-        
+
     }
 }
 
@@ -325,7 +380,7 @@ async function miner(mine_with) {
         } catch (error) {
             updateStatus(error)
             const errorRes = handleError(error)
-            console.log(error);
+            console.log('' + error);
             if (errorRes == 'restart') {
                 updateStatus('Normal error wait: ' + 2 + ' min')
                 nextmine = 120 * 1000;
@@ -348,7 +403,12 @@ async function miner(mine_with) {
                 updateStatus('User start new transaction wait: ' + 10 + ' sec')
                 nextmine = 10 * 1000;
                 updateNextMine(nextmine)
-            } else if (errorRes == 'wait') {
+            } else if (errorRes == 'timeout') {
+                updateStatus('Approve timeout: ' + 10 + ' sec')
+                nextmine = 10 * 1000;
+                updateNextMine(nextmine)
+            }
+            else if (errorRes == 'wait') {
                 updateStatus('Unknow error wait: ' + errorDelay / (60 * 1000) + ' min')
                 nextmine = errorDelay;
                 updateNextMine(nextmine)
@@ -397,6 +457,9 @@ function handleError(error) {
     else if (normalErr.some(v => error.message.includes(v))) {
         return 'restart'
     }
+    else if (error.message.includes('timeout')) {
+        return 'timeout'
+    }
     else if (error.message.includes('nothing')) {
         return 'break'
     } else {
@@ -423,7 +486,7 @@ function onclickRun() {
         document.getElementById("run_btn").textContent = "Click to STOP"
         document.getElementById("run_btn").className = "btn btn-danger"
         delay = 0;
-        run();  
+        run();
     }
 
 }

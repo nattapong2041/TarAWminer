@@ -22,6 +22,7 @@
     tab3 {
       padding-left: 12em;
     }
+
     /* Popup container - can be anything you want */
     .popup {
       position: relative;
@@ -34,33 +35,33 @@
     }
 
     /* The actual popup */
-.popup .popuptext {
-  visibility: hidden;
-  width: 300px;
-  height: 150px;
-  background-color: #555;
-  color: #fff;
-  text-align: left;
-  border-radius: 6px;
-  padding: 8px 0;
-  position: absolute;
-  z-index: 1;
-  top: 200%;
-  left: 100%;
-  margin-left: -80px;
-}
+    .popup .popuptext {
+      visibility: hidden;
+      width: 300px;
+      height: 150px;
+      background-color: #555;
+      color: #fff;
+      text-align: left;
+      border-radius: 6px;
+      padding: 8px 0;
+      position: absolute;
+      z-index: 1;
+      top: 200%;
+      left: 100%;
+      margin-left: -80px;
+    }
 
-/* Popup arrow */
-.popup .popuptext::after {
-  content: "";
-  position: absolute;
-  bottom: 100%;
-  left: 20%;
-  margin-left: -5px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: #555 transparent transparent transparent;
-}
+    /* Popup arrow */
+    .popup .popuptext::after {
+      content: "";
+      position: absolute;
+      bottom: 100%;
+      left: 20%;
+      margin-left: -5px;
+      border-width: 5px;
+      border-style: solid;
+      border-color: #555 transparent transparent transparent;
+    }
 
     /* Toggle this class - hide and show the popup */
     .popup .show {
@@ -144,19 +145,20 @@
           <input type="radio" id="ninja_vip" name="mining_with" value="ninja_vip">
           <label for="ninja_vip">ninja vip</label>
           <br>
-          <br>
           <span class="fs-6"><b>Real recieve TLM?: </b></span>
-          <input type="checkbox" id="need_real_tlm" checked=true >
-          <span class="fs-6"> check it out will reduce chance of getting ban IP</span>
+          <input type="checkbox" id="need_real_tlm">
+          <br>
+          <span class="fs-6"><b>Auto Update WAX: </b></span>
+          <input type="checkbox" id="auto_update" checked><br>
+          <span class="fs-6"><b>Auto claim NFTs: </b></span> <input type="checkbox" id="auto_claim">
+          <input type="number" id="auto_claim_time" value="60" style="width: 50px;"><span class="fs-6"><b> min</b></span><br>
+          <span class="fs-6"><b>Cpu time: </b></span>
+          <input type="number" id="cpu_time" value="5.0" style="width: 50px;">
+          <span class="fs-6"><b> min</b></span>
           <br>
           <br>
           <span class="fs-6"><b>Total get: </b></span>
           <span class="fs-6" id="toal_get">0.0000 TLM with 0 Times</span>
-          <br>
-          <br>
-          <span class="fs-6"><b>Cpu time: </b></span>
-          <input type="number" id="cpu_time" value="5.0" style="width: 60px;">
-          <span class="fs-6"><b> min</b></span>
           <br>
           <br>
           <span class="fs-6"><b>Status: </b></span>
@@ -180,28 +182,29 @@
           <div class="col">
             <span class="fs-6"><b>Wax Balance: </b></span><span class="fs-6" id="wax_balance"> 0.0000 WAX</span><br>
             <span class="fs-6"><b>TLM Balance: </b></span><span class="fs-6" id="tlm_balance"> 0.0000 TLM</span>
-            
+
           </div>
           <div class="col">
             <span class="fs-6"><b>Cpu stake
-              :</b></span><span class="fs-6" id="cpu_stake"> 0.0000 WAX</span><br>
+                :</b></span><span class="fs-6" id="cpu_stake"> 0.0000 WAX</span><br>
             <span class="fs-6"><b>Cpu limit
                 :</b></span><span class="fs-6" id="cpu_limit"> 00.00 %</span><br>
           </div>
           <div class="col-3">
             <button id="update_detail" type="button" class="btn btn-warning fs-6"
-            style="margin-left: 15px; margin-top: 10px; margin-bottom: 10px; ">Update</button>
+              style="margin-left: 15px; margin-top: 10px; margin-bottom: 10px; ">Update</button>
           </div>
-          
-        <br>
+
+          <br>
         </div>
         <br>
-        <span class="fs-6"><b>Mining Log (ฺBOT version 2.2.1)</b></span>
-        
+        <span class="fs-6"><b>Mining Log (ฺBOT version 2.3.0)</b></span>
+
         <div class="popup" onclick="patchNote()"> ((Click to see "Patch Note"))
-          <span class="popuptext" id="myPopup">**16/06/2021** <br> -Show real recieve TLM from mining<br>-Fix bug bot stop running <br>-add Update button to update<br> current status<br>- Delete some wax server<br></span>
+          <span class="popuptext" id="myPopup">**16/06/2021** <br> -Auto cliam<br>
+            - Fixed bug 2.2.1 version<br>- Add some choice for flexible<br></span>
         </div>
-        <br><span class="fs-6" id="wax_server" ><b>Wax server: </b></span>
+        <br><span class="fs-6" id="wax_server"><b>Wax server: </b></span>
         <textarea class="form-control box-shadow fs-6" rows="14" style="height:80%;" id="show_mine_log"
           disabled=""></textarea>
       </div>
