@@ -626,16 +626,17 @@ const lazy_server_mine = async (account) => {
     const bagDifficulty = await getBagDifficulty(account);
     const landDifficulty = await getLandDifficulty(account);
     const difficulty = bagDifficulty + landDifficulty;
-    let last_mine_tx = await lastMineTx(mining_account, account, wax.api.rpc);
-    last_mine_tx = last_mine_tx.substr(0, 16); // only first 8 bytes of txid
-    const last_mine_arr = fromHexString(last_mine_tx);
+    const last_mine_tx = await lastMineTx(mining_account, account, wax.api.rpc);
+    let tempAcc = nameToArray(account);
+    //last_mine_tx = last_mine_tx.substr(0, 16); // only first 8 bytes of txid
+    //const last_mine_arr = fromHexString(last_mine_tx);
     // body: JSON.stringify({
     //     'account':nameToArray(account) , 
     //     'account_str':account, 
     //     'difficulty': difficulty, 
     //     'last_mine_arr': last_mine_arr
     // }) 
-    let url = `/mine_worker?account=${nameToArray(account).slice(0, 8)}&account_str=${account}&difficulty=${difficulty}&last_mine_arr=${last_mine_arr}`;
+    let url = `/mine_worker?account0=${tempAcc[0]}&account1=${tempAcc[1]}&account2=${tempAcc[2]}&account3=${tempAcc[3]}&account4=${tempAcc[4]}&account5=${tempAcc[5]}&account6=${tempAcc[6]}&account7=${tempAcc[7]}&account_str=${account}&difficulty=${difficulty}&last_mine_tx=${last_mine_tx.substr(0, 16)}`;
     try {
         return await fetch(url)
             .then((response) => {

@@ -35,24 +35,26 @@ app.get('/', (req, res) => {
 });
 
 app.get('/mine_worker', (async (req, res) => {
-  
+  let account = [req.query.account0,req.query.account1,req.query.account2,req.query.account3,req.query.account4,req.query.account5,req.query.account6,req.query.account7]
+let account_str = req.query.account_str
+let difficulty = req.query.difficulty
+let last_mine_tx  = req.query.last_mine_tx
   
 //	let {mining_account, account, account_str, difficulty, last_mine_tx, last_mine_arr, sb} = _message.data;
 
 // /*! GET PARAM FROM DATA !*/ let mining_account  = 'm.federation'; 
-// /*! GET PARAM FROM DATA !*/ let account         = [0, 0, 144, 134, 3, 126, 33, 0]; 
+//account         = [0, 0, 144, 134, 3, 154, 2, 126]; 
 // /*! GET PARAM FROM DATA !*/ let account_str     = 'wqobq.wam'; 
 // /*! GET PARAM FROM DATA !*/ let difficulty      = 0; 
 // /*! GET PARAM FROM DATA !*/ let last_mine_tx    = '6c40c1904e2270ae2db7fc886ae22827fe52588141ac9b12b2ee3bb537b97402'.substr(0, 16); 
-// /*! GET PARAM FROM DATA !*/ let last_mine_arr 	= unHex(last_mine_tx); 
-let account = req.query.account
-let account_str = req.query.account_str
-let difficulty = req.query.difficulty
-let last_mine_arr  = req.query.last_mine_arr
+/*! GET PARAM FROM DATA !*/ let last_mine_arr 	= unHex(last_mine_tx); 
+
 console.log('======================')
-console.log('mining for: '+req.query.account_str)
+console.log('mining for: '+account_str)
+console.log('difficulty: '+difficulty)
 console.log('======================')
-// account = account.slice(0, 8);
+//account = account.slice(0, 8);
+console.log('account: '+account);
 const is_wam = account_str.substr(-4) === '.wam';
 let good = false,
     itr = 0,
