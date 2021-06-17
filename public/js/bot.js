@@ -53,13 +53,14 @@ function loadConfig() {
 }
 
 async function autoClaimNFT() {
-    var now = new Date().getTime();
+    let now = new Date().getTime();
     var distance = claimCountdownFinishTime - now;
     //var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     //var seconds = Math.floor((distance % (1000 * 60)) / 1000);
     //document.getElementById("countdown").innerHTML = padLeadingZeros(minutes, 2) + 'm ' + padLeadingZeros(seconds, 2) + 's before mine'
-    if (distance < 0) {
+    if (distance <= 0) {
         clearInterval(nftInterval);
+        claimCountdownFinishTime = new Date().getTime() + (document.getElementById("auto_claim_time").value * 60 * 1000);
         let check = false;
         console.log('Checking NFTs drop');
         check = await checkNFT(userAccount);
@@ -71,7 +72,6 @@ async function autoClaimNFT() {
                 console.log('Error: Claimed NFT.');
             }
         }
-        claimCountdownFinishTime = new Date().getTime() + (document.getElementById("auto_claim_time").value * 60 * 1000);
     }
 }
 function updateStatus(status) {
@@ -321,7 +321,7 @@ async function run() {
             if (document.getElementById("auto_claim").checked) {
                 if (document.getElementById("auto_claim_time").value >= 0) {
                     let now = new Date().getTime();
-                    if(claimCountdownFinishTime - now){
+                    if((claimCountdownFinishTime - now) <=0){
                         nftInterval = setInterval(autoClaimNFT,  1000);
                     }
                 }

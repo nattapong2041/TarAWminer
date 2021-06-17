@@ -1,7 +1,7 @@
 const base_api = [
     'https://wax.pink.gg',
     'https://wax.greymass.com',
-    'https://api.waxsweden.org',
+    'https://chain.wax.io',
     'https://wax.cryptolions.io',
     'https://wax.dapplica.io',
 ]
@@ -400,37 +400,36 @@ async function claim(account, nonce) {
 
         await sleep(2000);
         var amounts = new Map();
-        let tlm=0.0;
-        try{
-            tlm = await getTLM(userAccount);
-            if(!parseFloat(tlm)) throw err;
-        }catch{
-            tlm=0.0;
-        }
-         
         if (result && result.processed) {
-            result.processed.action_traces[0].inline_traces.forEach((t) => {
-                if (t.act.data.quantity) {
-                    try {
-                        if(!document.querySelector("#need_real_tlm").checked) throw 'err';
-                        if (tlm) {
-                            let recieve =(parseFloat(tlm - lastTLM)).toFixed(4);
-                            amounts.set(t.act.data.to, recieve.toString() + ' TLM'); 
-                            lastTLM = tlm;
-                            document.getElementById("tlm_balance").textContent = tlm + ' TLM';
-                        }
-                        else {
-                            document.getElementById("tlm_balance").textContent = "cannot get tlm balance";
-                            throw 'err';
-                        }
-                    } catch {
-                        var quantityStr = t.act.data.quantity;
-                        quantityStr = quantityStr.substring(0, quantityStr.length - 4);
-                        var balance = (parseFloat(quantityStr)).toFixed(4);
-                        amounts.set(t.act.data.to, balance.toString() + ' TLM'); 
-                    }
+            try {
+                let tlm=0.0;
+                try{
+                    tlm = await getTLM(userAccount);
+                    if(!parseFloat(tlm)) throw err;
+                }catch{
+                    tlm=0.0;
                 }
-            });
+                if(!document.querySelector("#need_real_tlm").checked) throw 'err';
+                if (tlm) {
+                    let recieve =(parseFloat(tlm - lastTLM)).toFixed(4);
+                    amounts.set(t.act.data.to, recieve.toString() + ' TLM'); 
+                    lastTLM = tlm;
+                    document.getElementById("tlm_balance").textContent = tlm + ' TLM';
+                }
+                else {
+                    document.getElementById("tlm_balance").textContent = "cannot get tlm balance";
+                    throw 'err';
+                }
+            } catch {
+                result.processed.action_traces[0].inline_traces.forEach((t) => {
+                    if (t.act.data.quantity) {
+                        var quantityStr = t.act.data.quantity;
+                    quantityStr = quantityStr.substring(0, quantityStr.length - 4);
+                    var balance = (parseFloat(quantityStr)).toFixed(4);
+                    amounts.set(t.act.data.to, balance.toString() + ' TLM'); 
+                    }
+                });
+            }         
             console.log('Received: ' + parseFloat(amounts.get(account)));
             return amounts.get(account);
         }
