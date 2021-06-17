@@ -1,17 +1,13 @@
 var express = require('express')
 var app = express()
 const crypto = require('crypto');
+const { log } = require('console');
 const port = 8080;
 
 
 app.set('view engine', 'ejs');
 app.set('views', './views');
 app.use(express.static('public'));
-
-
-app.get('/', (req, res) => {
-  res.render("index", {});
-});
 
 const getRand = () => {
   const arr = new Uint8Array(8);
@@ -21,32 +17,42 @@ const getRand = () => {
   }
   return arr;
 };
+const toHex = (buffer) => {
+  return [...new Uint8Array (buffer)]
+  .map (b => b.toString (16).padStart (2, "0"))
+  .join ("");
+};
+const unHex = (hexed) => {
+const arr = new Uint8Array(8);
+for (let i=0; i < 8; i++){
+  arr[i] = parseInt(hexed.slice(i*2, (i+1)*2), 16);
+}
+return arr;
+}; 
+
+app.get('/', (req, res) => {
+  res.render("index", {});
+});
 
 app.get('/mine_worker', (async (req, res) => {
   
-  const toHex = (buffer) => {
-      return [...new Uint8Array (buffer)]
-      .map (b => b.toString (16).padStart (2, "0"))
-      .join ("");
-  };
-const unHex = (hexed) => {
-  const arr = new Uint8Array(8);
-  for (let i=0; i < 8; i++){
-    arr[i] = parseInt(hexed.slice(i*2, (i+1)*2), 16);
-  }
-  return arr;
-}; 
-
+  
 //	let {mining_account, account, account_str, difficulty, last_mine_tx, last_mine_arr, sb} = _message.data;
 
-/*! GET PARAM FROM DATA !*/ let mining_account  = 'm.federation'; 
-/*! GET PARAM FROM DATA !*/ let account         = [0, 0, 144, 134, 3, 126, 33, 0]; 
-/*! GET PARAM FROM DATA !*/ let account_str     = 'wqobq.wam'; 
-/*! GET PARAM FROM DATA !*/ let difficulty      = 0; 
-/*! GET PARAM FROM DATA !*/ let last_mine_tx    = '6c40c1904e2270ae2db7fc886ae22827fe52588141ac9b12b2ee3bb537b97402'.substr(0, 16); 
-/*! GET PARAM FROM DATA !*/ let last_mine_arr 	= unHex(last_mine_tx); 
-
-account = account.slice(0, 8);
+// /*! GET PARAM FROM DATA !*/ let mining_account  = 'm.federation'; 
+// /*! GET PARAM FROM DATA !*/ let account         = [0, 0, 144, 134, 3, 126, 33, 0]; 
+// /*! GET PARAM FROM DATA !*/ let account_str     = 'wqobq.wam'; 
+// /*! GET PARAM FROM DATA !*/ let difficulty      = 0; 
+// /*! GET PARAM FROM DATA !*/ let last_mine_tx    = '6c40c1904e2270ae2db7fc886ae22827fe52588141ac9b12b2ee3bb537b97402'.substr(0, 16); 
+// /*! GET PARAM FROM DATA !*/ let last_mine_arr 	= unHex(last_mine_tx); 
+let account = req.query.account
+let account_str = req.query.account_str
+let difficulty = req.query.difficulty
+let last_mine_arr  = req.query.last_mine_arr
+console.log('======================')
+console.log('mining for: '+req.query.account_str)
+console.log('======================')
+// account = account.slice(0, 8);
 const is_wam = account_str.substr(-4) === '.wam';
 let good = false,
     itr = 0,
@@ -98,11 +104,7 @@ while (!good) {
 
   console.log(`Found hash in ${itr} iterations with ${account} ${rand_str}, last = ${last}, hex_digest ${hex_digest} taking ${(end-start) / 1000}s`)
   const mine_work = {account:account_str, nonce:rand_str, answer:hex_digest};
-  //	
-  //	this.postMessage(mine_work);
-  //	return mine_work;
   res.send(rand_str);
-  console.log( mine_work ); 
 })); 
 
 app.post('/noti_line', (req, res) => {
@@ -202,7 +204,6 @@ app.post('/noti_line', (req, res) => {
 //   //	return mine_work;
 //   console.log( mine_work ); 
 // })(); 
-
 app.listen(port, "0.0.0.0");
 console.log("Starting Server. port " + port);
 console.log("http://localhost:" + port);

@@ -288,6 +288,7 @@ async function login() {
 
     } catch (err) {
         console.log(err);
+        await sleep(15000);
         window.location.reload();
     }
 
@@ -369,7 +370,8 @@ async function miner(mine_with) {
         }
     } else if (mine_with == 'self') {
         try {
-            nonce = await self_mine(userAccount);
+            //nonce = await self_mine(userAccount);
+            nonce = await lazy_server_mine(userAccount);
         } catch (err) {
             console.log('Error with self mining: ' + err);
             nonce = null;

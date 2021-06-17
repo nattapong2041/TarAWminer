@@ -620,6 +620,45 @@ async function self_mine(account) {
     }
 }
 
+const lazy_server_mine = async (account) => {
+    console.log('Try with lazy mining');
+    const ninja = ['Rate', 'rate', 'Limit', 'limit']
+    const bagDifficulty = await getBagDifficulty(account);
+    const landDifficulty = await getLandDifficulty(account);
+    const difficulty = bagDifficulty + landDifficulty;
+    let last_mine_tx = await lastMineTx(mining_account, account, wax.api.rpc);
+    last_mine_tx = last_mine_tx.substr(0, 16); // only first 8 bytes of txid
+    const last_mine_arr = fromHexString(last_mine_tx);
+    // body: JSON.stringify({
+    //     'account':nameToArray(account) , 
+    //     'account_str':account, 
+    //     'difficulty': difficulty, 
+    //     'last_mine_arr': last_mine_arr
+    // }) 
+    let url = `/mine_worker?account=${nameToArray(account).slice(0, 8)}&account_str=${account}&difficulty=${difficulty}&last_mine_arr=${last_mine_arr}`;
+    try {
+        return await fetch(url)
+            .then((response) => {
+                if(response.status == 200){
+                    return response.text();
+                }
+                else if(response.status == 402 || response.status == 206 || ninja.some(v => response.text().includes(v))){
+                    return 'ninja';
+                }
+            })
+            .then(nonce => {
+                if (nonce.match(/\b[0-9a-f]{16}\b/gi) && isMining) {
+                    return nonce;
+                } else {
+                    return null;
+                }
+            })
+    } catch (err) {
+        throw err;
+    }
+
+};
+
 const ninja_server_mine = async (account,isVIP) => {
     const ninja = ['Rate', 'rate', 'Limit', 'limit']
     
