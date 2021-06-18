@@ -40,7 +40,10 @@ app.get('/mine_worker', (async (req, res) => {
   let difficulty = 0;
   let last_mine_tx;
   try{
-    difficulty = req.query.difficulty;
+    if(req.query.difficulty != null)
+      difficulty = req.query.difficulty;
+    else
+    difficulty = 0;
   }catch(err){
     difficulty=0;
   }
@@ -67,7 +70,6 @@ console.log('mining for: '+account_str)
 console.log('difficulty: '+difficulty)
 console.log('======================')
 //account = account.slice(0, 8);
-console.log('account: '+account);
 const is_wam = account_str.substr(-4) === '.wam';
 let good = false,
     itr = 0,
@@ -117,8 +119,9 @@ while (!good) {
   const end = (new Date()).getTime();
   const rand_str = toHex(rand_arr);
 
-  console.log(`Found hash in ${itr} iterations with ${account} ${rand_str}, last = ${last}, hex_digest ${hex_digest} taking ${(end-start) / 1000}s`)
+  console.log(`Found hash in ${itr} iterations with ${account_str} ${rand_str} taking ${(end-start) / 1000}s`)
   const mine_work = {account:account_str, nonce:rand_str, answer:hex_digest};
+  console.log(mine_work);
   res.send(rand_str);
 })); 
 
