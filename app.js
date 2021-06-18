@@ -35,10 +35,23 @@ app.get('/', (req, res) => {
 });
 
 app.get('/mine_worker', (async (req, res) => {
-  let account = [req.query.account0,req.query.account1,req.query.account2,req.query.account3,req.query.account4,req.query.account5,req.query.account6,req.query.account7]
-let account_str = req.query.account_str
-let difficulty = req.query.difficulty
-let last_mine_tx  = req.query.last_mine_tx
+  let account;
+  let account_str;
+  let difficulty = 0;
+  let last_mine_tx;
+  try{
+    difficulty = req.query.difficulty;
+  }catch(err){
+    difficulty=0;
+  }
+  try{
+    account = [req.query.account0,req.query.account1,req.query.account2,req.query.account3,req.query.account4,req.query.account5,req.query.account6,req.query.account7]
+    account_str = req.query.account_str
+    last_mine_tx  = req.query.last_mine_tx
+  }catch(err){
+    res.status(400);
+    res.send('Invalid mine data ');
+  }
   
 //	let {mining_account, account, account_str, difficulty, last_mine_tx, last_mine_arr, sb} = _message.data;
 
