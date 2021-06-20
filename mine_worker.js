@@ -54,9 +54,9 @@ function getMineWork(account, account_str, difficulty, last_mine_arr) {
             good &= last <= difficulty;
         }
         itr++;
-        if (itr % 1000000 === 0) {
-            console.log(`Still mining - tried ${itr} iterations`);
-        }
+        // if (itr % 1000000 === 0) {
+        //     console.log(`Still mining - tried ${itr} iterations`);
+        // }
 
         if (!good) {
             hash = null;
