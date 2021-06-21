@@ -6,7 +6,7 @@ var app = express()
 const port = 8080;
 
 const pool = new StaticPool({
-  size: 17,
+  size: 8,
   task: "./mine_worker.js"
 });
 const fromHexString = hexString =>
