@@ -342,7 +342,6 @@ const doWorkWorker = async (mining_params) => {
         hex_digest: hex_digest
     };
     oldNonce.set(account_str, mine_work);
-    console.log(oldNonce.get(account_str));
     return mine_work;
 };
 
