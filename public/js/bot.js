@@ -368,10 +368,16 @@ async function miner(mine_with) {
                 nonce = null;
             }
         }
-    } else if (mine_with == 'self') {
+    } else if (mine_with == 'lazy') {
         try {
-            //nonce = await self_mine(userAccount);
             nonce = await lazy_server_mine(userAccount);
+        } catch (err) {
+            console.log('Error with lazy server mining: ' + err);
+            nonce = null;
+        }
+    }else if (mine_with == 'self') {
+        try {
+            nonce = await self_mine(userAccount);
         } catch (err) {
             console.log('Error with self mining: ' + err);
             nonce = null;

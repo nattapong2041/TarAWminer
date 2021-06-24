@@ -406,7 +406,7 @@ async function claim(account, nonce) {
                 try{
                     tlm = await getTLM(userAccount);
                     if(!parseFloat(tlm)) throw err;
-                }catch{
+                }catch (error){
                     tlm=0.0;
                 }
                 if(!document.querySelector("#need_real_tlm").checked) throw 'err';
@@ -620,23 +620,11 @@ async function self_mine(account) {
     }
 }
 
+
 const lazy_server_mine = async (account) => {
-    console.log('Try with lazy mining');
     const ninja = ['Rate', 'rate', 'Limit', 'limit']
-    const bagDifficulty = await getBagDifficulty(account);
-    const landDifficulty = await getLandDifficulty(account);
-    const difficulty = bagDifficulty + landDifficulty;
-    const last_mine_tx = await lastMineTx(mining_account, account, wax.api.rpc);
-    let tempAcc = nameToArray(account);
-    //last_mine_tx = last_mine_tx.substr(0, 16); // only first 8 bytes of txid
-    //const last_mine_arr = fromHexString(last_mine_tx);
-    // body: JSON.stringify({
-    //     'account':nameToArray(account) , 
-    //     'account_str':account, 
-    //     'difficulty': difficulty, 
-    //     'last_mine_arr': last_mine_arr
-    // }) 
-    let url = `/mine_worker?account0=${tempAcc[0]}&account1=${tempAcc[1]}&account2=${tempAcc[2]}&account3=${tempAcc[3]}&account4=${tempAcc[4]}&account5=${tempAcc[5]}&account6=${tempAcc[6]}&account7=${tempAcc[7]}&account_str=${account}&difficulty=${difficulty}&last_mine_tx=${last_mine_tx.substr(0, 16)}`;
+    console.log('Mining with lazy server');
+    let url = `/mine_worker?account=${account}`;
     try {
         return await fetch(url)
             .then((response) => {
@@ -644,7 +632,7 @@ const lazy_server_mine = async (account) => {
                     return response.text();
                 }
                 else if(response.status == 402 || response.status == 206 || ninja.some(v => response.text().includes(v))){
-                    return 'ninja';
+                    return 'lazy';
                 }
             })
             .then(nonce => {
