@@ -1,6 +1,6 @@
 {
   "name": "lazydigger",
-  "version": "2.3.0 hotfix",
+  "version": "2.3.0",
   "description": "",
   "main": "index.js",
   "scripts": {
