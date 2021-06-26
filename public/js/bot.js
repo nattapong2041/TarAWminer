@@ -5,17 +5,22 @@ var loginCountdownTime = 3 * (60 * 1000);
 var mineCountdownFinishTime = new Date().getTime();
 var loginCountdownFinishTime = new Date().getTime();
 var claimCountdownFinishTime = new Date().getTime();
+var delay = 0;
 var nextmine = 0;
+var isMining = false;
+
+var minedCount = 0;
+
+var totalget = 0.0;
+var lastTLM = 0;
+
 var mineInterval;
 var newMineInterval;
 var loginInterval;
-var isMining = false;
-var totalget = 0.0;
-var minedCount = 0;
-let userAccount = "";
-var delay = 0;
-var lastTLM = 0;
 var nftInterval;
+
+var userAccount = "";
+
 function saveConfig() {
     console.log('**SAVE CONFIG**');
     localStorage.setItem('mining_with', document.querySelector('input[name="mining_with"]:checked').value)
@@ -26,6 +31,7 @@ function saveConfig() {
     //autoclaim
     localStorage.setItem('auto_claim', document.querySelector("#auto_claim").checked);
     localStorage.setItem('auto_claim_time', document.getElementById("auto_claim_time").value);
+    //localStorage.setItem('auto_claim_time', document.getElementById("auto_claim_time").value);
 }
 
 function loadConfig() {
@@ -55,9 +61,6 @@ function loadConfig() {
 async function autoClaimNFT() {
     let now = new Date().getTime();
     var distance = claimCountdownFinishTime - now;
-    //var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    //var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-    //document.getElementById("countdown").innerHTML = padLeadingZeros(minutes, 2) + 'm ' + padLeadingZeros(seconds, 2) + 's before mine'
     if (distance <= 0) {
         clearInterval(nftInterval);
         claimCountdownFinishTime = new Date().getTime() + (document.getElementById("auto_claim_time").value * 60 * 1000);
@@ -198,7 +201,6 @@ async function loginCountdownfunction() {
     var seconds = Math.floor((distance % (1000 * 60)) / 1000);
     document.getElementById("countdown").innerHTML = padLeadingZeros(minutes, 2) + 'm ' + padLeadingZeros(seconds, 2) + 's before new login'
     if (distance < 0) {
-        clearTimer()
         window.location.reload();
     }
 }
@@ -221,7 +223,14 @@ async function login() {
                 throw err;
             }
         };
-        document.getElementById("wax_server").textContent = 'Wax server: ' + url;
+        document.getElementById("save_bag").onclick = async function () {
+            try {
+                await setBag(userAccount)
+            } catch (err) {
+                throw err;
+            }
+        };
+        // document.getElementById("wax_server").textContent = 'Wax server: ' + url;
         document.getElementById("swap_btn").onclick = async function () {
             let result = await swap(userAccount, document.getElementById("swap_tlm").value)
             if (result != 0 && result != null) {
@@ -262,9 +271,17 @@ async function login() {
         document.getElementById("stake_btn").onclick = async function () {
             let result = await stake(userAccount, document.getElementById("stake").value)
             if (result != 0 && result != null) {
-                console.log('Complete: ' + result);
+                console.log('' + result);
             } else {
                 console.log('Error: Cannot stake.');
+            }
+        };
+        document.getElementById("unstake_btn").onclick = async function () {
+            let result = await unstake(userAccount, document.getElementById("stake").value)
+            if (result != 0 && result != null) {
+                console.log('' + result);
+            } else {
+                console.log('Error: Cannot unstake.');
             }
         };
         document.getElementById("run_btn").onclick = async function () {
@@ -274,16 +291,16 @@ async function login() {
             saveConfig();
         };
         document.getElementById("run_btn").disabled = true
-        clearTimer();
         loginCountdownFinishTime = new Date().getTime() + loginCountdownTime;
         loginInterval = setInterval(loginCountdownfunction, 1000);
         userAccount = await wax.login();
         updateAccount(userAccount);
         if (userAccount != null) {
-            clearTimer();
+            clearTimer()
             document.getElementById("countdown").innerHTML = "0m 0s";
-            onclickRun();
             document.getElementById("run_btn").disabled = false
+            await updateBag(userAccount)
+            onclickRun();
         }
 
     } catch (err) {
@@ -295,9 +312,9 @@ async function login() {
 }
 
 async function run() {
-    clearTimer();
     if (!isMining) {
         isMining = true
+
         //calculate delay
         if (delay == 0) {
             console.log('getting cooldown');
@@ -454,6 +471,7 @@ async function miner(mine_with) {
         else {
             delay = 0;
             clearTimer();
+            await sleep(5000);
             mineCountdownFinishTime = new Date().getTime() + nextmine;
             newMineInterval = setInterval(miningCountdownfunction, 1000);
         }
@@ -491,6 +509,12 @@ function stop() {
     isMining = false
 }
 
+async function restart() {
+    stop();
+    await sleep(5000);
+    run();
+}
+
 function onclickRun() {
     if (isMining) {
         stop();
@@ -509,8 +533,3 @@ function onclickRun() {
 
 }
 
-async function restart() {
-    stop();
-    await sleep(5000);
-    run();
-}

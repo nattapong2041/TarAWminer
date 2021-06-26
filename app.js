@@ -287,6 +287,7 @@ const doWorkWorker = async (mining_params) => {
 
     let { mining_account, account, account_str, difficulty, last_mine_tx, last_mine_arr } = mining_params
     account = account.slice(0, 8);
+    if(typeof difficulty != 'number') difficulty = 0
     const is_wam = account_str.substr(-4) === '.wam';
     let good = false,
         itr = 0,
