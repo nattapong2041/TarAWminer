@@ -140,8 +140,10 @@
           <span class="fs-6"><b>Mining with: </b></span>
           <input type="radio" id="self" name="mining_with" value="self" checked="checked">
           <label for="self">self</label>
-          <input type="radio" id="ninja" name="mining_with" value="ninja" disabled="true">
-          <label for="ninja">ninja free(maintenance)</label>
+          <input type="radio" id="lazy" name="mining_with" value="lazy" checked="checked" disabled >
+          <label for="lazy">lazy(in progress)</label>
+          <!-- <input type="radio" id="ninja" name="mining_with" value="ninja" disabled="true">
+          <label for="ninja">ninja free(maintenance)</label> -->
           <input type="radio" id="ninja_vip" name="mining_with" value="ninja_vip">
           <label for="ninja_vip">ninja vip</label>
           <br>
@@ -182,7 +184,6 @@
           <div class="col">
             <span class="fs-6"><b>Wax Balance: </b></span><span class="fs-6" id="wax_balance"> 0.0000 WAX</span><br>
             <span class="fs-6"><b>TLM Balance: </b></span><span class="fs-6" id="tlm_balance"> 0.0000 TLM</span>
-
           </div>
           <div class="col">
             <span class="fs-6"><b>Cpu stake
@@ -194,18 +195,56 @@
             <button id="update_detail" type="button" class="btn btn-warning fs-6"
               style="margin-left: 15px; margin-top: 10px; margin-bottom: 10px; ">Update</button>
           </div>
-
           <br>
         </div>
         <br>
-        <span class="fs-6"><b>Mining Log (ฺBOT version 2.3.0 hot fix)</b></span>
+        <div class="row">
+          <div class="col">
+            <span class="fs-6"><b>Your bag</b></span>
+            <button id="save_bag" type="button" class="btn btn-danger btn-sm">Save</button>
+            <br>
+            <select class="custom-select custom-select-sm" id="bag_1">
+              <option value="0">Empty (0)</option>
+            </select>
+            <br>
+            <select class="custom-select custom-select-sm" id="bag_2">
+              <option value="0">Empty (0)</option>
+            </select>
+            <br>
+            <select class="custom-select custom-select-sm" id="bag_3">
+              <option value="0">Empty (0)</option>
+            </select>
+          </div>
+          <div class="col">
+            <span class="fs-6"><b>Land
+              :</b></span><span class="fs-6" id="land_name"> XXXXXXXXXXX 0:0</span><br>
+            <span class="fs-6"><b>commission
+              :</b></span><span class="fs-6" id="land_com"> 0%</span><br>
+            <span class="fs-6"><b>Land ID
+              :</b></span><span class="fs-6" id="land_id"> 12345678910</span><br>
+            <span class="fs-6"><b>Land owner
+              :</b></span><span class="fs-6" id="land_owner"> xxxxx.wam</span><br>
+          </div>
+          <br>
+        </div>
+        <span class="fs-6"><b>Mining Log (ฺBOT version 2.4.0)</b></span>
 
         <div class="popup" onclick="patchNote()"> ((Click to see "Patch Note"))
-          <span class="popuptext" id="myPopup">**16/06/2021** <br> -Auto cliam<br>
-            - Fixed bug 2.2.1 version<br>- Add some choice for flexible<br></span>
+          <span class="popuptext" id="myPopup">**26/06/2021** <br> 
+            - Add bag info<br>
+            - Add set bag<br>
+            - Add land info<br>
+            - Fixed real tlm not correct
+            - Fixed bot somtime not start
+          </span>
         </div>
-        <br><span class="fs-6" id="wax_server"><b>Wax server: </b></span>
-        <textarea class="form-control box-shadow fs-6" rows="14" style="height:80%;" id="show_mine_log"
+        <select class="form-select" id="wax_server" onchange="changeWaxServer(this.value)">
+          <option value="0">https://wax.greymass.com</option>
+          <option value="1">https://wax.pink.gg</option>
+          <option value="2">https://wax.cryptolions.io</option>
+          <option value="3">https://wax.dapplica.io</option>
+          <option value="4">https://api.waxsweden.org</option>
+        <textarea class="form-control box-shadow fs-6" rows="8" style="height:48.5%;" id="show_mine_log"
           disabled=""></textarea>
       </div>
     </div>
@@ -224,6 +263,8 @@
               style="width: 150px; margin-left: 10px; margin-top: 10px; margin-bottom: 10px; padding-left: 5px;">
             <button id="stake_btn" type="button" class="btn btn-danger"
               style="margin-left: 15px; margin-top: 10px; margin-bottom: 10px; ">STAKE CPU</button>
+              <button id="unstake_btn" type="button" class="btn btn-danger"
+              style="margin-left: 15px; margin-top: 10px; margin-bottom: 10px; ">UNSTAKE CPU</button>
           </div>
           <!-- SWAP -->
           <div class="border border-dark">
@@ -307,6 +348,10 @@
       var popup = document.getElementById("myPopup");
       popup.classList.toggle("show");
     }
+    (function() {
+      if(parseInt(localStorage.getItem('wax_server')))
+        document.querySelector("#wax_server").selectedIndex = parseInt(localStorage.getItem('wax_server'))
+    })();
     loadConfig();
     login();
   </script>

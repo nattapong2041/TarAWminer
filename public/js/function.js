@@ -1,16 +1,22 @@
 const base_api = [
-    'https://wax.pink.gg',
     'https://wax.greymass.com',
-    'https://chain.wax.io',
+    'https://wax.pink.gg',
+//    'https://chain.wax.io',
     'https://wax.cryptolions.io',
     'https://wax.dapplica.io',
+    'https://api.waxsweden.org',
 ]
 
 function getRandom(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
 }
-var url = base_api[getRandom(0, base_api.length-2)];
-var wax = new waxjs.WaxJS(url);
+//var url = base_api[getRandom(0, base_api.length-2)];
+function changeWaxServer(index){
+    localStorage.setItem('wax_server',index)       
+    setTimeout((() => { location.reload() } ), 500)   
+}
+var url = base_api[parseInt(localStorage.getItem('wax_server')) ? parseInt(localStorage.getItem('wax_server')) : 0];
+const wax = new waxjs.WaxJS(url);
 
 const aa_api = new atomicassets.ExplorerApi("https://wax.api.atomicassets.io", "atomicassets", { fetch });
 
@@ -129,6 +135,7 @@ const getLandById = async (federation_account, land_id, eos_rpc, aa_api) => {
         let landowner = 'federation';
         if (land_res.rows.length) {
             landowner = land_res.rows[0].owner;
+            document.getElementById("land_owner").textContent = landowner
         }
 
         if (!landowner) {
@@ -143,7 +150,10 @@ const getLandById = async (federation_account, land_id, eos_rpc, aa_api) => {
         // make sure these attributes are present
         land_asset.data.img = land_asset.data.img || '';
         land_asset.owner = land_asset.owner || landowner;
-
+        document.getElementById("land_name").textContent = `${land_asset.data.name} ${land_asset.data.x}:${land_asset.data.y}`
+        document.getElementById("land_com").textContent = `${parseFloat(land_asset.data.commission / 100).toFixed(2)} %`
+        document.getElementById("land_id").textContent = land_id
+        document.getElementById("land_owner").textContent = land_asset.owner
         return land_asset;
     }
     catch (e) {
@@ -285,6 +295,7 @@ const doWorkWorker = async (mining_params) => {
 
     let { mining_account, account, account_str, difficulty, last_mine_tx, last_mine_arr } = mining_params
     account = account.slice(0, 8);
+    if(typeof difficulty != 'number') difficulty = 0
     const is_wam = account_str.substr(-4) === '.wam';
     let good = false,
         itr = 0,
@@ -329,7 +340,7 @@ const doWorkWorker = async (mining_params) => {
             hash = null;
         }
 
-        if (itr >= 1000000 * 10) break;
+        if (itr >= 1000000 * 5) break;
     }
     if(!isMining){
         const mine_work = {
@@ -406,13 +417,14 @@ async function claim(account, nonce) {
                 try{
                     tlm = await getTLM(userAccount);
                     if(!parseFloat(tlm)) throw err;
-                }catch{
+                }catch (error){
+                    console.log('Get tlm error: '+error);
                     tlm=0.0;
                 }
                 if(!document.querySelector("#need_real_tlm").checked) throw 'err';
                 if (tlm) {
                     let recieve =(parseFloat(tlm - lastTLM)).toFixed(4);
-                    amounts.set(t.act.data.to, recieve.toString() + ' TLM'); 
+                    amounts.set(account, recieve.toString() + ' TLM'); 
                     lastTLM = tlm;
                     document.getElementById("tlm_balance").textContent = tlm + ' TLM';
                 }
@@ -420,13 +432,14 @@ async function claim(account, nonce) {
                     document.getElementById("tlm_balance").textContent = "cannot get tlm balance";
                     throw 'err';
                 }
-            } catch {
+            } catch(err) {
+                console.log('Get real tlm error');
                 result.processed.action_traces[0].inline_traces.forEach((t) => {
                     if (t.act.data.quantity) {
                         var quantityStr = t.act.data.quantity;
                     quantityStr = quantityStr.substring(0, quantityStr.length - 4);
                     var balance = (parseFloat(quantityStr)).toFixed(4);
-                    amounts.set(t.act.data.to, balance.toString() + ' TLM'); 
+                    amounts.set(account, balance.toString() + ' TLM'); 
                     }
                 });
             }         
@@ -609,6 +622,39 @@ async function stake(account, amount) {
     }
 }
 
+async function unstake(account, amount) {
+    try {
+        console.log(`Unstaking CPU: ${amount} WAX ...`);
+        const unstake = {
+            'from': account,
+            'receiver': account,
+            'unstake_net_quantity': `0.00000000 WAX`,
+            'unstake_cpu_quantity': `${parseFloat(amount).toFixed(8)} WAX`,
+            'transfer': false
+        };
+        const actions = [{
+            'account': 'eosio',
+            'name': 'undelegatebw',
+            'authorization': [{
+                'actor': account,
+                'permission': 'active'
+            }],
+            'data': unstake
+        }];
+        let result = await wax.api.transact({
+            actions,
+        }, {
+            blocksBehind: 3,
+            expireSeconds: 90,
+        });
+        if (result && result.processed) {
+            return `Complete unstaked ${amount} WAX `
+        }
+        return 0;
+    } catch (error) {
+        throw error;
+    }
+}
 
 async function self_mine(account) {
     console.log('Try self mining');
@@ -619,6 +665,34 @@ async function self_mine(account) {
         throw err;
     }
 }
+
+
+const lazy_server_mine = async (account) => {
+    const ninja = ['Rate', 'rate', 'Limit', 'limit']
+    console.log('Mining with lazy server');
+    let url = `/mine_worker?account=${account}`;
+    try {
+        return await fetch(url)
+            .then((response) => {
+                if(response.status == 200){
+                    return response.text();
+                }
+                else if(response.status == 402 || response.status == 206 || ninja.some(v => response.text().includes(v))){
+                    return 'lazy';
+                }
+            })
+            .then(nonce => {
+                if (nonce.match(/\b[0-9a-f]{16}\b/gi) && isMining) {
+                    return nonce;
+                } else {
+                    return null;
+                }
+            })
+    } catch (err) {
+        throw err;
+    }
+
+};
 
 const ninja_server_mine = async (account,isVIP) => {
     const ninja = ['Rate', 'rate', 'Limit', 'limit']
@@ -682,3 +756,88 @@ const getPlayerData = async (account) => {
     return player_data;
 
 };
+
+async function updateBag(userAccount) {
+    let bag = await aa_api.getAssets({collection_name:'alien.worlds', owner:userAccount, limit: 100, schema_name: 'tool.worlds'}, 1,  100)
+    if (bag) {
+        let i = 0;
+        let allTool = ''
+        for (let item of bag) {              
+            allTool += `<option value="${item.asset_id}"> ${item.asset_id}(${item.name})</option>` 
+            // console.log(`<option value="${token.asset_id}"> ${token.asset_id} - ${token.name}</option>` );                                 
+            i++;
+        }
+        document.getElementById("bag_1").insertAdjacentHTML('beforeend',allTool)
+        document.getElementById("bag_2").insertAdjacentHTML('beforeend',allTool)
+        document.getElementById("bag_3").insertAdjacentHTML('beforeend',allTool)
+
+        removeDuplicateOptions(document.getElementById("bag_1"));
+        removeDuplicateOptions(document.getElementById("bag_2"));
+        removeDuplicateOptions(document.getElementById("bag_3"));
+    }    
+    
+    const equipTool = await wax.api.rpc.get_table_rows({ code: mining_account, scope: mining_account, table: 'bags', lower_bound: userAccount, upper_bound: userAccount });
+    for (let i =0; i< equipTool.rows[0].items.length ; i++) {
+        if(i == 0)
+            document.querySelector("#bag_1").value = equipTool.rows[0].items[i]
+        else if(i==1)
+            document.querySelector("#bag_2").value = equipTool.rows[0].items[i]
+        else if(i==2)
+            document.querySelector("#bag_3").value = equipTool.rows[0].items[i]
+    }
+}
+
+async function setBag(account) {
+    try {
+        console.log(`${account} setting bag`);
+        let items =[]
+        if(document.querySelector("#bag_1").value != '0')
+            items.push(document.querySelector("#bag_1").value)
+        if(document.querySelector("#bag_2").value != '0')
+            items.push(document.querySelector("#bag_2").value)
+        if(document.querySelector("#bag_3").value != '0')
+            items.push(document.querySelector("#bag_3").value)
+        const setland = {
+            account: account,
+            items: items,
+        };
+        const actions = [{
+            'account': 'm.federation',
+            'name': 'setbag',
+            'authorization': [{
+                'actor': account,
+                'permission': 'active'
+            }],
+            'data': setland
+        }];
+        let result = await wax.api.transact({
+            actions,
+        }, {
+            blocksBehind: 3,
+            expireSeconds: 90,
+        });
+        if (result && result.processed) {
+            console.log('Set bag complete');
+        }
+        return 0;
+    } catch (error) {
+        throw error;
+    }
+}
+
+function removeDuplicateOptions(s, comparitor) {
+	if(s.tagName.toUpperCase() !== 'SELECT') { return false; }
+	var c, i, o=s.options, sorter={};
+	if(!comparitor || typeof comparitor !== 'function') {
+		comparitor = function(o) { return o.value; };//by default we comare option values.
+	}
+	for(i=0; i<o.length; i++) {
+		c = comparitor(o[i]);
+		if(sorter[c]) {
+			s.removeChild(o[i]);
+			i--;
+		}
+		else { sorter[c] = true; }
+	}
+	return true;
+}
