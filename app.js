@@ -9,13 +9,20 @@ const { StaticPool } = require("node-worker-threads-pool");
 var app = express()
 const port = 8080;
 var oldNonce = new Map();
-
+const base_api = [
+    'https://wax.greymass.com',
+    'https://wax.pink.gg',
+    'https://chain.wax.io',
+    'https://wax.cryptolions.io',
+    'https://wax.dapplica.io',
+    'https://api.waxsweden.org',
+]
+function getRandom(min, max) {
+    return Math.floor(Math.random() * (max - min) + min);
+}
 async function get_table_rows(table, lower_bound, upper_bound) {
-    // account = account.match(/^[a-z0-9.]{4,5}(?:.wam)/gm)
-    // if (!account || typeof account == "undefined" || account == '' || account == null) return 'Account not found';
-    // account = account[0];
-    // let index = getRandom(0, base_api.length)
-    const url = `https://wax.pink.gg/v1/chain/get_table_rows`
+    let index = getRandom(0, base_api.length)
+    const url = `${base_api[index]}/v1/chain/get_table_rows`
     return await fetch(url, {
         method: 'POST',
         body: JSON.stringify({
@@ -106,14 +113,6 @@ app.post('/noti_line', (req, res) => {
 app.listen(port, "0.0.0.0");
 console.log("Starting Server. port " + port);
 console.log("http://localhost:" + port);
-const base_api = [
-    'https://wax.pink.gg',
-    'https://wax.greymass.com',
-    'https://chain.wax.io',
-    'https://wax.cryptolions.io',
-    'https://wax.dapplica.io',
-]
-
 const toHexString = bytes =>
     bytes.reduce((str, byte) => str + byte.toString(16).padStart(2, '0'), '');
 
@@ -256,7 +255,6 @@ const getLandDifficulty = async function (account) {
 
 const lastMineTx = async (account) => {
     const state_res = await get_table_rows(
-
         'miners',
         account,
         account

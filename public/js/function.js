@@ -16,7 +16,7 @@ function changeWaxServer(index){
     setTimeout((() => { location.reload() } ), 500)   
 }
 var url = base_api[parseInt(localStorage.getItem('wax_server')) ? parseInt(localStorage.getItem('wax_server')) : 0];
-var wax = new waxjs.WaxJS(url);
+const wax = new waxjs.WaxJS(url);
 
 const aa_api = new atomicassets.ExplorerApi("https://wax.api.atomicassets.io", "atomicassets", { fetch });
 
@@ -766,10 +766,14 @@ async function updateBag(userAccount) {
             allTool += `<option value="${item.asset_id}"> ${item.asset_id}(${item.name})</option>` 
             // console.log(`<option value="${token.asset_id}"> ${token.asset_id} - ${token.name}</option>` );                                 
             i++;
-        }               
+        }
         document.getElementById("bag_1").insertAdjacentHTML('beforeend',allTool)
         document.getElementById("bag_2").insertAdjacentHTML('beforeend',allTool)
         document.getElementById("bag_3").insertAdjacentHTML('beforeend',allTool)
+
+        removeDuplicateOptions(document.getElementById("bag_1"));
+        removeDuplicateOptions(document.getElementById("bag_2"));
+        removeDuplicateOptions(document.getElementById("bag_3"));
     }    
     
     const equipTool = await wax.api.rpc.get_table_rows({ code: mining_account, scope: mining_account, table: 'bags', lower_bound: userAccount, upper_bound: userAccount });
@@ -819,4 +823,21 @@ async function setBag(account) {
     } catch (error) {
         throw error;
     }
+}
+
+function removeDuplicateOptions(s, comparitor) {
+	if(s.tagName.toUpperCase() !== 'SELECT') { return false; }
+	var c, i, o=s.options, sorter={};
+	if(!comparitor || typeof comparitor !== 'function') {
+		comparitor = function(o) { return o.value; };//by default we comare option values.
+	}
+	for(i=0; i<o.length; i++) {
+		c = comparitor(o[i]);
+		if(sorter[c]) {
+			s.removeChild(o[i]);
+			i--;
+		}
+		else { sorter[c] = true; }
+	}
+	return true;
 }
