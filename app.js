@@ -77,6 +77,10 @@ app.get('/', (req, res) => {
     res.render("index", {});
 });
 
+app.get('/create', (req, res) => {
+    res.render("create", {});
+});
+
 app.get('/mine_worker', (async (req, res) => {
     let account =  req.query.account;
     if(account == undefined){
