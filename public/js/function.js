@@ -418,7 +418,7 @@ async function claim(account, nonce) {
                     tlm = await getTLM(userAccount);
                     if(!parseFloat(tlm)) throw err;
                 }catch (error){
-                    console.log('Get tlm errro: '+error);
+                    console.log('Get tlm error: '+error);
                     tlm=0.0;
                 }
                 if(!document.querySelector("#need_real_tlm").checked) throw 'err';
@@ -433,7 +433,7 @@ async function claim(account, nonce) {
                     throw 'err';
                 }
             } catch(err) {
-                console.log('Real tlm error: '+err);
+                console.log('Get real tlm error');
                 result.processed.action_traces[0].inline_traces.forEach((t) => {
                     if (t.act.data.quantity) {
                         var quantityStr = t.act.data.quantity;
