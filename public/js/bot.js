@@ -301,7 +301,6 @@ async function login() {
             clearTimer()
             document.getElementById("countdown").innerHTML = "0m 0s";
             document.getElementById("run_btn").disabled = false
-            await updateBag(userAccount)
             onclickRun();
         }
 
