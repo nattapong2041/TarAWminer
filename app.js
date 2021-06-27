@@ -9,8 +9,8 @@ const { StaticPool } = require("node-worker-threads-pool");
 var app = express()
 const port = 8080;
 var oldNonce = new Map();
-const cors = require('cors');
 
+var cors = require('cors')
 app.use(cors())
 
 const base_api = [
