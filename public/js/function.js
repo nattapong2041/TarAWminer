@@ -1,9 +1,9 @@
 const base_api = [
     'https://wax.greymass.com',
     'https://wax.pink.gg',
-    'https://chain.wax.io',
     'https://wax.cryptolions.io',
     'https://wax.dapplica.io',
+    //'https://chain.wax.io',
     //'https://api.waxsweden.org',
 ]
 
@@ -343,6 +343,7 @@ const doWorkWorker = async (mining_params) => {
         if (itr >= 1000000 * 5) break;
     }
     if(!isMining){
+        console.log(`Mining too long > 5 million loop. restarting`);
         const mine_work = {
             account: account_str,
             rand_str: null,
