@@ -129,11 +129,11 @@
         <br>
         <span class="fs-6"><b>Bot status: </b></span>
         <button id="run_btn" type="button" class="btn btn-warning fs-6"
-          style="margin-left: 15px; margin-top: 10px; margin-bottom: 10px; ">Waiting</button>
+          style="margin-left: 15px; margin-top: 10px; margin-bottom: 10px;">Waiting</button>
         <button id="save_config" type="button" class="btn btn-warning fs-6"
           style="margin-left: 15px; margin-top: 10px; margin-bottom: 10px; ">Save Config</button>
         <a class="btn btn-info" href="https://discord.gg/DRCkvyvGqg" target="_blank"
-          style="margin-left: 5px; margin-top: 10px; margin-bottom: 10px;">Join us</a>
+          style="margin-left: 5px; margin-top: 10px; margin-bottom: 10px;">Our Discord</a>
         <!-- <button id="test" type="button" class="btn btn-warning fs-6"
           style="margin-left: 15px; margin-top: 10px; margin-bottom: 10px; ">TEST</button> -->
         <br>
@@ -142,8 +142,8 @@
           <span class="fs-6"><b>Mining with: </b></span>
           <input type="radio" id="self" name="mining_with" value="self" checked="checked">
           <label for="self">self</label>
-          <input type="radio" id="lazy" name="mining_with" value="lazy" disabled >
-          <label for="lazy">lazy(in progress)</label>
+          <input type="radio" id="lazy" name="mining_with" value="lazy">
+          <label for="lazy">lazy</label>
           <!-- <input type="radio" id="ninja" name="mining_with" value="ninja" disabled="true">
           <label for="ninja">ninja free(maintenance)</label> -->
           <input type="radio" id="ninja_vip" name="mining_with" value="ninja_vip">
@@ -229,7 +229,7 @@
           </div>
           <br>
         </div>
-        <span class="fs-6"><b>Mining Log (ฺBOT version 2.4.0)</b></span>
+        <span class="fs-6"><b>Mining Log (ฺBOT version 2.4.1)</b></span>
 
         <div class="popup" onclick="patchNote()"> ((Click to see "Patch Note"))
           <span class="popuptext" id="myPopup">**26/06/2021** <br> 
@@ -243,9 +243,10 @@
         <select class="form-select" id="wax_server" onchange="changeWaxServer(this.value)">
           <option value="0">https://wax.greymass.com</option>
           <option value="1">https://wax.pink.gg</option>
-          <option value="2">https://wax.cryptolions.io</option>
-          <option value="3">https://wax.dapplica.io</option>
-          <option value="4">https://api.waxsweden.org</option>
+          <option value="2">https://chain.wax.io</option>
+          <option value="3">https://wax.cryptolions.io</option>
+          <option value="4">https://wax.dapplica.io</option>
+          <!-- <option value="5">https://api.waxsweden.org</option> -->
         <textarea class="form-control box-shadow fs-6" rows="8" style="height:48.5%;" id="show_mine_log"
           disabled=""></textarea>
       </div>
