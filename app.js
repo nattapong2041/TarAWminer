@@ -82,26 +82,27 @@ app.get('/create', (req, res) => {
 });
 
 app.get('/mine_worker', (async (req, res) => {
-    let account =  req.query.account;
-    if(account == undefined){
-        res.status(400);
-        res.send('Not a wax account');
-    }
-    account = account.match(/^[a-z0-9.]{4,5}(?:.wam)/gm)
-    if (!account || typeof account == "undefined" || account == '' || account == null || !account[0].substr(-4) === '.wam'){
-        res.status(400);
-        res.send('Not a wax account');
-    }else{
-        await background_mine(account[0]).then((result) => {
-        if (result == null) {
-            res.status(400);
-            res.send('Taking too long');
-        } else {
-            res.status(200);
-            res.send(result.rand_str);
-        }
-    })
-    }
+    res.send('Server is in progress')
+    // let account =  req.query.account;
+    // if(account == undefined){
+    //     res.status(400);
+    //     res.send('Not a wax account');
+    // }
+    // account = account.match(/^[a-z0-9.]{4,5}(?:.wam)/gm)
+    // if (!account || typeof account == "undefined" || account == '' || account == null || !account[0].substr(-4) === '.wam'){
+    //     res.status(400);
+    //     res.send('Not a wax account');
+    // }else{
+    //     await background_mine(account[0]).then((result) => {
+    //     if (result == null) {
+    //         res.status(400);
+    //         res.send('Taking too long');
+    //     } else {
+    //         res.status(200);
+    //         res.send(result.rand_str);
+    //     }
+    // })
+    // }
     
 }));
 
