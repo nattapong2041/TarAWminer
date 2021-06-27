@@ -663,7 +663,7 @@ async function self_mine(account) {
 const lazy_server_mine = async (account) => {
     const ninja = ['Rate', 'rate', 'Limit', 'limit']
     console.log('Mining with lazy server');
-    let url = `/mine_worker?account=${account}`;
+    let url = `https://lazydigger.as.r.appspot.com/mine_worker?account=${account}`;
     try {
         return await fetch(url)
             .then((response) => {
