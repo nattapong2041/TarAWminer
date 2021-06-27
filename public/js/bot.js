@@ -31,7 +31,6 @@ function saveConfig() {
     //autoclaim
     localStorage.setItem('auto_claim', document.querySelector("#auto_claim").checked);
     localStorage.setItem('auto_claim_time', document.getElementById("auto_claim_time").value);
-    //localStorage.setItem('auto_claim_time', document.getElementById("auto_claim_time").value);
 }
 
 function loadConfig() {
@@ -109,13 +108,24 @@ async function updateAccStatus() {
     } catch {
         console.log('Error while update account details');
     }
-    try{
-        await updateBag(userAccount)
-        await getLand(federation_account, mining_account, userAccount, wax.api.rpc, aa_api);       
-    }catch(error){
-        console.log(error);
+}
+
+async function updateLand() {
+    try {
+        await getLand(federation_account, mining_account, userAccount, wax.api.rpc, aa_api);   
+    } catch (error){
+        console.log('Cannot update land info');
     }
 }
+
+async function updateItem() {
+    try {
+        await updateBag(userAccount)     
+    } catch (error){
+        console.log('Cannot update item');
+    }
+}
+
 
 async function updateTLM() {
     try {
@@ -225,6 +235,8 @@ async function login() {
             try {
                 updateAccStatus();
                 updateTLM()
+                updateLand()
+                updateItem()
             } catch (err) {
                 throw err;
             }
@@ -297,6 +309,7 @@ async function login() {
             saveConfig();
         };
         document.getElementById("run_btn").disabled = true
+        clearTimer();
         loginCountdownFinishTime = new Date().getTime() + loginCountdownTime;
         loginInterval = setInterval(loginCountdownfunction, 1000);
         userAccount = await wax.login();
@@ -327,10 +340,6 @@ async function run() {
                 if (response == -1) throw 'Cannot get cooldown'
                 return response;
             }).catch((err) => {
-                // url = base_api[getRandom(0, base_api.length-2)];
-                // wax = new waxjs.WaxJS(url);
-                // document.getElementById("wax_server").textContent = 'Wax server: ' + url;
-                // console.log('change wax server to: ' + url);
                 return 0;
             });
             await sleep(3000);
@@ -360,6 +369,9 @@ async function run() {
             mineInterval = setInterval(chargingCountdownfunction, 1000);
         }
 
+    }else{
+        isMining = false;
+        clearTimer()
     }
 }
 
