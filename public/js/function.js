@@ -4,7 +4,7 @@ const base_api = [
     'https://chain.wax.io',
     'https://wax.cryptolions.io',
     'https://wax.dapplica.io',
-    'https://api.waxsweden.org',
+    //'https://api.waxsweden.org',
 ]
 
 function getRandom(min, max) {
@@ -416,9 +416,9 @@ async function claim(account, nonce) {
                 let tlm=0.0;
                 try{
                     tlm = await getTLM(userAccount);
-                    if(!parseFloat(tlm)) throw err;
+                    if(!parseFloat(tlm));
                 }catch (error){
-                    console.log('Get tlm error: '+error);
+                    console.log('Get tlm error');
                     tlm=0.0;
                 }
                 if(!document.querySelector("#need_real_tlm").checked) throw 'err';
@@ -448,12 +448,6 @@ async function claim(account, nonce) {
         }
         return 0.00;
     } catch (error) {
-        // delete(wax)
-        // url = base_api[getRandom(0, base_api.length-2)];
-        // wax = new waxjs.WaxJS(url);
-        // await sleep(3000);
-        // document.getElementById("wax_server").textContent = 'Wax server: '+url;
-        // console.log('change wax server to: '+ url);
         console.log(error.message); 
         throw error
     }
