@@ -758,7 +758,21 @@ const getPlayerData = async (account) => {
 };
 
 async function updateBag(userAccount) {
-    let bag = await aa_api.getAssets({collection_name:'alien.worlds', owner:userAccount, limit: 100, schema_name: 'tool.worlds'}, 1,  100)
+    //url = 'https://wax.api.atomicassets.io/atomicassets/v1/assets?collection_name=alien.worlds&owner=wqobq.wam&limit=100&schema_name=tool.worlds'
+    //let bag = await aa_api.getAssets({collection_name:'alien.worlds', owner:userAccount, limit: 100, schema_name: 'tool.worlds'}, 1,  100)
+    let bag = await fetch(`https://wax.api.atomicassets.io/atomicassets/v1/assets?collection_name=alien.worlds&owner=${userAccount}&limit=100&schema_name=tool.worlds`,
+    {header: {
+        'content-type': 'application/json'
+    }})
+    .then(function (response) {
+        return response.json();
+    }).then((res) => {
+        if (res.success) {
+            return res.data;
+        }
+    }).catch((err) => {  
+        return 'Error: cannot get bag data: ' + err.message;
+    });
     if (bag) {
         let i = 0;
         let allTool = ''

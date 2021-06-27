@@ -106,10 +106,14 @@ async function updateAccStatus() {
         else {
             document.getElementById("wax_balance").textContent = "cannot get wax balance"
         }
-        await getLand(federation_account, mining_account, userAccount, wax.api.rpc, aa_api);
-        await updateBag(userAccount)
     } catch {
         console.log('Error while update account details');
+    }
+    try{
+        await updateBag(userAccount)
+        await getLand(federation_account, mining_account, userAccount, wax.api.rpc, aa_api);       
+    }catch(error){
+        console.log(error);
     }
 }
 
