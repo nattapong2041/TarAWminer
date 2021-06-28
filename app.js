@@ -1,11 +1,9 @@
 const express = require('express')
 const crypto = require('crypto');
-const fetch = require("node-fetch");
 const { Serialize } = require('eosjs');
 const mining_account = "m.federation";
 const federation_account = "federation";
-const { Worker } = require("worker_threads");
-const { StaticPool } = require("node-worker-threads-pool");
+const axios = require('axios').default;
 var app = express()
 const port = 8080;
 var oldNonce = new Map();
@@ -22,23 +20,18 @@ const base_api = [
 function getRandom(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
 }
+axios.defaults.headers.post['Content-Type'] = 'application/json';
 async function get_table_rows(table, lower_bound, upper_bound) {
     let index = getRandom(0, base_api.length)
     const url = `${base_api[index]}/v1/chain/get_table_rows`
-    return await fetch(url, {
-        method: 'POST',
-        body: JSON.stringify({
-            "json": true,
-            "code": table == "landregs" ? federation_account : mining_account,
-            "scope": table == "landregs" ? federation_account : mining_account,
-            "table": table,
-            "lower_bound": lower_bound,
-            "upper_bound": upper_bound
-        }),
-        header: {
-            'content-type': 'application/json'
-        }
-    }).then(res => res.json())
+    return await axios.post(url,{
+            json: true,
+            code: table == "landregs" ? federation_account : mining_account,
+            scope: table == "landregs" ? federation_account : mining_account,
+            table: table,
+            lower_bound: lower_bound,
+            upper_bound: upper_bound
+    }).then(res => res.data)
         .then((json) => {
             return json
         })
@@ -49,12 +42,7 @@ async function get_table_rows(table, lower_bound, upper_bound) {
 }
 async function get_assets(assestId) {
     const url = `https://wax.api.atomicassets.io/atomicassets/v1/assets/${assestId}`
-    return await fetch(url, {
-        method: 'GET',
-        header: {
-            'content-type': 'application/json'
-        }
-    }).then(res => res.json())
+    return await axios.get(url).then(res => res.data)
         .then((json) => {
             return json
         })
@@ -64,10 +52,6 @@ async function get_assets(assestId) {
         });
 }
 
-const pool = new StaticPool({
-    size: 8,
-    task: "./mine_worker.js"
-});
 const fromHexString = hexString =>
     new Uint8Array(hexString.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
 
