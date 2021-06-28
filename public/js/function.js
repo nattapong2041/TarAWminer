@@ -397,34 +397,33 @@ async function claim(account, nonce) {
             },],
             data: mine_data,
         },];
-        const result = await wax.api.transact({ actions }, { blocksBehind: 3, expireSeconds: 90 });
-        // let result = await timeout(95000, wax.api.transact({
-        //     actions,
-        // }, {
-        //     blocksBehind: 3,
-        //     expireSeconds: 90,
-        // })).then(function (response) {
-        //     return response;
-        // }).catch((err) => {
-        //     throw err;
-        // });
+        let result = await timeout(95000, wax.api.transact({
+            actions,
+        }, {
+            blocksBehind: 3,
+            expireSeconds: 90,
+        })).then(function (response) {
+            return response;
+        }).catch((err) => {
+            throw err;
+        });
 
         await sleep(2000);
         var amounts = new Map();
         if (result && result.processed) {
+            let isFine = false
             try {
                 let tlm=0.0;
                 try{
                     tlm = await getTLM(userAccount);
-                    if(!parseFloat(tlm));
-                }catch (error){
-                    console.log('Get tlm error');
+                    isFine = true
+                }catch{
                     tlm=0.0;
                 }
                 if(!document.querySelector("#need_real_tlm").checked) throw 'err';
-                if (tlm) {
+                if (isFine) {
                     let recieve =(parseFloat(tlm - lastTLM)).toFixed(4);
-                    amounts.set(account, recieve.toString() + ' TLM'); 
+                    amounts.set(t.act.data.to, recieve.toString() + ' TLM'); 
                     lastTLM = tlm;
                     document.getElementById("tlm_balance").textContent = tlm + ' TLM';
                 }
@@ -432,14 +431,13 @@ async function claim(account, nonce) {
                     document.getElementById("tlm_balance").textContent = "cannot get tlm balance";
                     throw 'err';
                 }
-            } catch(err) {
-                console.log('Get real tlm error');
+            } catch {
                 result.processed.action_traces[0].inline_traces.forEach((t) => {
                     if (t.act.data.quantity) {
                         var quantityStr = t.act.data.quantity;
                     quantityStr = quantityStr.substring(0, quantityStr.length - 4);
                     var balance = (parseFloat(quantityStr)).toFixed(4);
-                    amounts.set(account, balance.toString() + ' TLM'); 
+                    amounts.set(t.act.data.to, balance.toString() + ' TLM'); 
                     }
                 });
             }         
