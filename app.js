@@ -9,33 +9,33 @@ const port = 8080;
 
 var cors = require('cors')
 app.use(cors())
-// var members= require('./member.json')
-var members = [
-    {
-        "account": "vmndk.wam",
-        "nonce": null
-    },
-    {
-        "account": "pf3tk.wam",
-        "nonce": null
-    },
-    {
-        "account": "qr4tk.wam",
-        "nonce": null
-    },
-    {
-        "account": "3badk.wam",
-        "nonce": null
-    },
-    {
-        "account": "i3pdo.wam",
-        "nonce": null
-    },
-    {
-        "account": "pnpto.wam",
-        "nonce": null
-    }
-]
+var members= require('./member.json')
+// var members = [
+//     {
+//         "account": "vmndk.wam",
+//         "nonce": null
+//     },
+//     {
+//         "account": "pf3tk.wam",
+//         "nonce": null
+//     },
+//     {
+//         "account": "qr4tk.wam",
+//         "nonce": null
+//     },
+//     {
+//         "account": "3badk.wam",
+//         "nonce": null
+//     },
+//     {
+//         "account": "i3pdo.wam",
+//         "nonce": null
+//     },
+//     {
+//         "account": "pnpto.wam",
+//         "nonce": null
+//     }
+// ]
 const base_api = [
     'https://wax.greymass.com',
     'https://wax.pink.gg',
