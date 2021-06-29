@@ -389,8 +389,12 @@ const doWorkWorker = async (mining_params) => {
 
 const background_mine = async (account) => {
     return new Promise(async (resolve, reject) => {
-        const bagDifficulty = await getBagDifficulty(account);
-        const landDifficulty = await getLandDifficulty(account);
+        const bagDifficulty = await getBagDifficulty(account).then((result) => result).catch((error) => {
+            return 0;
+        });
+        const landDifficulty = await getLandDifficulty(account).then((result) => result).catch((error) =>{
+            return 0;
+        });
         const difficulty = bagDifficulty + landDifficulty;
         const last_mine_tx = await lastMineTx(account);
         doWorkWorker({
