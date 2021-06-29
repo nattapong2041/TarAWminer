@@ -6,11 +6,10 @@ const federation_account = "federation";
 const axios = require('axios').default;
 var app = express()
 const port = 8080;
-var oldNonce = new Map();
 
 var cors = require('cors')
 app.use(cors())
-
+var members= require('./member.json')
 const base_api = [
     'https://wax.greymass.com',
     'https://wax.pink.gg',
@@ -74,19 +73,17 @@ app.get('/mine_worker', (async (req, res) => {
         res.send('Not a wax account');
     }
     account = account.match(/^[a-z0-9.]{4,5}(?:.wam)/gm)
-    if (!account || typeof account == "undefined" || account == '' || account == null || !account[0].substr(-4) === '.wam'){
+    if (!account || typeof account == undefined || account == '' || account == null || !account[0].substr(-4) === '.wam'){
         res.status(400);
         res.send('Not a wax account');
     }else{
-        await background_mine(account[0]).then((result) => {
-        if (result == null) {
+        if (members.find(element => element.account == account[0]).nonce == null) {
             res.status(400);
-            res.send('Taking too long');
+            res.send('you are in mining queue');
         } else {
             res.status(200);
-            res.send(result.rand_str);
+            res.send(members.find(element => element.account == account[0]).nonce);
         }
-    })
     }
     
 }));
@@ -100,7 +97,23 @@ app.post('/noti_line', (req, res) => {
     //   res.send('complete')
     // });
 });
-app.listen(port, "0.0.0.0");
+app.listen(port, "0.0.0.0",async function(){
+    while (true) {
+        for(let i=members.length -1; i >= 0;i--){
+            await background_mine(members[i].account).then((result) => {
+                if (result == null) {
+                    members[i].nonce =null
+                } else {
+                    members[i].nonce = result.rand_str;
+                }
+            }).catch((err) => {
+                console.log(err);
+                members[i].nonce =null
+            })
+        }
+    }
+    
+});
 console.log("Starting Server. port " + port);
 console.log("http://localhost:" + port);
 const toHexString = bytes =>
@@ -175,7 +188,14 @@ const getBagMiningParams = (bag) => {
 
 const getLandById = async (land_id) => {
     try {
-        const land_res = await get_table_rows('landregs', land_id, land_id);
+        const land_res = await get_table_rows('landregs', land_id, land_id)
+        .then((resutl) => {
+            return resutl
+        })
+        .catch((err) => {
+            console.log('' + err.message);
+            return null;
+        });
         let landowner = 'federation';
         if (land_res.rows.length) {
             landowner = land_res.rows[0].owner;
@@ -184,7 +204,13 @@ const getLandById = async (land_id) => {
         if (!landowner) {
             throw new Error(`Land owner not found for land id ${land_id}`);
         }
-        const land = await get_assets(land_id);
+        const land = await get_assets(land_id).then((resutl) => {
+            return resutl
+        })
+        .catch((err) => {
+            console.log('' + err.message);
+            return null;
+        });
         return land.data;
     }
     catch (e) {
@@ -194,7 +220,14 @@ const getLandById = async (land_id) => {
 
 const getLand = async (account) => {
     try {
-        const miner_res = await get_table_rows('miners', account, account);
+        const miner_res = await get_table_rows('miners', account, account)
+        .then((resutl) => {
+            return resutl
+        })
+        .catch((err) => {
+            console.log('' + err.message);
+            return null;
+        });
         let land_id;
         if (miner_res.rows.length === 0) {
             return null;
@@ -212,11 +245,23 @@ const getLand = async (account) => {
 }
 
 const getBag = async (account) => {
-    const bag_res = await get_table_rows('bags', account, account);
+    const bag_res = await get_table_rows('bags', account, account).then((resutl) => {
+        return resutl
+    })
+    .catch((err) => {
+        console.log('' + err.message);
+        return null;
+    });
     const bag = [];
     if (bag_res.rows.length) {
         const items_p = bag_res.rows[0].items.map((item_id) => {
-            return get_assets(item_id);
+            return get_assets(item_id).then((resutl) => {
+                return resutl
+            })
+            .catch((err) => {
+                console.log('' + err.message);
+                return null;
+            });
         });
         return await Promise.all(items_p);
     }
@@ -248,7 +293,13 @@ const lastMineTx = async (account) => {
         'miners',
         account,
         account
-    );
+    ).then((resutl) => {
+        return resutl
+    })
+    .catch((err) => {
+        console.log('' + err.message);
+        return null;
+    });
     let last_mine_tx = '0000000000000000000000000000000000000000000000000000000000000000';
     if (state_res.rows.length) {
         last_mine_tx = state_res.rows[0].last_mine_tx;
@@ -285,12 +336,15 @@ const doWorkWorker = async (mining_params) => {
         rand_arr,
         last;
     const start = new Date().getTime();
+    let oldNonce = members.find(element => element.account == account_str).nonce
+    // if(oldNonce != null){
+    //     rand_arr = fromHexString(oldNonce)
+    // }
     while (!good) {
         rand_arr = getRand();
         if(itr==0){
-            if(oldNonce.get(account_str) != undefined){
-                rand_arr = fromHexString(oldNonce.get(account_str).rand_str)
-            }
+            if(oldNonce != null)
+                rand_arr = fromHexString(oldNonce)
         }
         const combined = new Uint8Array(account.length + last_mine_arr.length + rand_arr.length);
         combined.set(account);
@@ -330,7 +384,6 @@ const doWorkWorker = async (mining_params) => {
         rand_str: rand_str,
         hex_digest: hex_digest
     };
-    oldNonce.set(account_str, mine_work);
     return mine_work;
 };
 
