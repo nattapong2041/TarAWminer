@@ -104,12 +104,12 @@ app.get('/mine_worker', (async (req, res) => {
         res.send('Not a wax account');
     } else {
         account = account[0];
-        if (members.find(element => element.account == account[0]).nonce == null) {
+        if (members.find(element => element.account == account).nonce == null) {
             res.status(400);
             res.send('you are in mining queue');
         } else {
             res.status(200);
-            res.send(members.find(element => element.account == account[0]).nonce);
+            res.send(members.find(element => element.account == account).nonce);
         }
     }
 
