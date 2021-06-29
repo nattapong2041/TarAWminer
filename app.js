@@ -9,7 +9,33 @@ const port = 8080;
 
 var cors = require('cors')
 app.use(cors())
-var members= require('./member.json')
+// var members= require('./member.json')
+var members = [
+    {
+        "account": "vmndk.wam",
+        "nonce": null
+    },
+    {
+        "account": "pf3tk.wam",
+        "nonce": null
+    },
+    {
+        "account": "qr4tk.wam",
+        "nonce": null
+    },
+    {
+        "account": "3badk.wam",
+        "nonce": null
+    },
+    {
+        "account": "i3pdo.wam",
+        "nonce": null
+    },
+    {
+        "account": "pnpto.wam",
+        "nonce": null
+    }
+]
 const base_api = [
     'https://wax.greymass.com',
     'https://wax.pink.gg',
@@ -108,7 +134,7 @@ app.listen(port, "0.0.0.0",async function(){
                 }
             }).catch((err) => {
                 console.log(err);
-                members[i].nonce =null
+                members[i].nonce = null
             })
         }
     }
@@ -340,6 +366,7 @@ const doWorkWorker = async (mining_params) => {
     // if(oldNonce != null){
     //     rand_arr = fromHexString(oldNonce)
     // }
+    difficulty =0;
     while (!good) {
         rand_arr = getRand();
         if(itr==0){
@@ -352,7 +379,7 @@ const doWorkWorker = async (mining_params) => {
         combined.set(rand_arr, account.length + last_mine_arr.length);
         hash = crypto.createHash('sha256').update(combined.slice(0, 24)).digest('Uint8Array');
         hex_digest = toHexString(hash);
-
+        
         if (is_wam) {
             good = hex_digest.substr(0, 4) === '0000';
         } else {
@@ -389,10 +416,12 @@ const doWorkWorker = async (mining_params) => {
 
 const background_mine = async (account) => {
     return new Promise(async (resolve, reject) => {
-        const bagDifficulty = await getBagDifficulty(account).then((result) => result).catch((error) => {
+        const bagDifficulty = await getBagDifficulty(account)
+        .then((result) => result).catch((error) => {
             return 0;
         });
-        const landDifficulty = await getLandDifficulty(account).then((result) => result).catch((error) =>{
+        const landDifficulty = await getLandDifficulty(account)
+        .then((result) => result).catch((error) =>{
             return 0;
         });
         const difficulty = bagDifficulty + landDifficulty;
@@ -404,6 +433,6 @@ const background_mine = async (account) => {
             last_mine_tx
         }).then((mine_work) => {
             resolve(mine_work);
-        });
+        }).catch((err)=> reject(err))
     });
 };
