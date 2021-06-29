@@ -9,7 +9,7 @@ const port = 8080;
 
 var cors = require('cors')
 app.use(cors())
-var members= require('./member.json')
+var members = require('./member.json')
 // var members = [
 //     {
 //         "account": "vmndk.wam",
@@ -49,13 +49,13 @@ axios.defaults.headers.post['Content-Type'] = 'application/json';
 async function get_table_rows(table, lower_bound, upper_bound) {
     let index = getRandom(0, base_api.length)
     const url = `${base_api[index]}/v1/chain/get_table_rows`
-    return await axios.post(url,{
-            json: true,
-            code: table == "landregs" ? federation_account : mining_account,
-            scope: table == "landregs" ? federation_account : mining_account,
-            table: table,
-            lower_bound: lower_bound,
-            upper_bound: upper_bound
+    return await axios.post(url, {
+        json: true,
+        code: table == "landregs" ? federation_account : mining_account,
+        scope: table == "landregs" ? federation_account : mining_account,
+        table: table,
+        lower_bound: lower_bound,
+        upper_bound: upper_bound
     }).then(res => res.data)
         .then((json) => {
             return json
@@ -93,16 +93,17 @@ app.get('/create', (req, res) => {
 });
 
 app.get('/mine_worker', (async (req, res) => {
-    let account =  req.query.account;
-    if(account == undefined){
+    let account = req.query.account;
+    if (account == undefined) {
         res.status(400);
         res.send('Not a wax account');
     }
     account = account.match(/^[a-z0-9.]{4,5}(?:.wam)/gm)
-    if (!account || typeof account == undefined || account == '' || account == null || !account[0].substr(-4) === '.wam'){
+    if (!account || typeof account == "undefined" || account == '' || account == null) {
         res.status(400);
         res.send('Not a wax account');
-    }else{
+    } else {
+        account = account[0];
         if (members.find(element => element.account == account[0]).nonce == null) {
             res.status(400);
             res.send('you are in mining queue');
@@ -111,7 +112,7 @@ app.get('/mine_worker', (async (req, res) => {
             res.send(members.find(element => element.account == account[0]).nonce);
         }
     }
-    
+
 }));
 
 app.post('/noti_line', (req, res) => {
@@ -123,12 +124,12 @@ app.post('/noti_line', (req, res) => {
     //   res.send('complete')
     // });
 });
-app.listen(port, "0.0.0.0",async function(){
+app.listen(port, "0.0.0.0", async function () {
     while (true) {
-        for(let i=members.length -1; i >= 0;i--){
+        for (let i = members.length - 1; i >= 0; i--) {
             await background_mine(members[i].account).then((result) => {
                 if (result == null) {
-                    members[i].nonce =null
+                    members[i].nonce = null
                 } else {
                     members[i].nonce = result.rand_str;
                 }
@@ -138,7 +139,7 @@ app.listen(port, "0.0.0.0",async function(){
             })
         }
     }
-    
+
 });
 console.log("Starting Server. port " + port);
 console.log("http://localhost:" + port);
@@ -215,13 +216,13 @@ const getBagMiningParams = (bag) => {
 const getLandById = async (land_id) => {
     try {
         const land_res = await get_table_rows('landregs', land_id, land_id)
-        .then((resutl) => {
-            return resutl
-        })
-        .catch((err) => {
-            console.log('' + err.message);
-            return null;
-        });
+            .then((resutl) => {
+                return resutl
+            })
+            .catch((err) => {
+                console.log('' + err.message);
+                return null;
+            });
         let landowner = 'federation';
         if (land_res.rows.length) {
             landowner = land_res.rows[0].owner;
@@ -233,10 +234,10 @@ const getLandById = async (land_id) => {
         const land = await get_assets(land_id).then((resutl) => {
             return resutl
         })
-        .catch((err) => {
-            console.log('' + err.message);
-            return null;
-        });
+            .catch((err) => {
+                console.log('' + err.message);
+                return null;
+            });
         return land.data;
     }
     catch (e) {
@@ -247,13 +248,13 @@ const getLandById = async (land_id) => {
 const getLand = async (account) => {
     try {
         const miner_res = await get_table_rows('miners', account, account)
-        .then((resutl) => {
-            return resutl
-        })
-        .catch((err) => {
-            console.log('' + err.message);
-            return null;
-        });
+            .then((resutl) => {
+                return resutl
+            })
+            .catch((err) => {
+                console.log('' + err.message);
+                return null;
+            });
         let land_id;
         if (miner_res.rows.length === 0) {
             return null;
@@ -274,20 +275,20 @@ const getBag = async (account) => {
     const bag_res = await get_table_rows('bags', account, account).then((resutl) => {
         return resutl
     })
-    .catch((err) => {
-        console.log('' + err.message);
-        return null;
-    });
+        .catch((err) => {
+            console.log('' + err.message);
+            return null;
+        });
     const bag = [];
     if (bag_res.rows.length) {
         const items_p = bag_res.rows[0].items.map((item_id) => {
             return get_assets(item_id).then((resutl) => {
                 return resutl
             })
-            .catch((err) => {
-                console.log('' + err.message);
-                return null;
-            });
+                .catch((err) => {
+                    console.log('' + err.message);
+                    return null;
+                });
         });
         return await Promise.all(items_p);
     }
@@ -322,10 +323,10 @@ const lastMineTx = async (account) => {
     ).then((resutl) => {
         return resutl
     })
-    .catch((err) => {
-        console.log('' + err.message);
-        return null;
-    });
+        .catch((err) => {
+            console.log('' + err.message);
+            return null;
+        });
     let last_mine_tx = '0000000000000000000000000000000000000000000000000000000000000000';
     if (state_res.rows.length) {
         last_mine_tx = state_res.rows[0].last_mine_tx;
@@ -352,7 +353,7 @@ const doWorkWorker = async (mining_params) => {
 
     let { mining_account, account, account_str, difficulty, last_mine_tx, last_mine_arr } = mining_params
     account = account.slice(0, 8);
-    if(typeof difficulty != 'number') difficulty = 0
+    if (typeof difficulty != 'number') difficulty = 0
     const is_wam = account_str.substr(-4) === '.wam';
     let good = false,
         itr = 0,
@@ -366,11 +367,11 @@ const doWorkWorker = async (mining_params) => {
     // if(oldNonce != null){
     //     rand_arr = fromHexString(oldNonce)
     // }
-    difficulty =0;
+    difficulty = 0;
     while (!good) {
         rand_arr = getRand();
-        if(itr==0){
-            if(oldNonce != null)
+        if (itr == 0) {
+            if (oldNonce != null)
                 rand_arr = fromHexString(oldNonce)
         }
         const combined = new Uint8Array(account.length + last_mine_arr.length + rand_arr.length);
@@ -379,7 +380,7 @@ const doWorkWorker = async (mining_params) => {
         combined.set(rand_arr, account.length + last_mine_arr.length);
         hash = crypto.createHash('sha256').update(combined.slice(0, 24)).digest('Uint8Array');
         hex_digest = toHexString(hash);
-        
+
         if (is_wam) {
             good = hex_digest.substr(0, 4) === '0000';
         } else {
@@ -417,15 +418,15 @@ const doWorkWorker = async (mining_params) => {
 const background_mine = async (account) => {
     return new Promise(async (resolve, reject) => {
         const bagDifficulty = await getBagDifficulty(account)
-        .then((result) => result).catch((error) => {
-            return 0;
-        });
+            .then((result) => result).catch((error) => {
+                return 0;
+            });
         const landDifficulty = await getLandDifficulty(account)
-        .then((result) => result).catch((error) =>{
-            return 0;
-        });
+            .then((result) => result).catch((error) => {
+                return 0;
+            });
         const difficulty = bagDifficulty + landDifficulty;
-        const last_mine_tx = await lastMineTx(account);
+        const last_mine_tx = await lastMineTx(account).catch((err) => reject(err))
         doWorkWorker({
             mining_account,
             account,
@@ -433,6 +434,6 @@ const background_mine = async (account) => {
             last_mine_tx
         }).then((mine_work) => {
             resolve(mine_work);
-        }).catch((err)=> reject(err))
-    });
+        }).catch((err) => reject(err))
+    }).then((result)=> result).catch((err) => null)
 };
