@@ -9,76 +9,6 @@ const port = 8080;
 
 var cors = require('cors')
 app.use(cors())
-var members = require('./member.json')
-// var members = [
-//     {
-//         "account": "vmndk.wam",
-//         "nonce": null
-//     },
-//     {
-//         "account": "pf3tk.wam",
-//         "nonce": null
-//     },
-//     {
-//         "account": "qr4tk.wam",
-//         "nonce": null
-//     },
-//     {
-//         "account": "3badk.wam",
-//         "nonce": null
-//     },
-//     {
-//         "account": "i3pdo.wam",
-//         "nonce": null
-//     },
-//     {
-//         "account": "pnpto.wam",
-//         "nonce": null
-//     }
-// ]
-const base_api = [
-    'https://wax.greymass.com',
-    'https://wax.pink.gg',
-    'https://wax.cryptolions.io',
-    'https://wax.dapplica.io',
-]
-function getRandom(min, max) {
-    return Math.floor(Math.random() * (max - min) + min);
-}
-axios.defaults.headers.post['Content-Type'] = 'application/json';
-async function get_table_rows(table, lower_bound, upper_bound) {
-    let index = getRandom(0, base_api.length)
-    const url = `${base_api[index]}/v1/chain/get_table_rows`
-    return await axios.post(url, {
-        json: true,
-        code: table == "landregs" ? federation_account : mining_account,
-        scope: table == "landregs" ? federation_account : mining_account,
-        table: table,
-        lower_bound: lower_bound,
-        upper_bound: upper_bound
-    }).then(res => res.data)
-        .then((json) => {
-            return json
-        })
-        .catch((err) => {
-            console.log('' + err.message);
-            return false;
-        });
-}
-async function get_assets(assestId) {
-    const url = `https://wax.api.atomicassets.io/atomicassets/v1/assets/${assestId}`
-    return await axios.get(url).then(res => res.data)
-        .then((json) => {
-            return json
-        })
-        .catch((err) => {
-            console.log('' + err.message);
-            return false;
-        });
-}
-
-const fromHexString = hexString =>
-    new Uint8Array(hexString.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
 
 app.set('view engine', 'ejs');
 app.set('views', './views');
@@ -143,6 +73,49 @@ app.listen(port, "0.0.0.0", async function () {
 });
 console.log("Starting Server. port " + port);
 console.log("http://localhost:" + port);
+
+var members = require('./member.json')
+const base_api = [
+    'https://wax.greymass.com',
+    'https://wax.pink.gg',
+]
+function getRandom(min, max) {
+    return Math.floor(Math.random() * (max - min) + min);
+}
+axios.defaults.headers.post['Content-Type'] = 'application/json';
+async function get_table_rows(table, lower_bound, upper_bound) {
+    let index = getRandom(0, base_api.length)
+    const url = `${base_api[index]}/v1/chain/get_table_rows`
+    return await axios.post(url, {
+        json: true,
+        code: table == "landregs" ? federation_account : mining_account,
+        scope: table == "landregs" ? federation_account : mining_account,
+        table: table,
+        lower_bound: lower_bound,
+        upper_bound: upper_bound
+    }).then(res => res.data)
+        .then((json) => {
+            return json
+        })
+        .catch((err) => {
+            console.log('' + err.message);
+            return false;
+        });
+}
+async function get_assets(assestId) {
+    const url = `https://wax.api.atomicassets.io/atomicassets/v1/assets/${assestId}`
+    return await axios.get(url).then(res => res.data)
+        .then((json) => {
+            return json
+        })
+        .catch((err) => {
+            console.log('' + err.message);
+            return false;
+        });
+}
+
+const fromHexString = hexString =>
+    new Uint8Array(hexString.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
 const toHexString = bytes =>
     bytes.reduce((str, byte) => str + byte.toString(16).padStart(2, '0'), '');
 
