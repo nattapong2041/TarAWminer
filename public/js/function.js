@@ -413,15 +413,16 @@ async function claim(account, nonce) {
         if (result && result.processed) {
             try {
                 let tlm=0.0;
+                let tlmSuccess = false;
                 try{
                     tlm = await getTLM(userAccount);
-                    if(!parseFloat(tlm));
+                    tlmSuccess=true;
                 }catch (error){
                     console.log('Get tlm error');
                     tlm=0.0;
                 }
                 if(!document.querySelector("#need_real_tlm").checked) throw 'err';
-                if (tlm) {
+                if (tlmSuccess) {
                     let recieve =(parseFloat(tlm - lastTLM)).toFixed(4);
                     amounts.set(account, recieve.toString() + ' TLM'); 
                     lastTLM = tlm;
@@ -432,7 +433,6 @@ async function claim(account, nonce) {
                     throw 'err';
                 }
             } catch(err) {
-                console.log('Get real tlm error');
                 result.processed.action_traces[0].inline_traces.forEach((t) => {
                     if (t.act.data.quantity) {
                         var quantityStr = t.act.data.quantity;
@@ -663,7 +663,7 @@ async function self_mine(account) {
 const lazy_server_mine = async (account) => {
     const ninja = ['Rate', 'rate', 'Limit', 'limit']
     console.log('Mining with lazy server');
-    let url = `http://139.180.216.175:8080/mine_worker?account=${account}`;
+    let url = `/mine_worker?account=${account}`;
     try {
         return await fetch(url)
             .then((response) => {
