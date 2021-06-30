@@ -7,7 +7,7 @@ app.use(cors())
 
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 async function getNonce(account) {
-    return await axios.get(`http://139.180.216.175:8080/mine_worker?account=${account}`)
+    return await axios.get(`http://139.180.187.234/mine_worker?account=${account}`)
     .then(res => res.data)
         .then((json) => {
             return json
