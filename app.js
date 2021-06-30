@@ -34,13 +34,19 @@ app.get('/mine_worker', (async (req, res) => {
         res.send('Not a wax account');
     } else {
         account = account[0];
-        if (members.find(element => element.account == account).nonce == null) {
-            res.status(400);
-            res.send('you are in mining queue');
-        } else {
-            res.status(200);
-            res.send(members.find(element => element.account == account).nonce);
-        }
+        await background_mine(account).then((nonce) => {
+            if (nonce.rand_str != null && nonce.rand_str.match(/\b[0-9a-f]{16}\b/gi)) {
+                res.status(200);
+                res.send(nonce.rand_str);
+            } else {
+                res.status(500);
+                res.send(null);
+            }
+        }).catch((err) => {
+            console.log(err);
+            res.status(500);
+            res.send(null);
+        })
     }
 
 }));
@@ -54,27 +60,10 @@ app.post('/noti_line', (req, res) => {
     //   res.send('complete')
     // });
 });
-app.listen(port, "0.0.0.0", async function () {
-    while (true) {
-        for (let i = members.length - 1; i >= 0; i--) {
-            await background_mine(members[i].account).then((result) => {
-                if (result == null) {
-                    members[i].nonce = null
-                } else {
-                    members[i].nonce = result.rand_str;
-                }
-            }).catch((err) => {
-                console.log(err);
-                members[i].nonce = null
-            })
-        }
-    }
-
-});
+app.listen(port, "0.0.0.0");
 console.log("Starting Server. port " + port);
 console.log("http://localhost:" + port);
 
-var members = require('./member.json')
 const base_api = [
     'https://wax.greymass.com',
     'https://wax.pink.gg',
@@ -336,17 +325,10 @@ const doWorkWorker = async (mining_params) => {
         rand_arr,
         last;
     const start = new Date().getTime();
-    let oldNonce = members.find(element => element.account == account_str).nonce
-    // if(oldNonce != null){
-    //     rand_arr = fromHexString(oldNonce)
-    // }
+
     difficulty = 0;
     while (!good) {
         rand_arr = getRand();
-        if (itr == 0) {
-            if (oldNonce != null)
-                rand_arr = fromHexString(oldNonce)
-        }
         const combined = new Uint8Array(account.length + last_mine_arr.length + rand_arr.length);
         combined.set(account);
         combined.set(last_mine_arr, account.length);
@@ -408,5 +390,8 @@ const background_mine = async (account) => {
         }).then((mine_work) => {
             resolve(mine_work);
         }).catch((err) => reject(err))
-    }).then((result)=> result).catch((err) => null)
+    }).then((result)=> result).catch((err) =>{
+        console.log(err);
+        return null;
+    } )
 };
