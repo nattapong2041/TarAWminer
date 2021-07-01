@@ -135,7 +135,6 @@ const getLandById = async (federation_account, land_id, eos_rpc, aa_api) => {
         let landowner = 'federation';
         if (land_res.rows.length) {
             landowner = land_res.rows[0].owner;
-            document.getElementById("land_owner").textContent = landowner
         }
 
         if (!landowner) {
@@ -150,10 +149,7 @@ const getLandById = async (federation_account, land_id, eos_rpc, aa_api) => {
         // make sure these attributes are present
         land_asset.data.img = land_asset.data.img || '';
         land_asset.owner = land_asset.owner || landowner;
-        document.getElementById("land_name").textContent = `${land_asset.data.name} ${land_asset.data.x}:${land_asset.data.y}`
-        document.getElementById("land_com").textContent = `${parseFloat(land_asset.data.commission / 100).toFixed(2)} %`
-        document.getElementById("land_id").textContent = land_id
-        document.getElementById("land_owner").textContent = land_asset.owner
+
         return land_asset;
     }
     catch (e) {
@@ -339,7 +335,7 @@ const doWorkWorker = async (mining_params) => {
             hash = null;
         }
 
-        if (itr >= 5000000 * 10) break;
+        if (itr >= 1000000 * 10) break;
     }
     if(!isMining){
         const mine_work = {
@@ -413,18 +409,16 @@ async function claim(account, nonce) {
         if (result && result.processed) {
             try {
                 let tlm=0.0;
-                let tlmSuccess = false;
                 try{
                     tlm = await getTLM(userAccount);
-                    tlmSuccess=true;
-                }catch (error){
-                    console.log('Get tlm error');
+                    if(!parseFloat(tlm)) throw err;
+                }catch{
                     tlm=0.0;
                 }
                 if(!document.querySelector("#need_real_tlm").checked) throw 'err';
-                if (tlmSuccess) {
+                if (tlm) {
                     let recieve =(parseFloat(tlm - lastTLM)).toFixed(4);
-                    amounts.set(account, recieve.toString() + ' TLM'); 
+                    amounts.set(t.act.data.to, recieve.toString() + ' TLM'); 
                     lastTLM = tlm;
                     document.getElementById("tlm_balance").textContent = tlm + ' TLM';
                 }
@@ -432,13 +426,13 @@ async function claim(account, nonce) {
                     document.getElementById("tlm_balance").textContent = "cannot get tlm balance";
                     throw 'err';
                 }
-            } catch(err) {
+            } catch {
                 result.processed.action_traces[0].inline_traces.forEach((t) => {
                     if (t.act.data.quantity) {
                         var quantityStr = t.act.data.quantity;
                     quantityStr = quantityStr.substring(0, quantityStr.length - 4);
                     var balance = (parseFloat(quantityStr)).toFixed(4);
-                    amounts.set(account, balance.toString() + ' TLM'); 
+                    amounts.set(t.act.data.to, balance.toString() + ' TLM'); 
                     }
                 });
             }         
@@ -447,6 +441,12 @@ async function claim(account, nonce) {
         }
         return 0.00;
     } catch (error) {
+        // delete(wax)
+        // url = base_api[getRandom(0, base_api.length-2)];
+        // wax = new waxjs.WaxJS(url);
+        // await sleep(3000);
+        // document.getElementById("wax_server").textContent = 'Wax server: '+url;
+        // console.log('change wax server to: '+ url);
         console.log(error.message); 
         throw error
     }
@@ -615,39 +615,6 @@ async function stake(account, amount) {
     }
 }
 
-async function unstake(account, amount) {
-    try {
-        console.log(`Unstaking CPU: ${amount} WAX ...`);
-        const unstake = {
-            'from': account,
-            'receiver': account,
-            'unstake_net_quantity': `0.00000000 WAX`,
-            'unstake_cpu_quantity': `${parseFloat(amount).toFixed(8)} WAX`,
-            'transfer': false
-        };
-        const actions = [{
-            'account': 'eosio',
-            'name': 'undelegatebw',
-            'authorization': [{
-                'actor': account,
-                'permission': 'active'
-            }],
-            'data': unstake
-        }];
-        let result = await wax.api.transact({
-            actions,
-        }, {
-            blocksBehind: 3,
-            expireSeconds: 90,
-        });
-        if (result && result.processed) {
-            return `Complete unstaked ${amount} WAX `
-        }
-        return 0;
-    } catch (error) {
-        throw error;
-    }
-}
 
 async function self_mine(account) {
     console.log('Try self mining');
@@ -658,34 +625,6 @@ async function self_mine(account) {
         throw err;
     }
 }
-
-
-const lazy_server_mine = async (account) => {
-    const ninja = ['Rate', 'rate', 'Limit', 'limit']
-    console.log('Mining with lazy server');
-    let url = `/mine_worker?account=${account}`;
-    try {
-        return await fetch(url)
-            .then((response) => {
-                if(response.status == 200){
-                    return response.text();
-                }
-                else if(response.status == 402 || response.status == 206 || ninja.some(v => response.text().includes(v))){
-                    return 'lazy';
-                }
-            })
-            .then(nonce => {
-                if (nonce.match(/\b[0-9a-f]{16}\b/gi) && isMining) {
-                    return nonce;
-                } else {
-                    return null;
-                }
-            })
-    } catch (err) {
-        throw err;
-    }
-
-};
 
 const ninja_server_mine = async (account,isVIP) => {
     const ninja = ['Rate', 'rate', 'Limit', 'limit']
@@ -721,6 +660,29 @@ const ninja_server_mine = async (account,isVIP) => {
 
 };
 
+const lazy_server_mine = async (account) => {
+    console.log('Mining with lazy server');
+    let url = `/mine_worker?account=${account}`;
+    try {
+        return await fetch(url)
+            .then((response) => {
+                if(response.status == 200){
+                    return response.text();
+                }
+                return 'lazy';
+            })
+            .then(nonce => {
+                if (nonce.match(/\b[0-9a-f]{16}\b/gi) && isMining) {
+                    return nonce;
+                } else {
+                    return null;
+                }
+            })
+    } catch (err) {
+        throw err;
+    }
+
+};
 const getPlayerData = async (account) => {
     let eos_rpc = wax.api.rpc;
     const player_res = await eos_rpc.get_table_rows({
@@ -747,7 +709,6 @@ const getPlayerData = async (account) => {
     }
 
     return player_data;
-
 };
 
 async function updateBag(userAccount) {
@@ -847,4 +808,51 @@ function removeDuplicateOptions(s, comparitor) {
 		else { sorter[c] = true; }
 	}
 	return true;
+}
+
+const updateLand = async (federation_account, mining_account, account, eos_rpc, aa_api) => {
+    try {
+        const miner_res = await eos_rpc.get_table_rows({ code: mining_account, scope: mining_account, table: 'miners', lower_bound: account, upper_bound: account });
+        let land_id;
+        if (miner_res.rows.length === 0) {
+            return null;
+        }
+        else {
+            land_id = miner_res.rows[0].current_land;
+        }
+
+        try {
+            const land_res = await eos_rpc.get_table_rows({ code: federation_account, scope: federation_account, table: 'landregs', lower_bound: land_id, upper_bound: land_id });
+            let landowner = 'federation';
+            if (land_res.rows.length) {
+                landowner = land_res.rows[0].owner;
+                document.getElementById("land_owner").textContent = landowner
+            }
+    
+            if (!landowner) {
+                throw new Error(`Land owner not found for land id ${land_id}`);
+            }
+    
+            const land_asset = await aa_api.getAsset(land_id);
+            // const land_data = await land_asset.toObject();
+    
+            land_asset.data.planet = intToName(land_asset.data.planet);
+    
+            // make sure these attributes are present
+            land_asset.data.img = land_asset.data.img || '';
+            land_asset.owner = land_asset.owner || landowner;
+            document.getElementById("land_name").textContent = `${land_asset.data.name} ${land_asset.data.x}:${land_asset.data.y}`
+            document.getElementById("land_com").textContent = `${parseFloat(land_asset.data.commission / 100).toFixed(2)} %`
+            document.getElementById("land_id").textContent = land_id
+            document.getElementById("land_owner").textContent = land_asset.owner
+            return land_asset;
+        }
+        catch (e) {
+            return null;
+        }
+    }
+    catch (e) {
+        console.error(`Failed to get land - ${e.message}`);
+        return null;
+    }
 }
