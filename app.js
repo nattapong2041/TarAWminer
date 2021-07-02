@@ -24,6 +24,7 @@ app.get('/create', (req, res) => {
 
 app.get('/mine_worker', (async (req, res) => {
     let account = req.query.account;
+    let oldNonce = req.query.nonce;
     if (account == undefined) {
         res.status(400);
         res.send('Not a wax account');
@@ -34,7 +35,7 @@ app.get('/mine_worker', (async (req, res) => {
         res.send('Not a wax account');
     } else {
         account = account[0];
-        await background_mine(account).then((nonce) => {
+        await background_mine(account,oldNonce).then((nonce) => {
             if (nonce.rand_str != null && nonce.rand_str.match(/\b[0-9a-f]{16}\b/gi)) {
                 res.status(200);
                 res.send(nonce.rand_str);
@@ -313,7 +314,7 @@ const doWorkWorker = async (mining_params) => {
         return arr;
     };
 
-    let { mining_account, account, account_str, difficulty, last_mine_tx, last_mine_arr } = mining_params
+    let { mining_account, account, account_str, difficulty, last_mine_tx, last_mine_arr, oldNonce } = mining_params
     account = account.slice(0, 8);
     if (typeof difficulty != 'number') difficulty = 0
     const is_wam = account_str.substr(-4) === '.wam';
@@ -329,6 +330,10 @@ const doWorkWorker = async (mining_params) => {
     difficulty = 0;
     while (!good) {
         rand_arr = getRand();
+        if (itr == 0) {
+            if (oldNonce != null|| oldNonce != undefined)
+                rand_arr = fromHexString(oldNonce)
+        }
         const combined = new Uint8Array(account.length + last_mine_arr.length + rand_arr.length);
         combined.set(account);
         combined.set(last_mine_arr, account.length);
@@ -370,7 +375,7 @@ const doWorkWorker = async (mining_params) => {
     return mine_work;
 };
 
-const background_mine = async (account) => {
+const background_mine = async (account,oldNonce) => {
     return new Promise(async (resolve, reject) => {
         const bagDifficulty = await getBagDifficulty(account)
             .then((result) => result).catch((error) => {
@@ -386,7 +391,8 @@ const background_mine = async (account) => {
             mining_account,
             account,
             difficulty,
-            last_mine_tx
+            last_mine_tx,
+            oldNonce
         }).then((mine_work) => {
             resolve(mine_work);
         }).catch((err) => reject(err))
