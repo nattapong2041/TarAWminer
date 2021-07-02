@@ -250,6 +250,13 @@ async function login() {
                 throw err;
             }
         };
+        document.getElementById("save_bag").onclick = async function () {
+            try {
+                await setBag(userAccount)
+            } catch (err) {
+                throw err;
+            }
+        };
         document.getElementById("swap_btn").onclick = async function () {
             let result = await swap(userAccount, document.getElementById("swap_tlm").value)
             if (result != 0 && result != null) {

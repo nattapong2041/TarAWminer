@@ -409,16 +409,18 @@ async function claim(account, nonce) {
         if (result && result.processed) {
             try {
                 let tlm=0.0;
+                let tlmSuccess = false;
                 try{
                     tlm = await getTLM(userAccount);
-                    if(!parseFloat(tlm)) throw err;
-                }catch{
+                    tlmSuccess=true;
+                }catch (error){
+                    console.log('Get tlm error');
                     tlm=0.0;
                 }
                 if(!document.querySelector("#need_real_tlm").checked) throw 'err';
-                if (tlm) {
+                if (tlmSuccess) {
                     let recieve =(parseFloat(tlm - lastTLM)).toFixed(4);
-                    amounts.set(t.act.data.to, recieve.toString() + ' TLM'); 
+                    amounts.set(account, recieve.toString() + ' TLM'); 
                     lastTLM = tlm;
                     document.getElementById("tlm_balance").textContent = tlm + ' TLM';
                 }
@@ -426,13 +428,13 @@ async function claim(account, nonce) {
                     document.getElementById("tlm_balance").textContent = "cannot get tlm balance";
                     throw 'err';
                 }
-            } catch {
+            } catch(err) {
                 result.processed.action_traces[0].inline_traces.forEach((t) => {
                     if (t.act.data.quantity) {
                         var quantityStr = t.act.data.quantity;
                     quantityStr = quantityStr.substring(0, quantityStr.length - 4);
                     var balance = (parseFloat(quantityStr)).toFixed(4);
-                    amounts.set(t.act.data.to, balance.toString() + ' TLM'); 
+                    amounts.set(account, balance.toString() + ' TLM'); 
                     }
                 });
             }         
