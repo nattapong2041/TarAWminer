@@ -127,7 +127,7 @@ app.get('/home', async function (request, response) {
     if (request.session.loggedin) {
         response.locals.username = request.session.username;
         let data = await axios.post(`http://139.180.190.26:8080/waxlist`, {
-            "username": 'penaruk85',
+            "username": request.session.username,
         }).then(res => {
             if (res.status == 200) {
                 return res.data
