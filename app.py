@@ -9,7 +9,7 @@ import urllib
 import time
 import random
 from pymongo import message
-
+import datetime as dt
 mineurl =["http://139.180.187.234/mine_worker?account="]
 
 
@@ -257,8 +257,26 @@ def mineworker():
         pass
     return Response(texxt, status=500)
 
-
-
+@app.route('/gencode', methods=['GET','POST'])
+def gencode():
+    code = request.json.get("code")
+    hash = request.json.get("hash")
+    count = request.json.get("count")
+    try:
+        date_1 = dt.datetime.today()
+        date_2 = date_1 + dt.timedelta(days=30)
+        db.testcode.insert_one(
+            {
+                'code':code,
+                'hash':hash,
+                'wam': [],
+                'count': count,
+                'start' : date_1,
+                'stop' : date_2,
+            }
+        )
+    except : print("dup username")
+    
 @app.route('/getnonce', methods=['GET','POST'])
 async def getnonce():
     while True:
