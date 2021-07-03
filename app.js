@@ -192,13 +192,15 @@ app.post('/addWam', async (request, response) => {
 app.post('/deleteWam', async (request, response) => {
     var username = request.body.username;
     var wax = request.body.wax;
+    var wax = request.body.code;
     await axios.post('http://139.180.190.26:8080/deletewax', {
         headers: {
             'Content-Type' :'application/json',
             'Accept' : 'application/json'
           },
         "username": username,
-        "wax": wax
+        "wax": wax,
+        "code": code
     }).then(res => {
         if (res.status == 200) {
             response.status(200)
@@ -220,13 +222,15 @@ app.post('/addCode', async (request, response) => {
     var code = request.body.code;
     await axios.post('http://139.180.190.26:8080/addcode', {
         head:{
-            "Accept": "text/plain",
+            "Accept": "*/*",
             "Content-Type":"application/json"
         },
         "username": username,
         "wax": wax,
         "code":code
     }).then(result => {
+        console.log(result.status);
+        console.log(result.data);
         if (result.status == 200) {
             response.status(200)
             response.send(res);
