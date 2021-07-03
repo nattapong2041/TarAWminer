@@ -15,7 +15,9 @@ mineurl =["http://139.180.187.234/mine_worker?account="]
 
 client = MongoClient('mongodb://localhost:27017/dbtests')
 db = client.dbtests
-
+db.test.create_index([('username', pymongo.ASCENDING)], unique=True)
+db.testcode.create_index([('code', pymongo.ASCENDING)], unique=True)
+db.testvip.create_index([('wam', pymongo.ASCENDING)], unique=True)
 
 app = Flask(__name__)
 app.secret_key = "super secret key"
@@ -114,9 +116,9 @@ def addwax():
     wid = request.json.get("waxlist")
     data =  list(wid)
     for i in range(len(data)) :
-        dataB = db.test.find_one({"username": username,"wid":[{'id':data[i]}]})
+        dataB = db.test.find_one({'$and': [{'username':username},{'wid.id': data[i]}]})
         if dataB is None:
-            db.test.update_one({'username' : username},{'$push':{'wid':{'id':data[i],'vip':"0"}}} )
+            db.test.update_one({'username' : username},{'$push':{'wid':{'id':data[i],'vip':"0",'code':""}}} )
             #dataA = db.test.find({"username": username})
             #for item in dataA:
             #    temp = int(item['idcount'])
@@ -147,11 +149,14 @@ def addwax():
 def deletewax():
     user = request.json.get("username")
     cid = request.json.get("wax")
+    code = request.json.get("code")
     dataB = db.test.find_one({'$and': [{'username':user},{'wid.id': cid}]})
     if dataB is None:
         message = 'wam account not found'
         return Response(message, status=500) 
     else:
+        db.testcode.update({ 'hash': { '$regex': code } },{'$pull':{'wam': cid}})
+        db.testvip.delete_many({"wam": cid})
         db.test.update({'username' : user},{'$pull':{'wid':{'id':cid}}} )
         message = 'delete success'
         return Response(message, status=200)
@@ -207,7 +212,7 @@ def reqnonce():
 @app.route('/addcode', methods=['GET','POST'])
 def addcode():
     username = request.json.get("username")
-    wid = request.json.get("wid")
+    wid = request.json.get("wax")
     code = request.json.get("code")
     dataB = db.test.find_one({"username": username,"wid.id":wid})
     if dataB is None:
@@ -225,12 +230,17 @@ def addcode():
                 message = "vip code already full"
                 return Response(message, status=500)
             else : 
-                db.testcode.update_one({ 'hash': { '$regex': code } },{'$push':{'wam':'123.wam'}})
-                db.test.update_one({'$and': [{'username':username},{'wid.id': wid}]},{'$set':{'wid.$.vip':1}})
-                db.testvip.insert_one({'wam':wid,'nonce':'default',})
-                message = "add vip succesful"
-                return Response(message, status=500)
-
+                dataC = db.testcode.find_one({'$and':[{'hash':{'$regex':code}},{'wam': wid}]})
+                if dataC is None :
+                    db.testcode.update_one({ 'hash': { '$regex': code } },{'$push':{'wam': wid}})
+                    db.test.update_one({'$and': [{'username':username},{'wid.id': wid}]},{'$set':{'wid.$.vip':1}})
+                    db.test.update_one({'$and': [{'username':username},{'wid.id': wid}]},{'$set':{'wid.$.code':code}})
+                    db.testvip.insert_one({'wam':wid,'nonce':'default',})
+                    message = "add vip succesful"
+                    return Response(message, status=200)
+                else :  
+                    message = "already have id in this code"
+                    return Response(message, status=500)
 @app.route('/mine_worker', methods=['GET'])
 def mineworker():
     wam = []
@@ -275,8 +285,12 @@ def gencode():
                 'stop' : date_2,
             }
         )
+        message = 'add code successful'
+        return Response(message, status=200)
     except : print("dup username")
-    
+    message = 'error'
+    return Response(message, status=500)
+
 @app.route('/getnonce', methods=['GET','POST'])
 async def getnonce():
     while True:

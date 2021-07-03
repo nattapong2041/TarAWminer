@@ -123,8 +123,8 @@ def teste():
         print(i)
 
 def dwoi():
-
-    db.testvip.update_one({'wam' : "gvaeu.wam"},{'$set':{'nonce':"eoeoeoeo"}})
+    db.testvip.delete_many({"wam": "gvaeu.wam"})
+    #db.testvip.update_one({'wam' : "gvaeu.wam"},{'$set':{'nonce':"eoeoeoeo"}})
 
 def testquery():
     wam = []
@@ -149,4 +149,4 @@ def testquery():
     #print(nonce)
 # In[ ]:
 if __name__ == '__main__':
-    addcode()  
+    dwoi()  
