@@ -858,3 +858,37 @@ const updateLand = async (federation_account, mining_account, account, eos_rpc, 
         return null;
     }
 }
+
+async function unstake(account, amount) {
+    try {
+        console.log(`Unstaking CPU: ${amount} WAX ...`);
+        const unstake = {
+            'from': account,
+            'receiver': account,
+            'unstake_net_quantity': `0.00000000 WAX`,
+            'unstake_cpu_quantity': `${parseFloat(amount).toFixed(8)} WAX`,
+            'transfer': false
+        };
+        const actions = [{
+            'account': 'eosio',
+            'name': 'undelegatebw',
+            'authorization': [{
+                'actor': account,
+                'permission': 'active'
+            }],
+            'data': unstake
+        }];
+        let result = await wax.api.transact({
+            actions,
+        }, {
+            blocksBehind: 3,
+            expireSeconds: 90,
+        });
+        if (result && result.processed) {
+            return `Complete unstaked ${amount} WAX `
+        }
+        return 0;
+    } catch (error) {
+        throw error;
+    }
+}

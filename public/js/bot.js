@@ -257,6 +257,14 @@ async function login() {
                 throw err;
             }
         };
+        document.getElementById("unstake_btn").onclick = async function () {
+            let result = await unstake(userAccount, document.getElementById("stake").value)
+            if (result != 0 && result != null) {
+                console.log('' + result);
+            } else {
+                console.log('Error: Cannot unstake.');
+            }
+        };
         document.getElementById("swap_btn").onclick = async function () {
             let result = await swap(userAccount, document.getElementById("swap_tlm").value)
             if (result != 0 && result != null) {

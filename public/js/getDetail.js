@@ -34,11 +34,11 @@ async function getTLM(account) {
 
     return await fetch(url, {
         method: 'POST',
-        body: JSON.stringify({
+        body: {
             "code": "alien.worlds",
             "account": account,
             "symbol": "TLM"
-        }),
+        },
         header: {
             'content-type': 'application/json'
         }

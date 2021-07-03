@@ -6,7 +6,7 @@
     <!--Made with love by Mutiullah Samim -->
     <!--Bootsrap 4 CDN-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
 
     <!--Fontawesome CDN-->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
@@ -39,7 +39,7 @@
                 <div class="col align-self-start">
                     <div class="flex flex-row items-center justify-center w-full">
                         <label class="text-center lg:mr-4">Wallet:</label>
-                        <input type="text"
+                        <input type="text" id="wallet_list"
                             class="shadow appearance-none w-4/6 rounded py-2 px-3 bg-gray-300 text-gray-800 font-bold leading-tight focus:outline-none focus:shadow-outline"
                             value="">
                         <button id="add_btn" type="button" class="btn btn-success fs-6"
@@ -65,18 +65,40 @@
                 </thead>
                 <tbody>
                     <script>
-                        var member = [{account:"mmyuw.wam", vip:"1fehyn67kg"},
-                        {account:"wuyew.wam", vip:"1fehyn67kg"},
-                        {account:".yyuw.wam", vip:"1fehyn67kg"},
-                        {account:"ceyuw.wam", vip:"1wd5fbghm8"},
-                        {account:"fuyuw.wam", vip:"4jgimtlidf"},
-                        {account:"j2yuw.wam", vip:"2sfbt6jki9"}]
+                        //GET ACC
+                        var member = []
+                        const getAcc = async () => {
+                            try {
+                                 member = await fetch('/getAcc',
+                                    {
+                                        method: 'POST',
+                                        body: JSON.stringify(
+                                            {
+                                                username: '<%= username %>',
+                                                wax: wamAcc
+                                            }
+                                        ),
+                                        header: {
+                                            'Accept': 'application/json',
+                                            'Content-Type': 'application/json'
+                                        }
+                                    }).then(function (response) {
+                                        return response.json();
+                                    }).then((res) => {
+                                        return res
+                                    }).catch((err) => {
+                                        console.log('Error: cannot get Wax account ' + err.message)
+                                    });
+                            } catch (err) {
+                                throw err;
+                            }
+                        };
                         for (var i = 0; i < member.length; i++) {
                             document.write("<tr>");
                             document.write(`<td class='p-3'><button type='button' onclick=deleteAcc("${member[i].account}") class='btn btn-danger btn-sm fs-6' style='margin-left: 10px;width: 100px'>delete</button></td>`);
                             document.write("<th scope='row'>" + i + "</th>");
-                            document.write("<td>"+member[i].account+"</td>");
-                            document.write(`<td><input type="text" value="${member[i].vip}"
+                            document.write("<td>" + member[i].account + "</td>");
+                            document.write(`<td><input type="text" id="${member[i].account}_code" value="${member[i].vip}"
                             style="width: 150px; margin-left: 10px; margin-top: 10px; margin-bottom: 10px; padding-left: 5px;"><button type='button' onclick=saveAcc("${member[i].account}") class='btn btn-success btn-sm fs-6' style='margin-left: 10px;width: 100px'>save</button></td>`);
                             //document.write(`<td><button type='button' onclick=saveAcc("${member[i].account}") class='btn btn-success btn-sm fs-6' style='margin-left: 10px;width: 100px'>save</button></td>`);
                             document.write("<td>soon</td>");
@@ -89,15 +111,86 @@
         </div>
     </div>
     <script>
+        //DELETE ACC
         const deleteAcc = async (wamAcc) => {
-            console.log("Delete: "+wamAcc)
+            try {
+                await fetch('/deleteWam',
+                    {
+                        method: 'POST',
+                        body: JSON.stringify(
+                            {
+                                username: '<%= username %>',
+                                wax: wamAcc
+                            }
+                        ),
+                        header: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        }
+                    }).then(function (response) {
+                        return response.json();
+                    }).then((res) => {
+                        console.log(res)
+                    }).catch((err) => {
+                        console.log('Error: cannot delete Wax account ' + err.message)
+                    });
+            } catch (err) {
+                throw err;
+            }
         };
-        const saveAcc = async (wamAcc,vipCode) => {
-            console.log("Save: "+vipCode+" to wallet: "+wamAcc)
+
+        //SAVE CODE
+        const saveAcc = async (wamAcc, vipCode) => {
+            try {
+                await fetch('/addCode',
+                    {
+                        method: 'POST',
+                        body: JSON.stringify(
+                            {
+                                username: '<%= username %>',
+                                wax: wamAcc,
+                                code: document.getElementById(wamAcc + "_code").value
+                            }
+                        ),
+                        header: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        }
+                    }).then(function (response) {
+                        return response.json();
+                    }).then((res) => {
+                        console.log(res)
+                    }).catch((err) => {
+                        console.log('Error: cannot add code to account ' + err.message)
+                    });
+            } catch (err) {
+                throw err;
+            }
         };
+
+        //ADD WAX
         document.getElementById("add_btn").onclick = async function () {
             try {
-                console.log("add acc: ")
+                await fetch('/addWam',
+                    {
+                        method: 'POST',
+                        body: JSON.stringify(
+                            {
+                                username: '<%= username %>',
+                                waxlist: (document.getElementById("wallet_list").value + '').match(/[a-z0-9.]{4,5}(?:.wam)/g)
+                            }
+                        ),
+                        header: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        }
+                    }).then(function (response) {
+                        return response.json();
+                    }).then((res) => {
+                        console.log(res)
+                    }).catch((err) => {
+                        console.log('Error: cannot add Wax account ' + err.message)
+                    });
             } catch (err) {
                 throw err;
             }
