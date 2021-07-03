@@ -7,8 +7,12 @@ import asyncio
 import requests
 import urllib
 import time
-
+import random
 from pymongo import message
+
+mineurl =["http://139.180.187.234/mine_worker?account="]
+
+
 client = MongoClient('mongodb://localhost:27017/dbtests')
 db = client.dbtests
 
@@ -24,9 +28,9 @@ app.secret_key = "super secret key"
 
 def register():
     if request.method == "POST":
-        user = request.form.get("username")
-        password1 = request.form.get("password1")
-        password2 = request.form.get("password2")
+        user = request.json.get("username")
+        password1 = request.json.get("password1")
+        password2 = request.json.get("password2")
         #if found in database showcase that it's found 
         user_found = db.test.find_one({"name": user})
         if user_found is not None:
@@ -79,8 +83,8 @@ def login():
         #return redirect(url_for("logged_in"))
     #กดล็อคอินมา
     if request.method == "POST":
-        username = request.form.get("username")
-        password = request.form.get("password")
+        username = request.json.get("username")
+        password = request.json.get("password")
 
     #check if user exists in database
         user_found = db.test.find_one({"username": username})
@@ -106,9 +110,9 @@ def login():
 
 @app.route('/addwax', methods=["POST", "GET"])
 def addwax():
-    username = request.form.get("username")
-    wid = request.form.get("waxlist:")
-    data = json.loads(wid)
+    username = request.json.get("username")
+    wid = request.json.get("waxlist")
+    data =  list(wid)
     for i in range(len(data)) :
         dataB = db.test.find_one({"username": username,"wid":[{'id':data[i]}]})
         if dataB is None:
@@ -141,9 +145,9 @@ def addwax():
 @app.route('/deletewax', methods=['GET','POST'])
     
 def deletewax():
-    user = request.form.get("username")
-    cid = request.form.get("wid")
-    dataB = db.test.find_one({"username": user,"wid":[{'id':cid}]})
+    user = request.json.get("username")
+    cid = request.json.get("wax")
+    dataB = db.test.find_one({'$and': [{'username':user},{'wid.id': cid}]})
     if dataB is None:
         message = 'wam account not found'
         return Response(message, status=500) 
@@ -155,9 +159,9 @@ def deletewax():
 #update nonce
 #@app.route('/wnonce', methods=['GET','POST'])
 #def wnonce():
-    non = request.form.get("nonce")
-    user = request.form.get("user")
-    wid = request.form.get("wid")
+    non = request.json.get("nonce")
+    user = request.json.get("user")
+    wid = request.json.get("wid")
     dataB = db.test.find_one({"username": user,"wid":[{'id':wid}]})
     if dataB is None:
         return jsonify({'error':'erorrororo'})
@@ -165,9 +169,9 @@ def deletewax():
         db.test.update_one({'$and': [{'username':user},{'wid.id': wid}]},{'$set':{'wid.$.nonce':non}})
         return jsonify({'success':"updatenon"})
 
-@app.route('/waxlist:', methods=['GET','POST'])
+@app.route('/waxlist', methods=['GET','POST'])
 def waxlist():
-    user = request.form.get('username')
+    user = request.json.get('username')
     dataA = db.test.find_one({'username':user})
     if dataA is None:
         message = "error mai me wam"
@@ -180,7 +184,7 @@ def waxlist():
 
 @app.route('/reqnonce', methods=['GET','POST'])
 def reqnonce():
-    wid = request.form.get("wid")
+    wid = request.json.get("wid")
     dataA = db.testvip.find_one({"wam": wid })
     if dataA is None:
         message = 'no wam account in vip'
@@ -194,7 +198,7 @@ def reqnonce():
 #@app.route('/showaid', methods=['GET','POST'])
 
 #def showaid():
-    user = request.form.get("username")
+    user = request.json.get("username")
     dataB = db.test.find({"username":user})
     for item in dataB :
         temp = str(item['aid'])
@@ -202,9 +206,9 @@ def reqnonce():
 
 @app.route('/addcode', methods=['GET','POST'])
 def addcode():
-    username = request.form.get("username")
-    wid = request.form.get("wid")
-    code = request.form.get("code")
+    username = request.json.get("username")
+    wid = request.json.get("wid")
+    code = request.json.get("code")
     dataB = db.test.find_one({"username": username,"wid.id":wid})
     if dataB is None:
         message= 'error'
@@ -226,6 +230,34 @@ def addcode():
                 db.testvip.insert_one({'wam':wid,'nonce':'default',})
                 message = "add vip succesful"
                 return Response(message, status=500)
+
+@app.route('/mine_worker', methods=['GET'])
+def mineworker():
+    wam = []
+    nonce = []
+    texxt = ''
+    yo = ''
+    #minurl = mineurl[random.randint(0,1)]
+    user = request.args.get('account')
+    dataA = list(db.testvip.find({'wam': user }))
+    for item in dataA :
+        wam.append(item['wam']) 
+        nonce.append(item['nonce'])
+    try:
+        yo = "%s"%(mineurl[0])+wam[0]+'&nonce='+nonce[0]
+        r = requests.get(yo)
+        texxt = r.text
+        print(r.text) 
+        if len(texxt) >= 20 :
+            pass
+        else : 
+            db.testvip.update_one({'wam' : wam[0]},{'$set':{'nonce':texxt}})
+            return Response(texxt, status=200)
+    except :     
+        pass
+    return Response(texxt, status=500)
+
+
 
 @app.route('/getnonce', methods=['GET','POST'])
 async def getnonce():

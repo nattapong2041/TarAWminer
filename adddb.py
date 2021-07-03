@@ -28,14 +28,16 @@ def adduser():
 
 def addcode():
     try:
+        date_1 = dt.datetime.today()
+        date_2 = date_1 + dt.timedelta(days=30)
         db.testcode.insert_one(
             {
-                'code':'lazy-01-50',
-                'hash':'0cb68ad96dbbe62f9c23af0f58abe3eb57c06713a2c4aba777c2018dd8d93eb2',
+                'code':'lazy-01-1000',
+                'hash':'9868ae39f27ead85e6dd382e3cccc1f7efdaec0852e2daecfcc3c92ac5c5a366',
                 'wam': [],
-                'count': 50,
-                'start' : dt.datetime.today(),
-                'stop' : 'x',
+                'count': 1000,
+                'start' : date_1,
+                'stop' : date_2,
             }
         )
     except : print("dup username")
@@ -48,7 +50,7 @@ def dat():
         print(temp)
 
 def dat2():
-    dataA = db.test.find_one({"username": "ooppu","aid":'sadasd.wam'})
+    dataA = db.test.find_one({'$and': [{'username':'asdsad'},{'wid.id': 'poipoi.wam'}]})
     if dataA is None:
         print("nulssl")
     else:
@@ -147,4 +149,4 @@ def testquery():
     #print(nonce)
 # In[ ]:
 if __name__ == '__main__':
-    testquery()  
+    addcode()  
