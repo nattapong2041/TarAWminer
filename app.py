@@ -141,13 +141,12 @@ def delaid():
     cid = request.form.get("wid")
     dataB = db.test.find_one({"username": user,"wid":[{'id':cid}]})
     if dataB is None:
+        message = 'wam account not found'
+        return Response(message, status=500) 
+    else:
         db.test.update({'username' : user},{'$pull':{'wid':{'id':cid}}} )
         message = 'delete success'
         return Response(message, status=200)
-    else:
-        message = 'wam account not found'
-        return Response(message, status=500) 
-
 
 #update nonce
 #@app.route('/wnonce', methods=['GET','POST'])
@@ -223,6 +222,10 @@ def addvip():
                 db.testvip.insert_one({'wam':wid,'nonce':'default',})
                 message = "add vip succesful"
                 return Response(message, status=500)
+
+#@app.route('/getnonce', methods=['GET','POST'])
+#    async def getnonce():
+
 
 @app.route('/pups', methods=['GET'])
 def pups():
