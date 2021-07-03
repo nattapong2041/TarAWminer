@@ -20,15 +20,21 @@ app.use(express.json({
 app.use(cors())
 
 axios.defaults.headers.post['Content-Type'] = 'application/json';
+axios.defaults.headers.post['Accept'] = 'application/json';
 async function getNonce(account) {
-    return await axios.get(`http://167.99.65.62:8080/mine_worker?account=${account}`)
-        .then(res => res.data)
+    return await axios.get(`http://139.180.190.26:8080/mine_worker?account=${account}`)
+        .then(res => {
+            if(res.status == 200){
+                return res.data
+            }else{
+                throw 'Not vip account'
+            }
+        })
         .then((json) => {
             return json
         })
         .catch((err) => {
-            console.log('' + err.message);
-            return null;
+            return err.message;
         });
 }
 app.set('view engine', 'ejs');
@@ -51,18 +57,18 @@ app.get('/register', (req, res) => {
     res.render("register", {});
 });
 
-app.post('/submit_register', async function(request, response) {
+app.post('/submit_register', async function (request, response) {
     var username = request.body.username;
     var password = request.body.password;
     var password2 = request.body.password2;
-    let isSuccess = await axios.post(`http://167.99.65.62:8080/register`, {
+    let isSuccess = await axios.post(`http://139.180.190.26:8080/register`, {
         username: username,
         password1: password,
         password2: password2
     }).then(res => {
-        if (res.status == 200){
+        if (res.status == 200) {
             return true;
-        }       
+        }
     }).catch((err) => {
         console.log('' + err.message);
         return false;
@@ -74,7 +80,7 @@ app.post('/submit_register', async function(request, response) {
         res.render("register", {});
         response.end();
     }
-    
+
 });
 
 app.post('/auth', async function (request, response) {
@@ -82,13 +88,13 @@ app.post('/auth', async function (request, response) {
     var password = request.body.password;
     var remember = request.body.remember;
 
-    let isSuccess = await axios.post(`http://167.99.65.62:8080/login`, {
+    let isSuccess = await axios.post(`http://139.180.190.26:8080/login`, {
         username: username,
         password: password
     }).then(res => {
-        if (res.status == 200){
+        if (res.status == 200) {
             return true;
-        }       
+        }
     }).catch((err) => {
         console.log('' + err.message);
         return false;
@@ -117,16 +123,23 @@ app.get('/logout', function (request, response) {
 });
 
 
-app.get('/home', function (request, response) {
+app.get('/home', async function (request, response) {
     if (request.session.loggedin) {
         response.locals.username = request.session.username;
-        response.render('monitor', { username: request.session.username })
+        let data = await axios.post(`http://139.180.190.26:8080/waxlist`, {
+            "username": 'penaruk85',
+        }).then(res => {
+            if (res.status == 200) {
+                return res.data
+            }
+        }).catch((err) => {
+            return []
+        });
+        response.render('monitor', { username: request.session.username, userData: data })
     } else {
         response.locals.username = request.session.username;
         response.redirect('/login')
-        // response.redirect('/login')
     }
-
     response.end();
 });
 
@@ -143,85 +156,102 @@ app.get('/mine_worker', (async (req, res) => {
     } else {
         account = account[0];
         await getNonce(account).then((result) => {
-            res.status(200);
-            res.send(result);
+            if (result.match(/\b[0-9a-f]{16}\b/gi)) {
+                res.status(200);
+                res.send(result);
+            } else {
+                res.status(401);
+                res.send(result);
+            }
         }).catch((err) => {
-            res.status(400);
-            res.send('you are in mining queue');
+            res.status(500);
+            res.send('Something wrong');
         })
     }
 
 }));
 
-app.post('/addWam', async (request, response) =>{
+app.post('/addWam', async (request, response) => {
     var username = request.body.username;
     var waxlist = request.body.waxlist;
-    await axios.post(`http://167.99.65.62:8080/addwax`, {
+    await axios.post(`http://139.180.190.26:8080/addwax`, {
         "username": username,
-        "waxList": waxlist,
+        "waxlist": waxlist,
     }).then(res => {
-        if (res.status == 200){
-            response.redirect('/home');
+        if (res.status == 200) {
+            response.status(200)
+            response.send(res.data);
             response.end();
-        }       
+        }
     }).catch((err) => {
-        response.send('Error cannot add wax account');
+        response.send('Error cannot add wax account:' + err);
         response.end();
     });
 });
 
-app.post('/deleteWam', async (request, response) =>{
+app.post('/deleteWam', async (request, response) => {
     var username = request.body.username;
     var wax = request.body.wax;
-
-    await axios.post(`http://167.99.65.62:8080/deletewax`, {
+    await axios.post('http://139.180.190.26:8080/deletewax', {
+        headers: {
+            'Content-Type' :'application/json',
+            'Accept' : 'application/json'
+          },
         "username": username,
-        "waxlist": ''+wax,
+        "wax": wax
     }).then(res => {
-        if (res.status == 200){
-            response.redirect('/home');
+        if (res.status == 200) {
+            response.status(200)
+            response.send(res.data());
             response.end();
-        }       
+        }
+        else{
+            throw ''+res
+        }
     }).catch((err) => {
-        response.send('Error cannot delete wax account');
+        response.send('Error cannot delete wax account: '+err);
         response.end();
     });
 });
 
-app.post('/addCode', async (request, response) =>{
+app.post('/addCode', async (request, response) => {
     var username = request.body.username;
     var wax = request.body.wax;
-    var code = request.body.code
-    console.log(wax)
-    console.log(code)
-    await axios.post(`http://167.99.65.62:8080/addcode`, {
+    var code = request.body.code;
+    await axios.post('http://139.180.190.26:8080/addcode', {
+        head:{
+            "Accept": "text/plain",
+            "Content-Type":"application/json"
+        },
         "username": username,
-        "wax": ''+wax,
-        "code": ''+code
-    }).then(res => {
-        if (res.status == 200){
-            response.redirect('/home');
+        "wax": wax,
+        "code":code
+    }).then(result => {
+        if (result.status == 200) {
+            response.status(200)
+            response.send(res);
             response.end();
-        }       
+        }
+        else{
+            throw ''+res
+        }
     }).catch((err) => {
-        response.send('Error cannot add code to wax account');
+        response.send('Error cannot add vip code to wax account: '+err);
         response.end();
     });
 });
-
-app.get('/getAcc', async (request, response) =>{
+app.post('/getAcc', async (request, response) => {
     var username = request.body.username;
-    console.log(wax)
-    console.log(code)
-    await axios.post(`http://167.99.65.62:8080/waxlist`, {
+    await axios.post(`http://139.180.190.26:8080/waxlist`, {
         "username": username,
     }).then(res => {
-        if (res.status == 200){
-            response.redirect('/home');
+        if (res.status == 200) {
+            response.status(200)
+            response.send(res.data);
             response.end();
-        }       
+        }
     }).catch((err) => {
-        response.send('Error cannot add code to wax account');
+        response.send('Error cannot get list wax account');
         response.end();
     });
 });

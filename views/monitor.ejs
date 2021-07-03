@@ -64,48 +64,50 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <script>
-                        //GET ACC
-                        var member = []
-                        const getAcc = async () => {
-                            try {
-                                 member = await fetch('/getAcc',
-                                    {
-                                        method: 'POST',
-                                        body: JSON.stringify(
-                                            {
-                                                username: '<%= username %>',
-                                                wax: wamAcc
-                                            }
-                                        ),
-                                        header: {
-                                            'Accept': 'application/json',
-                                            'Content-Type': 'application/json'
-                                        }
-                                    }).then(function (response) {
-                                        return response.json();
-                                    }).then((res) => {
-                                        return res
-                                    }).catch((err) => {
-                                        console.log('Error: cannot get Wax account ' + err.message)
-                                    });
-                            } catch (err) {
-                                throw err;
-                            }
-                        };
-                        for (var i = 0; i < member.length; i++) {
-                            document.write("<tr>");
-                            document.write(`<td class='p-3'><button type='button' onclick=deleteAcc("${member[i].account}") class='btn btn-danger btn-sm fs-6' style='margin-left: 10px;width: 100px'>delete</button></td>`);
-                            document.write("<th scope='row'>" + i + "</th>");
-                            document.write("<td>" + member[i].account + "</td>");
-                            document.write(`<td><input type="text" id="${member[i].account}_code" value="${member[i].vip}"
-                            style="width: 150px; margin-left: 10px; margin-top: 10px; margin-bottom: 10px; padding-left: 5px;"><button type='button' onclick=saveAcc("${member[i].account}") class='btn btn-success btn-sm fs-6' style='margin-left: 10px;width: 100px'>save</button></td>`);
-                            //document.write(`<td><button type='button' onclick=saveAcc("${member[i].account}") class='btn btn-success btn-sm fs-6' style='margin-left: 10px;width: 100px'>save</button></td>`);
-                            document.write("<td>soon</td>");
-                            document.write("<td>soon</td>");
-                            document.write("</tr>");
-                        }
-                    </script>
+                    <% if(userData.length!=0){ var i=1; userData.forEach(function(data){ %>
+                        <tr>
+                            <td class='p-3'>
+                                <button type='button' onclick=deleteAcc('<%=data.id %>') class='btn btn-danger btn-sm fs-6' style='margin-left: 10px;width: 100px'>delete</button>
+                            </td>
+                            <td>
+                                <%=i; %>
+                            </td>
+                            <td>
+                                <%=data.id %>
+                            </td>
+                            <!-- <td>
+                                <%=data.vip %>
+                            </td> -->
+                            <td>
+                                <input type="text" id="<%=data.id %>_code" value='<%=data.vip %>'
+                                style="width: 150px; margin-left: 10px; margin-top: 10px; margin-bottom: 10px; padding-left: 5px;"><button type='button' onclick=saveCode("<%=data.id %>") class='btn btn-success btn-sm fs-6' style='margin-left: 10px;width: 100px'>save</button></td>
+                            <td>
+                                soon
+                            </td>
+                            <td>soon</td>
+                            <!-- <td><a href="/users/delete/<%=data.id%>">Delete</a></td> -->
+                        </tr>
+                        <% i++; }) %>
+                            <% } else{ %>
+                                <tr>
+                                    <td colspan="7">No Data Found</td>
+                                </tr>
+                                <% } %>
+                                    <script>
+                        //var member = await getAcc('<%= username %>');
+                        // for (var i = 0; i < member.length; i++) {
+                        //     document.write("<tr>");
+                        //     document.write(`<td class='p-3'><button type='button' onclick=deleteAcc("${member[i].account}") class='btn btn-danger btn-sm fs-6' style='margin-left: 10px;width: 100px'>delete</button></td>`);
+                        //     document.write("<th scope='row'>" + i + "</th>");
+                        //     document.write("<td>" + member[i].account + "</td>");
+                        //     document.write(`<td><input type="text" id="${member[i].account}_code" value="${member[i].vip}"
+                        //     style="width: 150px; margin-left: 10px; margin-top: 10px; margin-bottom: 10px; padding-left: 5px;"><button type='button' onclick=saveAcc("${member[i].account}") class='btn btn-success btn-sm fs-6' style='margin-left: 10px;width: 100px'>save</button></td>`);
+                        //     //document.write(`<td><button type='button' onclick=saveAcc("${member[i].account}") class='btn btn-success btn-sm fs-6' style='margin-left: 10px;width: 100px'>save</button></td>`);
+                        //     document.write("<td>soon</td>");
+                        //     document.write("<td>soon</td>");
+                        //     document.write("</tr>");
+                        // }
+                                    </script>
                 </tbody>
             </table>
         </div>
@@ -127,12 +129,13 @@
                             'Accept': 'application/json',
                             'Content-Type': 'application/json'
                         }
-                    }).then(function (response) {
-                        return response.json();
                     }).then((res) => {
-                        console.log(res)
+                        if (res.status == 200) {
+                            alert('Delete account success')
+                        }
+
                     }).catch((err) => {
-                        console.log('Error: cannot delete Wax account ' + err.message)
+                        alert(res.text('Error: cannot delete Wax account ' + err.message))
                     });
             } catch (err) {
                 throw err;
@@ -140,7 +143,7 @@
         };
 
         //SAVE CODE
-        const saveAcc = async (wamAcc, vipCode) => {
+        const saveCode = async (wamAcc, vipCode) => {
             try {
                 await fetch('/addCode',
                     {
@@ -156,12 +159,14 @@
                             'Accept': 'application/json',
                             'Content-Type': 'application/json'
                         }
-                    }).then(function (response) {
-                        return response.json();
-                    }).then((res) => {
-                        console.log(res)
+                    }).then(function(response) {
+                        if(response.status == 200){
+                            return response.text()
+                        }
+                    }).then(function(result) {
+                        alert(result)
                     }).catch((err) => {
-                        console.log('Error: cannot add code to account ' + err.message)
+                        alert(err.message)
                     });
             } catch (err) {
                 throw err;
@@ -177,19 +182,19 @@
                         body: JSON.stringify(
                             {
                                 username: '<%= username %>',
-                                waxlist: (document.getElementById("wallet_list").value + '').match(/[a-z0-9.]{4,5}(?:.wam)/g)
+                                waxlist: (document.getElementById("wallet_list").value).match(/[a-z0-9.]{4,5}(?:.wam)/g)
                             }
                         ),
                         header: {
                             'Accept': 'application/json',
-                            'Content-Type': 'application/json'
                         }
-                    }).then(function (response) {
-                        return response.json();
                     }).then((res) => {
-                        console.log(res)
+                        if (res.status == 200) {
+                            alert('Add account success')
+                        }
+
                     }).catch((err) => {
-                        console.log('Error: cannot add Wax account ' + err.message)
+                        alert(res.text('Error: cannot add Wax account ' + err.message))
                     });
             } catch (err) {
                 throw err;
@@ -197,7 +202,7 @@
         };
         document.getElementById("update_btn").onclick = async function () {
             try {
-                console.log("update acc: ")
+                window.location.reload();
             } catch (err) {
                 throw err;
             }
