@@ -118,7 +118,7 @@ def addwax():
     for i in range(len(data)) :
         dataB = db.test.find_one({'$and': [{'username':username},{'wid.id': data[i]}]})
         if dataB is None:
-            db.test.update_one({'username' : username},{'$push':{'wid':{'id':data[i],'vip':"0",'code':""}}} )
+            db.test.update_one({'username' : username},{'$push':{'wid':{'id':data[i],'vip':"0",'code':"",'vipstart':"",'vipend':""}}} )
             #dataA = db.test.find({"username": username})
             #for item in dataA:
             #    temp = int(item['idcount'])
@@ -184,7 +184,7 @@ def waxlist():
         print(dataA['wid'])
     else :
         yo = dataA['wid']
-        yoo = json.dumps(yo)
+        yoo = json.dumps(yo, default=str)
         return Response(yoo, status=200)
 
 @app.route('/reqnonce', methods=['GET','POST'])
@@ -214,6 +214,8 @@ def addcode():
     username = request.json.get("username")
     wid = request.json.get("wax")
     code = request.json.get("code")
+    a = dt
+    b = dt
     dataB = db.test.find_one({"username": username,"wid.id":wid})
     if dataB is None:
         message= 'error'
@@ -231,10 +233,17 @@ def addcode():
                 return Response(message, status=500)
             else : 
                 dataC = db.testcode.find_one({'$and':[{'hash':{'$regex':code}},{'wam': wid}]})
+                dataD = list(db.testcode.find({'hash':{'$regex':"9868ae39f27ea"}}))
+                for item in dataD :
+                    b = item['start']
+                    a = item['stop']
+                                  
                 if dataC is None :
                     db.testcode.update_one({ 'hash': { '$regex': code } },{'$push':{'wam': wid}})
                     db.test.update_one({'$and': [{'username':username},{'wid.id': wid}]},{'$set':{'wid.$.vip':1}})
                     db.test.update_one({'$and': [{'username':username},{'wid.id': wid}]},{'$set':{'wid.$.code':code}})
+                    db.test.update_one({'$and': [{'username':username},{'wid.id': wid}]},{'$set':{'wid.$.vipstart':b}})
+                    db.test.update_one({'$and': [{'username':username},{'wid.id': wid}]},{'$set':{'wid.$.vipend':a}})
                     db.testvip.insert_one({'wam':wid,'nonce':'default',})
                     message = "add vip succesful"
                     return Response(message, status=200)

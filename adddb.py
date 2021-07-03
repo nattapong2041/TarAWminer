@@ -123,7 +123,15 @@ def teste():
         print(i)
 
 def dwoi():
-    db.testvip.delete_many({"wam": "gvaeu.wam"})
+    dataC = list(db.testcode.find({'hash':{'$regex':"9868ae39f27ea"}}))
+    a = []
+    for item in dataC :
+        a.append(item['start'])
+        b = item['start']
+        print(item['start'])
+        print(b)
+
+    #db.testvip.delete_many({"wam": "gvaeu.wam"})
     #db.testvip.update_one({'wam' : "gvaeu.wam"},{'$set':{'nonce':"eoeoeoeo"}})
 
 def testquery():
