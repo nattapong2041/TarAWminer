@@ -71,7 +71,9 @@
                             <% if(userData.length!=0){ var i=1; userData.forEach(function(data){ %>
                                 <tr>
                                     <td class='p-3'>
-                                        <button type='button' onclick=deleteAcc('<%=data.id %>','<%=data.id %>') class='btn btn-danger btn-sm fs-6' style='margin-left: 10px;width: 100px'>delete</button>
+                                        <button type='button' onclick=deleteAcc('<%=data.id %>','<%=data.code %>')
+                                                class='btn btn-danger btn-sm fs-6' style='margin-left: 10px;width:
+                                                100px'>delete</button>
                                     </td>
                                     <td>
                                         <%=i; %>
@@ -84,13 +86,16 @@
                                     </td>
                                     <td>
                                         <input type="text" id="<%=data.id %>_code" value='<%=data.code %>'
-                                        style="width: 150px; margin-left: 10px; margin-top: 10px; margin-bottom: 10px; padding-left: 5px;">
-                                        <button type='button' onclick=saveCode("<%=data.id %>") class='btn btn-success btn-sm fs-6' style='margin-left: 10px;width: 100px'>save</button>
+                                            style="width: 150px; margin-left: 10px; margin-top: 10px; margin-bottom: 10px; padding-left: 5px;">
+                                        <button type='button' onclick=saveCode("<%=data.id %>") class='btn btn-success
+                                            btn-sm fs-6' style='margin-left: 10px;width: 100px'>save</button>
                                     </td>
                                     <td>
-                                        soon
+                                        <%=data.vipstart.substring(0, 16); %>
                                     </td>
-                                    <td>soon</td>
+                                    <td>
+                                        <%=data.vipend.substring(0, 16); %>
+                                    </td>
                                     <!-- <td><a href="/users/delete/<%=data.id%>">Delete</a></td> -->
                                 </tr>
                                 <% i++; }) %>
@@ -99,31 +104,16 @@
                                             <td colspan="7">No Data Found</td>
                                         </tr>
                                         <% } %>
-                                            <script>
-                                //var member = await getAcc('<%= username %>');
-                                // for (var i = 0; i < member.length; i++) {
-                                //     document.write("<tr>");
-                                //     document.write(`<td class='p-3'><button type='button' onclick=deleteAcc("${member[i].account}") class='btn btn-danger btn-sm fs-6' style='margin-left: 10px;width: 100px'>delete</button></td>`);
-                                //     document.write("<th scope='row'>" + i + "</th>");
-                                //     document.write("<td>" + member[i].account + "</td>");
-                                //     document.write(`<td><input type="text" id="${member[i].account}_code" value="${member[i].vip}"
-                                //     style="width: 150px; margin-left: 10px; margin-top: 10px; margin-bottom: 10px; padding-left: 5px;"><button type='button' onclick=saveAcc("${member[i].account}") class='btn btn-success btn-sm fs-6' style='margin-left: 10px;width: 100px'>save</button></td>`);
-                                //     //document.write(`<td><button type='button' onclick=saveAcc("${member[i].account}") class='btn btn-success btn-sm fs-6' style='margin-left: 10px;width: 100px'>save</button></td>`);
-                                //     document.write("<td>soon</td>");
-                                //     document.write("<td>soon</td>");
-                                //     document.write("</tr>");
-                                // }
-                                            </script>
                         </tbody>
                     </table>
                 </div>
             </div>
-          </div>
-        
+        </div>
+
     </div>
     <script>
         //DELETE ACC
-        const deleteAcc = async (wamAcc) => {
+        const deleteAcc = async (wamAcc,code) => {
             try {
                 await fetch('/deleteWam',
                     {
@@ -131,7 +121,8 @@
                         body: JSON.stringify(
                             {
                                 username: '<%= username %>',
-                                wax: wamAcc
+                                wax: wamAcc,
+                                code: code
                             }
                         ),
                         header: {
@@ -140,7 +131,7 @@
                         }
                     }).then((res) => {
                         if (res.status == 200) {
-                            alert('Delete account success')
+                            window.location.reload();
                         }
 
                     }).catch((err) => {
@@ -168,12 +159,12 @@
                             'Accept': '*/*',
                             'Content-Type': 'application/json'
                         }
-                    }).then(function(response) {
-                        if(response.status == 200){
+                    }).then(function (response) {
+                        if (response.status == 200) {
                             return response.text()
                         }
-                    }).then(function(result) {
-                        alert(result)
+                    }).then(function (result) {
+                        window.location.reload();
                     }).catch((err) => {
                         alert(err.message)
                     });
@@ -199,7 +190,7 @@
                         }
                     }).then((res) => {
                         if (res.status == 200) {
-                            alert('Add account success')
+                            window.location.reload();
                         }
 
                     }).catch((err) => {
