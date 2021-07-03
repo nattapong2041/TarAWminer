@@ -233,7 +233,7 @@ def addcode():
                 return Response(message, status=500)
             else : 
                 dataC = db.testcode.find_one({'$and':[{'hash':{'$regex':code}},{'wam': wid}]})
-                dataD = list(db.testcode.find({'hash':{'$regex':"9868ae39f27ea"}}))
+                dataD = list(db.testcode.find({'hash':{'$regex':code}}))
                 for item in dataD :
                     b = item['start']
                     a = item['stop']
