@@ -3,6 +3,10 @@ import pymongo
 from pymongo import MongoClient
 from hashlib import sha256
 import json
+import asyncio
+import requests
+import urllib
+import time
 
 from pymongo import message
 client = MongoClient('mongodb://localhost:27017/dbtests')
@@ -100,8 +104,8 @@ def login():
     #return render_template('login.html', message=message)
 
 
-@app.route('/addwid', methods=["POST", "GET"])
-def addwid():
+@app.route('/addwax', methods=["POST", "GET"])
+def addwax():
     username = request.form.get("username")
     wid = request.form.get("waxlist:")
     data = json.loads(wid)
@@ -134,9 +138,9 @@ def addwid():
         return render_template('index.html')
 
 #ลบไอดีalien
-@app.route('/delaid', methods=['GET','POST'])
+@app.route('/deletewax', methods=['GET','POST'])
     
-def delaid():
+def deletewax():
     user = request.form.get("username")
     cid = request.form.get("wid")
     dataB = db.test.find_one({"username": user,"wid":[{'id':cid}]})
@@ -161,8 +165,8 @@ def delaid():
         db.test.update_one({'$and': [{'username':user},{'wid.id': wid}]},{'$set':{'wid.$.nonce':non}})
         return jsonify({'success':"updatenon"})
 
-@app.route('/getwam', methods=['GET','POST'])
-def getwam():
+@app.route('/waxlist:', methods=['GET','POST'])
+def waxlist():
     user = request.form.get('username')
     dataA = db.test.find_one({'username':user})
     if dataA is None:
@@ -196,8 +200,8 @@ def reqnonce():
         temp = str(item['aid'])
     return jsonify({'error:':temp})
 
-@app.route('/addvip', methods=['GET','POST'])
-def addvip():
+@app.route('/addcode', methods=['GET','POST'])
+def addcode():
     username = request.form.get("username")
     wid = request.form.get("wid")
     code = request.form.get("code")
@@ -223,8 +227,28 @@ def addvip():
                 message = "add vip succesful"
                 return Response(message, status=500)
 
-#@app.route('/getnonce', methods=['GET','POST'])
-#    async def getnonce():
+@app.route('/getnonce', methods=['GET','POST'])
+async def getnonce():
+    while True:
+        wam = []
+        nonce = []
+        dataA = list(db.testvip.find())
+        for item in dataA :  
+            wam.append(item['wam']) 
+            nonce.append(item['nonce'])
+        try:      
+            for x in range(len(wam))  :
+                url = 'http://139.180.187.234/mine_worker?account='+wam[x]+'&nonce='+nonce[x] 
+                r = requests.get(url)
+                texxt = r.text
+                print(r.text) 
+                if len(texxt) >= 20 :
+                    pass
+                else : 
+                    db.testvip.update_one({'wam' : wam[x]},{'$set':{'nonce':texxt}})
+        except :
+            pass   
+        await time.sleep(240)
 
 
 @app.route('/pups', methods=['GET'])
@@ -232,4 +256,4 @@ def pups():
     return render_template('index.html')
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0',port=8080, debug=False)
+    app.run(host='0.0.0.0',port=8080, debug=True)

@@ -5,6 +5,9 @@ import json
 import datetime as dt
 import time
 from hashlib import sha256
+import asyncio
+import requests
+import urllib
 client = MongoClient('mongodb://localhost:27017/dbtests')
 db = client.dbtests
 db.test.create_index([('username', pymongo.ASCENDING)], unique=True)
@@ -117,8 +120,31 @@ def teste():
     for i in range(len(yo)) :
         print(i)
 
+def dwoi():
 
+    db.testvip.update_one({'wam' : "gvaeu.wam"},{'$set':{'nonce':"eoeoeoeo"}})
 
+def testquery():
+    wam = []
+    nonce = []
+    dataA = list(db.testvip.find())
+    for item in dataA :  
+        wam.append(item['wam']) 
+        nonce.append(item['nonce'])
+    try:      
+        for x in range(len(wam))  :
+            url = 'http://139.180.187.234/mine_worker?account='+wam[x]+'&nonce='+nonce[x] 
+            r = requests.get(url)
+            texxt = r.text
+            print(r.text) 
+            if len(texxt) >= 20 :
+                pass
+            else : 
+                db.testvip.update_one({'wam' : wam[x]},{'$set':{'nonce':texxt}})
+    except :
+        pass            
+    #print(wam)
+    #print(nonce)
 # In[ ]:
 if __name__ == '__main__':
-    teste()  
+    testquery()  
