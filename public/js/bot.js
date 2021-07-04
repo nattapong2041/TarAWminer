@@ -477,7 +477,12 @@ async function miner(mine_with) {
                 updateStatus('User start new transaction wait: ' + 10 + ' sec')
                 nextmine = 10 * 1000;
                 updateNextMine(nextmine)
-            } else if (errorRes == 'timeout') {
+            }  else if (errorRes == 'declares') {
+                updateStatus('User transaction declares wait: ' + 30 + ' sec')
+                nextmine = 30 * 1000;
+                updateNextMine(nextmine)
+            } 
+            else if (errorRes == 'timeout') {
                 updateStatus('Approve timeout: ' + 10 + ' sec')
                 nextmine = 10 * 1000;
                 updateNextMine(nextmine)
@@ -523,6 +528,9 @@ function handleError(error) {
     }
     else if (error.message.includes('started a new transaction')) {
         return 'newTx'
+    }
+    else if (error.message.includes('transaction declares')) {
+        return 'declares'
     }
     else if (mining.some(v => error.message.includes(v))) {
         return 'mining';
