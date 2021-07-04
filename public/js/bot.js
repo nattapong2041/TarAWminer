@@ -20,7 +20,7 @@ var loginInterval;
 var nftInterval;
 
 var userAccount = "";
-
+var oldNonce;
 function saveConfig() {
     console.log('**SAVE CONFIG**');
     localStorage.setItem('mining_with', document.querySelector('input[name="mining_with"]:checked').value)
@@ -45,7 +45,6 @@ function loadConfig() {
     }
     //AutoUpdateWax
     if (localStorage.getItem('auto_update') != null && localStorage.getItem('auto_update') == 'false') {
-        console.log('WTF: ' + localStorage.getItem('auto_update'));
         document.querySelector("#auto_update").checked = false;
     }
     //AutoClaim
@@ -55,6 +54,16 @@ function loadConfig() {
     if (localStorage.getItem('auto_claim_time') != null) {
         document.getElementById("auto_claim_time").value = localStorage.getItem('auto_claim_time');
     }
+}
+
+function resetConfig() {
+    localStorage.clear();
+    document.getElementById('self').checked = true;
+    document.getElementById("cpu_time").value = 5;
+    document.querySelector("#need_real_tlm").checked = false;
+    document.querySelector("#auto_update").checked = true;
+    document.querySelector("#auto_claim").checked = false;
+    document.getElementById("auto_claim_time").value = 60;
 }
 
 async function autoClaimNFT() {
@@ -110,22 +119,21 @@ async function updateAccStatus() {
     }
 }
 
-async function updateLand() {
+async function updateLandInfo() {
     try {
-        await getLand(federation_account, mining_account, userAccount, wax.api.rpc, aa_api);   
-    } catch (error){
+        await updateLand(federation_account, mining_account, userAccount, wax.api.rpc, aa_api);
+    } catch (error) {
         console.log('Cannot update land info');
     }
 }
 
-async function updateItem() {
+async function updateItemInfo() {
     try {
-        await updateBag(userAccount)     
-    } catch (error){
+        await updateBag(userAccount)
+    } catch (error) {
         console.log('Cannot update item');
     }
 }
-
 
 async function updateTLM() {
     try {
@@ -217,6 +225,7 @@ async function loginCountdownfunction() {
     var seconds = Math.floor((distance % (1000 * 60)) / 1000);
     document.getElementById("countdown").innerHTML = padLeadingZeros(minutes, 2) + 'm ' + padLeadingZeros(seconds, 2) + 's before new login'
     if (distance < 0) {
+        clearTimer()
         window.location.reload();
     }
 }
@@ -235,8 +244,8 @@ async function login() {
             try {
                 updateAccStatus();
                 updateTLM()
-                updateLand()
-                updateItem()
+                updateLandInfo()
+                updateItemInfo()
             } catch (err) {
                 throw err;
             }
@@ -248,7 +257,14 @@ async function login() {
                 throw err;
             }
         };
-        // document.getElementById("wax_server").textContent = 'Wax server: ' + url;
+        document.getElementById("unstake_btn").onclick = async function () {
+            let result = await unstake(userAccount, document.getElementById("stake").value)
+            if (result != 0 && result != null) {
+                console.log('' + result);
+            } else {
+                console.log('Error: Cannot unstake.');
+            }
+        };
         document.getElementById("swap_btn").onclick = async function () {
             let result = await swap(userAccount, document.getElementById("swap_tlm").value)
             if (result != 0 && result != null) {
@@ -289,17 +305,9 @@ async function login() {
         document.getElementById("stake_btn").onclick = async function () {
             let result = await stake(userAccount, document.getElementById("stake").value)
             if (result != 0 && result != null) {
-                console.log('' + result);
+                console.log('Complete: ' + result);
             } else {
                 console.log('Error: Cannot stake.');
-            }
-        };
-        document.getElementById("unstake_btn").onclick = async function () {
-            let result = await unstake(userAccount, document.getElementById("stake").value)
-            if (result != 0 && result != null) {
-                console.log('' + result);
-            } else {
-                console.log('Error: Cannot unstake.');
             }
         };
         document.getElementById("run_btn").onclick = async function () {
@@ -308,6 +316,9 @@ async function login() {
         document.getElementById("save_config").onclick = async function () {
             saveConfig();
         };
+        document.getElementById("reset_config").onclick = async function () {
+            resetConfig();
+        };
         document.getElementById("run_btn").disabled = true
         clearTimer();
         loginCountdownFinishTime = new Date().getTime() + loginCountdownTime;
@@ -315,24 +326,23 @@ async function login() {
         userAccount = await wax.login();
         updateAccount(userAccount);
         if (userAccount != null) {
-            clearTimer()
+            clearTimer();
             document.getElementById("countdown").innerHTML = "0m 0s";
-            document.getElementById("run_btn").disabled = false
             onclickRun();
+            document.getElementById("run_btn").disabled = false
         }
 
     } catch (err) {
         console.log(err);
-        await sleep(15000);
         window.location.reload();
     }
 
 }
 
 async function run() {
+    clearTimer();
     if (!isMining) {
         isMining = true
-
         //calculate delay
         if (delay == 0) {
             console.log('getting cooldown');
@@ -340,6 +350,10 @@ async function run() {
                 if (response == -1) throw 'Cannot get cooldown'
                 return response;
             }).catch((err) => {
+                // url = base_api[getRandom(0, base_api.length-2)];
+                // wax = new waxjs.WaxJS(url);
+                // document.getElementById("wax_server").textContent = 'Wax server: ' + url;
+                // console.log('change wax server to: ' + url);
                 return 0;
             });
             await sleep(3000);
@@ -353,8 +367,8 @@ async function run() {
             if (document.getElementById("auto_claim").checked) {
                 if (document.getElementById("auto_claim_time").value >= 0) {
                     let now = new Date().getTime();
-                    if((claimCountdownFinishTime - now) <=0){
-                        nftInterval = setInterval(autoClaimNFT,  1000);
+                    if ((claimCountdownFinishTime - now) <= 0) {
+                        nftInterval = setInterval(autoClaimNFT, 1000);
                     }
                 }
             }
@@ -369,9 +383,6 @@ async function run() {
             mineInterval = setInterval(chargingCountdownfunction, 1000);
         }
 
-    }else{
-        isMining = false;
-        clearTimer()
     }
 }
 
@@ -396,7 +407,8 @@ async function miner(mine_with) {
         } catch (err) {
             console.log('Error with ninja-sever mining: : ' + err);
             try {
-                nonce = await self_mine(userAccount);
+                nonce = await self_mine(userAccount, oldNonce);
+                oldNonce = nonce;
             } catch (err) {
                 console.log('Error with self mining: ' + err);
                 nonce = null;
@@ -405,13 +417,23 @@ async function miner(mine_with) {
     } else if (mine_with == 'lazy') {
         try {
             nonce = await lazy_server_mine(userAccount);
+            if (nonce == 'lazy') {
+                throw 'Cannot get answer';
+            }
         } catch (err) {
-            console.log('Error with lazy server mining: ' + err);
-            nonce = null;
+            console.log('Error with lazy-sever mining: : ' + err);
+            try {
+                nonce = await self_mine(userAccount, oldNonce);
+                oldNonce = nonce;
+            } catch (err) {
+                console.log('Error with self mining: ' + err);
+                nonce = null;
+            }
         }
-    }else if (mine_with == 'self') {
+    } else if (mine_with == 'self') {
         try {
-            nonce = await self_mine(userAccount);
+            nonce = await self_mine(userAccount, oldNonce);
+            oldNonce = nonce;
         } catch (err) {
             console.log('Error with self mining: ' + err);
             nonce = null;
@@ -488,11 +510,9 @@ async function miner(mine_with) {
         else {
             delay = 0;
             clearTimer();
-            await sleep(5000);
             mineCountdownFinishTime = new Date().getTime() + nextmine;
             newMineInterval = setInterval(miningCountdownfunction, 1000);
         }
-
     }
 }
 function handleError(error) {
@@ -526,23 +546,17 @@ function stop() {
     isMining = false
 }
 
-async function restart() {
-    stop();
-    await sleep(5000);
-    run();
-}
-
 function onclickRun() {
     if (isMining) {
         stop();
         updateStatus('STOPPING')
         console.log('**STOPPING**');
-        document.getElementById("run_btn").textContent = "Click to Start"
+        document.getElementById("run_btn").textContent = "START Bot"
         document.getElementById("run_btn").className = "btn btn-success"
     } else {
         updateStatus('RUNNING')
         console.log('**RUNNING**');
-        document.getElementById("run_btn").textContent = "Click to STOP"
+        document.getElementById("run_btn").textContent = "STOP Bot"
         document.getElementById("run_btn").className = "btn btn-danger"
         delay = 0;
         run();
@@ -550,3 +564,8 @@ function onclickRun() {
 
 }
 
+async function restart() {
+    stop();
+    await sleep(5000);
+    run();
+}

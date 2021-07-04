@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Lazy Login</title>
+    <!--Made with love by Mutiullah Samim -->
+    <!--Bootsrap 4 CDN-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+
+    <!--Fontawesome CDN-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+        integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+
+    <!--Custom styles-->
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
+</head>
+
+<body>
+    <div class="container text-white">
+        <div class="col">
+            <div class="row">
+                <div class="col align-self-start">
+                    <span class="fs-5 font-weight-bold"><b>Account: </b></span>
+                    <span id="user_account" class="fs-5 font-weight-bold">
+                        <%= username %>
+                    </span>
+                </div>
+                <div class="col align-self-end">
+                    <a class="btn btn-warning fs-6" href="/" target="_blank"
+                        style="margin-left: 10px;width: 130px">Bot</a>
+                    <a class="btn btn-info" href="https://discord.gg/DRCkvyvGqg" target="_blank"
+                        style="margin-left: 10px;width: 130px">Our Discord</a>
+                    <a class="btn btn-danger" href="/logout" style="margin-left: 10px;width: 130px">Logout</a>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col align-self-start">
+                    <div class="flex flex-row items-center justify-center w-full">
+                        <label class="text-center lg:mr-4">Wallet:</label>
+                        <input type="text" id="wallet_list"
+                            class="shadow appearance-none w-4/6 rounded py-2 px-3 bg-gray-300 text-gray-800 font-bold leading-tight focus:outline-none focus:shadow-outline"
+                            value="">
+                        <button id="add_btn" type="button" class="btn btn-success fs-6"
+                            style="margin-left: 10px;width: 100px">Add</button>
+                        <button id="update_btn" type="button" class="btn btn-warning fs-6"
+                            style="margin-left: 10px;width: 150px">Update table</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="row justify-content-center">
+            <!-- <div class="col-auto"> -->
+            <div class="col">
+                <div class="table-responsive-lg">
+                    <table class="table table-bordered table-dark text-white">
+                        <thead>
+                            <tr>
+                                <th scope="col">Remove</th>
+                                <th scope="col">#</th>
+                                <th scope="col">Wallet</th>
+                                <th scope="col">isVIP</th>
+                                <th scope="col">VIP code</th>
+                                <th scope="col">VIP start</th>
+                                <th scope="col">VIP end</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if(userData.length!=0){ var i=1; userData.forEach(function(data){ %>
+                                <tr>
+                                    <td class='p-3'>
+                                        <button type='button' onclick=deleteAcc('<%=data.id %>','<%=data.code %>')
+                                                class='btn btn-danger btn-sm fs-6' style='margin-left: 10px;width:
+                                                100px'>delete</button>
+                                    </td>
+                                    <td>
+                                        <%=i; %>
+                                    </td>
+                                    <td>
+                                        <%=data.id %>
+                                    </td>
+                                    <td>
+                                        <%=data.vip %>
+                                    </td>
+                                    <td>
+                                        <input type="text" id="<%=data.id %>_code" value='<%=data.code %>'
+                                            style="width: 150px; margin-left: 10px; margin-top: 10px; margin-bottom: 10px; padding-left: 5px;">
+                                        <button type='button' onclick=saveCode("<%=data.id %>") class='btn btn-success
+                                            btn-sm fs-6' style='margin-left: 10px;width: 100px'>save</button>
+                                    </td>
+                                    <td>
+                                        <%=data.vipstart.substring(0, 16); %>
+                                    </td>
+                                    <td>
+                                        <%=data.vipend.substring(0, 16); %>
+                                    </td>
+                                    <!-- <td><a href="/users/delete/<%=data.id%>">Delete</a></td> -->
+                                </tr>
+                                <% i++; }) %>
+                                    <% } else{ %>
+                                        <tr>
+                                            <td colspan="7">No Data Found</td>
+                                        </tr>
+                                        <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script>
+        //DELETE ACC
+        const deleteAcc = async (wamAcc,code) => {
+            try {
+                await fetch('/deleteWam',
+                    {
+                        method: 'POST',
+                        body: JSON.stringify(
+                            {
+                                username: '<%= username %>',
+                                wax: wamAcc,
+                                code: code
+                            }
+                        ),
+                        header: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        }
+                    }).then((res) => {
+                        if (res.status == 200) {
+                            window.location.reload();
+                        }
+
+                    }).catch((err) => {
+                        alert(res.text('Error: cannot delete Wax account ' + err.message))
+                    });
+            } catch (err) {
+                throw err;
+            }
+        };
+
+        //SAVE CODE
+        const saveCode = async (wamAcc, vipCode) => {
+            try {
+                await fetch('/addCode',
+                    {
+                        method: 'POST',
+                        body: JSON.stringify(
+                            {
+                                username: '<%= username %>',
+                                wax: wamAcc,
+                                code: document.getElementById(wamAcc + "_code").value
+                            }
+                        ),
+                        header: {
+                            'Accept': '*/*',
+                            'Content-Type': 'application/json'
+                        }
+                    }).then(function (response) {
+                        if (response.status == 200) {
+                            return response.text()
+                        }
+                    }).then(function (result) {
+                        window.location.reload();
+                    }).catch((err) => {
+                        alert(err.message)
+                    });
+            } catch (err) {
+                throw err;
+            }
+        };
+
+        //ADD WAX
+        document.getElementById("add_btn").onclick = async function () {
+            try {
+                await fetch('/addWam',
+                    {
+                        method: 'POST',
+                        body: JSON.stringify(
+                            {
+                                username: '<%= username %>',
+                                waxlist: (document.getElementById("wallet_list").value).match(/[a-z0-9.]{4,5}(?:.wam)/g)
+                            }
+                        ),
+                        header: {
+                            'Accept': 'application/json',
+                        }
+                    }).then((res) => {
+                        if (res.status == 200) {
+                            window.location.reload();
+                        }
+
+                    }).catch((err) => {
+                        alert(res.text('Error: cannot add Wax account ' + err.message))
+                    });
+            } catch (err) {
+                throw err;
+            }
+        };
+        document.getElementById("update_btn").onclick = async function () {
+            try {
+                window.location.reload();
+            } catch (err) {
+                throw err;
+            }
+        };
+    </script>
+
+</body>
+
+</html>
