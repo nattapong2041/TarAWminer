@@ -331,7 +331,7 @@ const doWorkWorker = async (mining_params) => {
     while (!good) {
         rand_arr = getRand();
         if (itr == 0) {
-            if (oldNonce != null|| oldNonce != undefined)
+            if (oldNonce)
                 rand_arr = fromHexString(oldNonce)
         }
         const combined = new Uint8Array(account.length + last_mine_arr.length + rand_arr.length);
