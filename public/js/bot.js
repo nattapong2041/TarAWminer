@@ -407,7 +407,8 @@ async function miner(mine_with) {
         } catch (err) {
             console.log('Error with ninja-sever mining: : ' + err);
             try {
-                nonce = await self_mine(userAccount);
+                nonce = await self_mine(userAccount, oldNonce);
+                oldNonce = nonce;
             } catch (err) {
                 console.log('Error with self mining: ' + err);
                 nonce = null;
@@ -422,7 +423,8 @@ async function miner(mine_with) {
         } catch (err) {
             console.log('Error with lazy-sever mining: : ' + err);
             try {
-                nonce = await self_mine(userAccount);
+                nonce = await self_mine(userAccount, oldNonce);
+                oldNonce = nonce;
             } catch (err) {
                 console.log('Error with self mining: ' + err);
                 nonce = null;
@@ -430,7 +432,8 @@ async function miner(mine_with) {
         }
     } else if (mine_with == 'self') {
         try {
-            nonce = await self_mine(userAccount);
+            nonce = await self_mine(userAccount, oldNonce);
+            oldNonce = nonce;
         } catch (err) {
             console.log('Error with self mining: ' + err);
             nonce = null;

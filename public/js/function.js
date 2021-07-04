@@ -289,7 +289,7 @@ const doWorkWorker = async (mining_params) => {
             .join("");
     };
 
-    let { mining_account, account, account_str, difficulty, last_mine_tx, last_mine_arr } = mining_params
+    let { mining_account, account, account_str, difficulty, last_mine_tx, last_mine_arr, oldNonce } = mining_params
     account = account.slice(0, 8);
     const is_wam = account_str.substr(-4) === '.wam';
     let good = false,
@@ -303,7 +303,11 @@ const doWorkWorker = async (mining_params) => {
 
     while (!good && isMining) {
         rand_arr = getRand();
-
+        if (itr == 0) {
+            if (oldNonce){
+                rand_arr = fromHexString(oldNonce)
+            }  
+        }
         const combined = new Uint8Array(account.length + last_mine_arr.length + rand_arr.length);
         combined.set(account);
         combined.set(last_mine_arr, account.length);
@@ -335,7 +339,7 @@ const doWorkWorker = async (mining_params) => {
             hash = null;
         }
 
-        if (itr >= 1000000 * 10) break;
+        if (itr >= 1000000 * 8) break;
     }
     if(!isMining){
         const mine_work = {
@@ -360,7 +364,7 @@ const doWorkWorker = async (mining_params) => {
     
 };
 
-const background_mine = async (account) => {
+const background_mine = async (account, oldNonce) => {
     return new Promise(async (resolve, reject) => {
         const bagDifficulty = await getBagDifficulty(account);
         const landDifficulty = await getLandDifficulty(account);
@@ -370,7 +374,8 @@ const background_mine = async (account) => {
             mining_account,
             account,
             difficulty,
-            last_mine_tx
+            last_mine_tx,
+            oldNonce
         }).then((mine_work) => {
             resolve(mine_work);
         });
@@ -618,9 +623,9 @@ async function stake(account, amount) {
 }
 
 
-async function self_mine(account) {
+async function self_mine(account, oldnonce) {
     console.log('Try self mining');
-    let mine_work = await background_mine(account)
+    let mine_work = await background_mine(account,oldnonce)
     try {
         return mine_work.rand_str;
     } catch (err) {
