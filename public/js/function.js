@@ -654,6 +654,30 @@ const ninja_server_mine = async (account,isVIP) => {
 
 };
 
+const lazy_server_mine = async (account) => {
+    console.log('Mining with lazy server');
+    let url = `/mine_worker?account=${account}`;
+    try {
+        return await fetch(url)
+            .then((response) => {
+                if(response.status == 200){
+                    return response.text();
+                }
+                throw "You're not VIP or Something went wrong";
+            })
+            .then(nonce => {
+                if (nonce.match(/\b[0-9a-f]{16}\b/gi) && isMining) {
+                    return nonce;
+                } else {
+                    return null;
+                }
+            })
+    } catch (err) {
+        throw err;
+    }
+
+};
+
 const getPlayerData = async (account) => {
     let eos_rpc = wax.api.rpc;
     const player_res = await eos_rpc.get_table_rows({

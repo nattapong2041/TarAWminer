@@ -1,1 +1,529 @@
-var _0x5bc0=['cpu_limit','#need_real_tlm','mining','countdown','includes','set_land','cannot\x20cpu\x20get\x20stake','account:','last_mine','Error:\x20Claimed\x20NFT.','cpu','split','wax_balance','252742LuJldt','1GqSsJQ','some','auto_claim_time','false','sec','title','cannot\x20get\x20wax\x20balance','Error\x20while\x20update\x20account\x20details','getElementById','\x20TLM','onclick','true','**RUNNING**','\x20at\x20','Invalid','floor','core_liquid_balance','soon','used','\x20Times','s\x20before\x20new\x20login','5eWeeLX','\x20TLM\x20with\x20','19918diRLXG','mining\x20success\x20sleeping','RUNNING','user_account','location','**STOPPING**','toal_get','Complete:\x20','76449ZyZZQu','restart','s\x20before\x20new\x20mine','waiting\x20to\x20mine...','\x20min','newTx','Ninja\x20server\x20reach\x20rate\x20limit','log','status','597xmOLDf','isInteger','Approve\x20timeout:\x20','auto_claim','cpu_weight','Error\x20with\x20ninja-sever\x20mining:\x20:\x20','#auto_claim','break','send_btn','reload','need_real_tlm','cannot\x20get\x20cpu\x20litmit','message','WTF:\x20','Cooldown\x20total:\x20','innerHTML','className','then','textContent','getSeconds','\x20sec','input[name=\x22mining_with\x22]:checked','569622bCjIvd','tlm_balance','Click\x20to\x20STOP','wait','getItem','getHours','max','trying\x20to\x20mine','Error\x20while\x20find\x20answer\x20wait:\x20','-------------------','175189duWUEo','setItem','to_acc','update_detail','cannot\x20get\x20tlm\x20balance','stake_btn','length','expired','total_resources','claim_nft_acc','\x20Add:\x20','wax_bloks','btn\x20btn-danger','163tyrsjZ','cpu_stake','getTime','ninja_vip','declined','run_btn','self','land_btn','Error\x20with\x20self\x20mining:\x20','3JdoKsh','timeout','login','Checking\x20NFTs\x20drop','\x20||\x20answer:','Cannot\x20get\x20cooldown','random','href','swap_btn','getMinutes','value','btn\x20btn-success','ninja','Cpu\x20full\x20wait:\x20','Failed','#auto_update','limit','User','stake','mining_with','disabled','save_config','25364EChAsg','getting\x20cooldown','0m\x200s','CPU\x20time','Nothing\x20to\x20be\x20mine\x20wait\x20:\x20','toFixed','querySelector','s\x20before\x20mine','STOPPING','checked','send_wax','cpu_time','Error:\x20Cannot\x20set\x20land.','Unknow\x20error\x20wait:\x20','auto_update','https://wax.atomichub.io/profile/'];var _0x384257=_0x5aed;(function(_0x39357e,_0x2e8d52){var _0x2d7e98=_0x5aed;while(!![]){try{var _0x51eb6f=parseInt(_0x2d7e98(0x1d6))*parseInt(_0x2d7e98(0x1d4))+-parseInt(_0x2d7e98(0x1bf))*parseInt(_0x2d7e98(0x1de))+-parseInt(_0x2d7e98(0x175))+parseInt(_0x2d7e98(0x18b))*parseInt(_0x2d7e98(0x1a1))+-parseInt(_0x2d7e98(0x1be))+-parseInt(_0x2d7e98(0x1e7))*parseInt(_0x2d7e98(0x182))+parseInt(_0x2d7e98(0x16b));if(_0x51eb6f===_0x2e8d52)break;else _0x39357e['push'](_0x39357e['shift']());}catch(_0x557b72){_0x39357e['push'](_0x39357e['shift']());}}}(_0x5bc0,0x230fd));var errorDelay=0x5*(0x3c*0x3e8),cpuDelay=0x5*(0x3c*0x3e8),mineCountdownTime=0x5*(0x3c*0x3e8),loginCountdownTime=0x3*(0x3c*0x3e8),mineCountdownFinishTime=new Date()[_0x384257(0x184)](),loginCountdownFinishTime=new Date()[_0x384257(0x184)](),claimCountdownFinishTime=new Date()['getTime'](),nextmine=0x0,mineInterval,newMineInterval,loginInterval,isMining=![],totalget=0x0,minedCount=0x0;let userAccount='';var delay=0x0,lastTLM=0x0,nftInterval;function saveConfig(){var _0x4408b4=_0x384257;console[_0x4408b4(0x1e5)]('**SAVE\x20CONFIG**'),localStorage[_0x4408b4(0x176)](_0x4408b4(0x19e),document[_0x4408b4(0x1a7)](_0x4408b4(0x16a))[_0x4408b4(0x195)]),localStorage[_0x4408b4(0x176)]('cpu_time',document[_0x4408b4(0x1c7)](_0x4408b4(0x1ac))[_0x4408b4(0x195)]),localStorage[_0x4408b4(0x176)]('need_real_tlm',document['querySelector'](_0x4408b4(0x1b2))[_0x4408b4(0x1aa)]),localStorage[_0x4408b4(0x176)](_0x4408b4(0x1af),document[_0x4408b4(0x1a7)]('#auto_update')[_0x4408b4(0x1aa)]),localStorage[_0x4408b4(0x176)]('auto_claim',document[_0x4408b4(0x1a7)](_0x4408b4(0x15b))[_0x4408b4(0x1aa)]),localStorage[_0x4408b4(0x176)](_0x4408b4(0x1c1),document[_0x4408b4(0x1c7)]('auto_claim_time')[_0x4408b4(0x195)]);}function loadConfig(){var _0x5a6a2a=_0x384257;localStorage[_0x5a6a2a(0x16f)](_0x5a6a2a(0x19e))!=null&&(document[_0x5a6a2a(0x1c7)](localStorage[_0x5a6a2a(0x16f)](_0x5a6a2a(0x19e)))[_0x5a6a2a(0x1aa)]=!![]),localStorage['getItem'](_0x5a6a2a(0x1ac))!=null&&(document['getElementById'](_0x5a6a2a(0x1ac))[_0x5a6a2a(0x195)]=localStorage[_0x5a6a2a(0x16f)](_0x5a6a2a(0x1ac))),localStorage[_0x5a6a2a(0x16f)](_0x5a6a2a(0x15f))!=null&&localStorage['getItem'](_0x5a6a2a(0x15f))==_0x5a6a2a(0x1ca)&&(document[_0x5a6a2a(0x1a7)](_0x5a6a2a(0x1b2))[_0x5a6a2a(0x1aa)]=!![]),localStorage['getItem']('auto_update')!=null&&localStorage[_0x5a6a2a(0x16f)](_0x5a6a2a(0x1af))==_0x5a6a2a(0x1c2)&&(console[_0x5a6a2a(0x1e5)](_0x5a6a2a(0x162)+localStorage[_0x5a6a2a(0x16f)](_0x5a6a2a(0x1af))),document[_0x5a6a2a(0x1a7)](_0x5a6a2a(0x19a))['checked']=![]),localStorage[_0x5a6a2a(0x16f)](_0x5a6a2a(0x158))!=null&&localStorage[_0x5a6a2a(0x16f)](_0x5a6a2a(0x158))==_0x5a6a2a(0x1ca)&&(document[_0x5a6a2a(0x1a7)](_0x5a6a2a(0x15b))[_0x5a6a2a(0x1aa)]=localStorage[_0x5a6a2a(0x16f)](_0x5a6a2a(0x158))),localStorage[_0x5a6a2a(0x16f)]('auto_claim_time')!=null&&(document[_0x5a6a2a(0x1c7)](_0x5a6a2a(0x1c1))[_0x5a6a2a(0x195)]=localStorage[_0x5a6a2a(0x16f)](_0x5a6a2a(0x1c1)));}async function autoClaimNFT(){var _0x3c551e=_0x384257;let _0x13d426=new Date()[_0x3c551e(0x184)]();var _0x36156c=claimCountdownFinishTime-_0x13d426;if(_0x36156c<=0x0){clearInterval(nftInterval),claimCountdownFinishTime=new Date()[_0x3c551e(0x184)]()+document[_0x3c551e(0x1c7)](_0x3c551e(0x1c1))['value']*0x3c*0x3e8;let _0x559673=![];console[_0x3c551e(0x1e5)](_0x3c551e(0x18e)),_0x559673=await checkNFT(userAccount);if(_0x559673){let _0x3ce8ff=await claimNFT(userAccount,userAccount);_0x3ce8ff!=0x0&&_0x3ce8ff!=null?console[_0x3c551e(0x1e5)](_0x3c551e(0x1dd)+_0x3ce8ff):console[_0x3c551e(0x1e5)](_0x3c551e(0x1ba));}}}function updateStatus(_0x12be66){var _0x5004f0=_0x384257;document['getElementById'](_0x5004f0(0x1e6))[_0x5004f0(0x167)]=_0x12be66,document[_0x5004f0(0x1c4)]=_0x12be66+':\x20'+userAccount;}function _0x5aed(_0x1589b5,_0x1b3328){_0x1589b5=_0x1589b5-0x156;var _0x5bc09d=_0x5bc0[_0x1589b5];return _0x5bc09d;}async function updateAccStatus(){var _0x3613d7=_0x384257;try{let _0x26f9b1=await getAccount(userAccount);_0x26f9b1[_0x3613d7(0x1b1)]?document[_0x3613d7(0x1c7)](_0x3613d7(0x1b1))[_0x3613d7(0x167)]=(_0x26f9b1[_0x3613d7(0x1b1)][_0x3613d7(0x1d1)]/_0x26f9b1[_0x3613d7(0x1b1)][_0x3613d7(0x171)]*0x64)[_0x3613d7(0x1a6)](0x2)+'\x20%':document[_0x3613d7(0x1c7)](_0x3613d7(0x1b1))['textContent']=_0x3613d7(0x160);if(_0x26f9b1[_0x3613d7(0x17d)]){let _0x386620=_0x26f9b1[_0x3613d7(0x17d)][_0x3613d7(0x159)][_0x3613d7(0x1bc)]('\x20');document[_0x3613d7(0x1c7)](_0x3613d7(0x183))[_0x3613d7(0x167)]=parseFloat(_0x386620[0x0])[_0x3613d7(0x1a6)](0x4)+'\x20'+_0x386620[0x1];}else document[_0x3613d7(0x1c7)]('cpu_stake')[_0x3613d7(0x167)]=_0x3613d7(0x1b7);if(_0x26f9b1['core_liquid_balance']){let _0x32147f=_0x26f9b1[_0x3613d7(0x1cf)]['split']('\x20');document[_0x3613d7(0x1c7)](_0x3613d7(0x1bd))[_0x3613d7(0x167)]=parseFloat(_0x32147f[0x0])[_0x3613d7(0x1a6)](0x4)+'\x20'+_0x32147f[0x1];}else document['getElementById']('wax_balance')[_0x3613d7(0x167)]=_0x3613d7(0x1c5);}catch{console[_0x3613d7(0x1e5)](_0x3613d7(0x1c6));}}async function updateTLM(){var _0x1fd3c8=_0x384257;try{let _0xd26b8a=await getTLM(userAccount);_0xd26b8a?(lastTLM=_0xd26b8a,document[_0x1fd3c8(0x1c7)](_0x1fd3c8(0x16c))[_0x1fd3c8(0x167)]=_0xd26b8a+_0x1fd3c8(0x1c8)):document['getElementById'](_0x1fd3c8(0x16c))[_0x1fd3c8(0x167)]=_0x1fd3c8(0x179);}catch{console[_0x1fd3c8(0x1e5)](_0x1fd3c8(0x1c6));}}function updateNextMine(_0x10c820){var _0x3b21e8=_0x384257;const _0xd44701=new Date()['getTime'](),_0x409bf8=new Date(_0xd44701+_0x10c820);document[_0x3b21e8(0x1c7)]('next_mine')['textContent']=padLeadingZeros(_0x409bf8[_0x3b21e8(0x170)](),0x2)+':'+padLeadingZeros(_0x409bf8[_0x3b21e8(0x194)](),0x2)+':'+padLeadingZeros(_0x409bf8[_0x3b21e8(0x168)](),0x2);}function clearTimer(){var _0x5a498f=_0x384257;loginInterval&&clearInterval(loginInterval),newMineInterval&&clearInterval(newMineInterval),mineInterval&&clearInterval(mineInterval),document[_0x5a498f(0x1c7)](_0x5a498f(0x1b4))[_0x5a498f(0x164)]=_0x5a498f(0x1a3);}function padLeadingZeros(_0x5f9bc4,_0x33f7ed){var _0x17a0e9=_0x384257,_0x4c63ee=_0x5f9bc4+'';while(_0x4c63ee[_0x17a0e9(0x17b)]<_0x33f7ed)_0x4c63ee='0'+_0x4c63ee;return _0x4c63ee;}function sleep(_0xf90c7){return new Promise(_0x183cac=>setTimeout(_0x183cac,_0xf90c7));}function updateAccount(_0x525af1){var _0x19fd33=_0x384257;document[_0x19fd33(0x1c7)](_0x19fd33(0x1d9))[_0x19fd33(0x167)]=_0x525af1,document[_0x19fd33(0x1c7)](_0x19fd33(0x180))[_0x19fd33(0x192)]='https://wax.bloks.io/account/'+_0x525af1,document[_0x19fd33(0x1c7)]('atomic_hub')[_0x19fd33(0x192)]=_0x19fd33(0x1b0)+_0x525af1;}async function chargingCountdownfunction(){var _0x13f917=_0x384257;newMineInterval&&clearInterval(newMineInterval);var _0x3aa167=new Date()[_0x13f917(0x184)](),_0x2ee994=mineCountdownFinishTime-_0x3aa167,_0x19d9df=Math[_0x13f917(0x1ce)](_0x2ee994%(0x3e8*0x3c*0x3c)/(0x3e8*0x3c)),_0x257483=Math[_0x13f917(0x1ce)](_0x2ee994%(0x3e8*0x3c)/0x3e8);document['getElementById'](_0x13f917(0x1b4))['innerHTML']=padLeadingZeros(_0x19d9df,0x2)+'m\x20'+padLeadingZeros(_0x257483,0x2)+_0x13f917(0x1a8),_0x2ee994<0x0&&(clearTimer(),document[_0x13f917(0x1c7)]('countdown')[_0x13f917(0x164)]=_0x13f917(0x172),await miner(document[_0x13f917(0x1a7)](_0x13f917(0x16a))[_0x13f917(0x195)]));}async function miningCountdownfunction(){var _0x21ba9c=_0x384257;mineInterval&&clearInterval(mineInterval);var _0x2b904c=new Date()[_0x21ba9c(0x184)](),_0x30cc9e=mineCountdownFinishTime-_0x2b904c,_0x3bc69d=Math['floor'](_0x30cc9e%(0x3e8*0x3c*0x3c)/(0x3e8*0x3c)),_0x45589d=Math[_0x21ba9c(0x1ce)](_0x30cc9e%(0x3e8*0x3c)/0x3e8);document[_0x21ba9c(0x1c7)](_0x21ba9c(0x1b4))[_0x21ba9c(0x164)]=padLeadingZeros(_0x3bc69d,0x2)+'m\x20'+padLeadingZeros(_0x45589d,0x2)+_0x21ba9c(0x1e0),_0x30cc9e<0x0&&(clearTimer(),await restart(),document[_0x21ba9c(0x1c7)](_0x21ba9c(0x1b4))['innerHTML']='restarting');}async function loginCountdownfunction(){var _0x183a41=_0x384257,_0x4e051f=new Date()['getTime'](),_0x2426f6=loginCountdownFinishTime-_0x4e051f,_0x3481a2=Math[_0x183a41(0x1ce)](_0x2426f6%(0x3e8*0x3c*0x3c)/(0x3e8*0x3c)),_0x4d94a6=Math[_0x183a41(0x1ce)](_0x2426f6%(0x3e8*0x3c)/0x3e8);document[_0x183a41(0x1c7)](_0x183a41(0x1b4))['innerHTML']=padLeadingZeros(_0x3481a2,0x2)+'m\x20'+padLeadingZeros(_0x4d94a6,0x2)+_0x183a41(0x1d3),_0x2426f6<0x0&&(clearTimer(),window[_0x183a41(0x1da)][_0x183a41(0x15e)]());}async function login(){var _0x4cc1c3=_0x384257;try{document[_0x4cc1c3(0x1c7)](_0x4cc1c3(0x178))[_0x4cc1c3(0x1c9)]=async function(){try{updateAccStatus(),updateTLM();}catch(_0x42613c){throw _0x42613c;}},document[_0x4cc1c3(0x1c7)]('wax_server')['textContent']='Wax\x20server:\x20'+url,document[_0x4cc1c3(0x1c7)](_0x4cc1c3(0x193))[_0x4cc1c3(0x1c9)]=async function(){var _0x5ce3fb=_0x4cc1c3;let _0x569bb9=await swap(userAccount,document[_0x5ce3fb(0x1c7)]('swap_tlm')[_0x5ce3fb(0x195)]);_0x569bb9!=0x0&&_0x569bb9!=null?console[_0x5ce3fb(0x1e5)](_0x5ce3fb(0x1dd)+_0x569bb9):console[_0x5ce3fb(0x1e5)]('Error:\x20Cannot\x20swap\x20TLM.');},document[_0x4cc1c3(0x1c7)](_0x4cc1c3(0x189))[_0x4cc1c3(0x1c9)]=async function(){var _0x4a5e51=_0x4cc1c3;let _0x44fa9f=null;try{_0x44fa9f=await setLand(userAccount,document[_0x4a5e51(0x1c7)](_0x4a5e51(0x1b6))[_0x4a5e51(0x195)]);}catch(_0x456826){console['log'](_0x456826);}_0x44fa9f!=0x0&&_0x44fa9f!=null?console[_0x4a5e51(0x1e5)](_0x4a5e51(0x1dd)+_0x44fa9f):console[_0x4a5e51(0x1e5)](_0x4a5e51(0x1ad));},document[_0x4cc1c3(0x1c7)](_0x4cc1c3(0x15d))[_0x4cc1c3(0x1c9)]=async function(){var _0x1a0f60=_0x4cc1c3;let _0x565e47=await transfer(userAccount,document['getElementById'](_0x1a0f60(0x1ab))['value'],document[_0x1a0f60(0x1c7)](_0x1a0f60(0x177))['value'],document[_0x1a0f60(0x1c7)]('memo')[_0x1a0f60(0x195)]);_0x565e47!=0x0&&_0x565e47!=null?console[_0x1a0f60(0x1e5)]('Complete:\x20'+_0x565e47):console[_0x1a0f60(0x1e5)]('Error:\x20Cannot\x20transfer.');},document['getElementById']('claim_btn')[_0x4cc1c3(0x1c9)]=async function(){var _0x747a79=_0x4cc1c3;let _0x32462a=await claimNFT(userAccount,document[_0x747a79(0x1c7)](_0x747a79(0x17e))[_0x747a79(0x195)]);_0x32462a!=0x0&&_0x32462a!=null?console['log'](_0x747a79(0x1dd)+_0x32462a):console[_0x747a79(0x1e5)](_0x747a79(0x1ba));},document[_0x4cc1c3(0x1c7)](_0x4cc1c3(0x17a))['onclick']=async function(){var _0x2761f6=_0x4cc1c3;let _0x237a0d=await stake(userAccount,document['getElementById'](_0x2761f6(0x19d))[_0x2761f6(0x195)]);_0x237a0d!=0x0&&_0x237a0d!=null?console[_0x2761f6(0x1e5)]('Complete:\x20'+_0x237a0d):console[_0x2761f6(0x1e5)]('Error:\x20Cannot\x20stake.');},document[_0x4cc1c3(0x1c7)](_0x4cc1c3(0x187))[_0x4cc1c3(0x1c9)]=async function(){onclickRun();},document[_0x4cc1c3(0x1c7)](_0x4cc1c3(0x1a0))[_0x4cc1c3(0x1c9)]=async function(){saveConfig();},document['getElementById']('run_btn')['disabled']=!![],clearTimer(),loginCountdownFinishTime=new Date()[_0x4cc1c3(0x184)]()+loginCountdownTime,loginInterval=setInterval(loginCountdownfunction,0x3e8),userAccount=await wax[_0x4cc1c3(0x18d)](),updateAccount(userAccount),userAccount!=null&&(clearTimer(),document['getElementById'](_0x4cc1c3(0x1b4))['innerHTML']=_0x4cc1c3(0x1a3),onclickRun(),document['getElementById']('run_btn')[_0x4cc1c3(0x19f)]=![]);}catch(_0x21652b){console[_0x4cc1c3(0x1e5)](_0x21652b),window['location']['reload']();}}async function run(){var _0x115609=_0x384257;clearTimer();if(!isMining){isMining=!![];if(delay==0x0){console[_0x115609(0x1e5)](_0x115609(0x1a2)),delay=await getMineDelay(userAccount)[_0x115609(0x166)](function(_0x4dbb55){var _0x235e46=_0x115609;if(_0x4dbb55==-0x1)throw _0x235e46(0x190);return _0x4dbb55;})['catch'](_0x32616b=>{return 0x0;}),await sleep(0xbb8);let _0x5d5dcb=Math[_0x115609(0x1ce)](Math[_0x115609(0x191)]()*0x5208)+0xfa0,_0x196c33=0x0;Number[_0x115609(0x156)](delay)?_0x196c33=delay+_0x5d5dcb:_0x196c33=_0x5d5dcb;if(document['getElementById'](_0x115609(0x158))[_0x115609(0x1aa)]){if(document[_0x115609(0x1c7)](_0x115609(0x1c1))[_0x115609(0x195)]>=0x0){let _0x340b0d=new Date()['getTime']();claimCountdownFinishTime-_0x340b0d<=0x0&&(nftInterval=setInterval(autoClaimNFT,0x3e8));}}console[_0x115609(0x1e5)](_0x115609(0x163)+_0x196c33/0x3e8+'sec\x20Mine:\x20'+delay/0x3e8+_0x115609(0x17f)+_0x5d5dcb/0x3e8+_0x115609(0x1c3)),updateStatus('charging'),updateNextMine(_0x196c33),document[_0x115609(0x1c7)](_0x115609(0x1af))[_0x115609(0x1aa)]&&updateAccStatus(),updateTLM(),mineCountdownFinishTime=new Date()[_0x115609(0x184)]()+_0x196c33,mineInterval=setInterval(chargingCountdownfunction,0x3e8);}}}async function miner(_0x16cac5){var _0x510295=_0x384257;updateStatus(_0x510295(0x1e1)),updateStatus('mining'),mineCountdownFinishTime=new Date()[_0x510295(0x184)]()+mineCountdownTime,newMineInterval=setInterval(miningCountdownfunction,0x3e8);let _0x20d3e8=null;if(_0x16cac5==_0x510295(0x197)||_0x16cac5==_0x510295(0x185))try{_0x16cac5==_0x510295(0x185)?_0x20d3e8=await ninja_server_mine(userAccount,!![]):_0x20d3e8=await ninja_server_mine(userAccount,![]);if(_0x20d3e8=='ninja'){document[_0x510295(0x1c7)](_0x510295(0x188))[_0x510295(0x1aa)]=!![];throw _0x510295(0x1e4);}}catch(_0x58999b){console[_0x510295(0x1e5)](_0x510295(0x15a)+_0x58999b);try{_0x20d3e8=await self_mine(userAccount);}catch(_0x1566f1){console[_0x510295(0x1e5)](_0x510295(0x18a)+_0x1566f1),_0x20d3e8=null;}}else{if(_0x16cac5==_0x510295(0x188))try{_0x20d3e8=await self_mine(userAccount);}catch(_0x33aa1d){console[_0x510295(0x1e5)](_0x510295(0x18a)+_0x33aa1d),_0x20d3e8=null;}}if(_0x20d3e8!=null){updateStatus('claiming');let _0xe6931a=null;try{console[_0x510295(0x1e5)](_0x510295(0x1b8)+userAccount+_0x510295(0x18f)+_0x20d3e8),_0xe6931a=await claim(userAccount,_0x20d3e8),totalget+=parseFloat(_0xe6931a),minedCount+=0x1;let _0x1bbdd1=new Date();document[_0x510295(0x1c7)](_0x510295(0x1b9))[_0x510295(0x167)]=_0xe6931a+_0x510295(0x1cc)+padLeadingZeros(_0x1bbdd1[_0x510295(0x170)](),0x2)+':'+padLeadingZeros(_0x1bbdd1[_0x510295(0x194)](),0x2)+':'+padLeadingZeros(_0x1bbdd1['getSeconds'](),0x2),document[_0x510295(0x1c7)](_0x510295(0x1dc))[_0x510295(0x167)]=totalget[_0x510295(0x1a6)](0x4)+_0x510295(0x1d5)+minedCount+_0x510295(0x1d2);}catch(_0x4667a0){updateStatus(_0x4667a0);const _0x5b4a61=handleError(_0x4667a0);console['log'](''+_0x4667a0);if(_0x5b4a61==_0x510295(0x1df))updateStatus('Normal\x20error\x20wait:\x20'+0x2+_0x510295(0x1e2)),nextmine=0x78*0x3e8,updateNextMine(nextmine);else{if(_0x5b4a61=='mining')updateStatus(_0x510295(0x173)+0x2+_0x510295(0x1e2)),document['querySelector'](_0x510295(0x16a))['value']==_0x510295(0x197)&&(document[_0x510295(0x1c7)](_0x510295(0x188))[_0x510295(0x1aa)]=!![]),nextmine=0x78*0x3e8,updateNextMine(nextmine);else{if(_0x5b4a61==_0x510295(0x1bb))document[_0x510295(0x1c7)](_0x510295(0x1ac))['value']>0x0&&(cpuDelay=document[_0x510295(0x1c7)](_0x510295(0x1ac))[_0x510295(0x195)]*0x3c*0x3e8),updateStatus(_0x510295(0x198)+cpuDelay/(0x3c*0x3e8)+_0x510295(0x1e2)),nextmine=cpuDelay,updateNextMine(nextmine);else{if(_0x5b4a61=='newTx')updateStatus('User\x20start\x20new\x20transaction\x20wait:\x20'+0xa+_0x510295(0x169)),nextmine=0xa*0x3e8,updateNextMine(nextmine);else{if(_0x5b4a61==_0x510295(0x18c))updateStatus(_0x510295(0x157)+0xa+_0x510295(0x169)),nextmine=0xa*0x3e8,updateNextMine(nextmine);else{if(_0x5b4a61==_0x510295(0x16e))updateStatus(_0x510295(0x1ae)+errorDelay/(0x3c*0x3e8)+_0x510295(0x1e2)),nextmine=errorDelay,updateNextMine(nextmine);else _0x5b4a61==_0x510295(0x15c)?(updateStatus(_0x510295(0x1a5)+0x3c+_0x510295(0x1e2)),nextmine=0x3c*0x3c*0x3e8,updateNextMine(nextmine)):(updateStatus(_0x510295(0x1ae)+errorDelay/(0x3c*0x3e8)+'\x20min'),nextmine=errorDelay,updateNextMine(nextmine));}}}}}}console[_0x510295(0x1e5)](_0x510295(0x174)),_0xe6931a!=null?(delay=0x0,clearTimer(),updateStatus(_0x510295(0x1d7)),isMining=![],await sleep(0x2710),run()):(delay=0x0,clearTimer(),mineCountdownFinishTime=new Date()[_0x510295(0x184)]()+nextmine,newMineInterval=setInterval(miningCountdownfunction,0x3e8));}}function handleError(_0x381bf2){var _0x38029f=_0x384257;const _0x143c89=[_0x38029f(0x186),_0x38029f(0x17c),_0x38029f(0x1d0),_0x38029f(0x19c),_0x38029f(0x199)],_0x83b534=[_0x38029f(0x1cd),_0x38029f(0x19b)];if(_0x381bf2[_0x38029f(0x161)]['includes'](_0x38029f(0x1a4)))return _0x38029f(0x1bb);else{if(_0x381bf2[_0x38029f(0x161)]['includes']('started\x20a\x20new\x20transaction'))return _0x38029f(0x1e3);else{if(_0x83b534['some'](_0x11eca3=>_0x381bf2[_0x38029f(0x161)][_0x38029f(0x1b5)](_0x11eca3)))return _0x38029f(0x1b3);else{if(_0x143c89[_0x38029f(0x1c0)](_0x1975fd=>_0x381bf2[_0x38029f(0x161)][_0x38029f(0x1b5)](_0x1975fd)))return _0x38029f(0x1df);else{if(_0x381bf2['message']['includes'](_0x38029f(0x18c)))return _0x38029f(0x18c);else return _0x381bf2[_0x38029f(0x161)]['includes']('nothing')?_0x38029f(0x15c):_0x38029f(0x16e);}}}}}function stop(){clearTimer(),delay=0x0,isMining=![];}function onclickRun(){var _0x6d65e7=_0x384257;isMining?(stop(),updateStatus(_0x6d65e7(0x1a9)),console[_0x6d65e7(0x1e5)](_0x6d65e7(0x1db)),document[_0x6d65e7(0x1c7)](_0x6d65e7(0x187))['textContent']='Click\x20to\x20Start',document[_0x6d65e7(0x1c7)](_0x6d65e7(0x187))[_0x6d65e7(0x165)]=_0x6d65e7(0x196)):(updateStatus(_0x6d65e7(0x1d8)),console[_0x6d65e7(0x1e5)](_0x6d65e7(0x1cb)),document[_0x6d65e7(0x1c7)]('run_btn')[_0x6d65e7(0x167)]=_0x6d65e7(0x16d),document[_0x6d65e7(0x1c7)]('run_btn')['className']=_0x6d65e7(0x181),delay=0x0,run());}async function restart(){stop(),await sleep(0x1388),run();}
+var errorDelay = 5 * (60 * 1000);
+var cpuDelay = 5.0 * (60 * 1000);
+var mineCountdownTime = 5 * (60 * 1000);
+var loginCountdownTime = 3 * (60 * 1000);
+var mineCountdownFinishTime = new Date().getTime();
+var loginCountdownFinishTime = new Date().getTime();
+var claimCountdownFinishTime = new Date().getTime();
+var nextmine = 0;
+var mineInterval;
+var newMineInterval;
+var loginInterval;
+var isMining = false;
+var totalget = 0.0;
+var minedCount = 0;
+let userAccount = "";
+var delay = 0;
+var lastTLM = 0;
+var nftInterval;
+function saveConfig() {
+    console.log('**SAVE CONFIG**');
+    localStorage.setItem('mining_with', document.querySelector('input[name="mining_with"]:checked').value)
+    localStorage.setItem('cpu_time', document.getElementById("cpu_time").value);
+    localStorage.setItem('need_real_tlm', document.querySelector("#need_real_tlm").checked);
+    //auto update wax
+    localStorage.setItem('auto_update', document.querySelector("#auto_update").checked);
+    //autoclaim
+    localStorage.setItem('auto_claim', document.querySelector("#auto_claim").checked);
+    localStorage.setItem('auto_claim_time', document.getElementById("auto_claim_time").value);
+}
+
+function loadConfig() {
+    if (localStorage.getItem('mining_with') != null) {
+        document.getElementById(localStorage.getItem('mining_with')).checked = true;
+    }
+    if (localStorage.getItem('cpu_time') != null) {
+        document.getElementById("cpu_time").value = localStorage.getItem('cpu_time');
+    }
+    if (localStorage.getItem('need_real_tlm') != null && localStorage.getItem('need_real_tlm') == 'true') {
+        document.querySelector("#need_real_tlm").checked = true;
+    }
+    //AutoUpdateWax
+    if (localStorage.getItem('auto_update') != null && localStorage.getItem('auto_update') == 'false') {
+        console.log('WTF: ' + localStorage.getItem('auto_update'));
+        document.querySelector("#auto_update").checked = false;
+    }
+    //AutoClaim
+    if (localStorage.getItem('auto_claim') != null && localStorage.getItem('auto_claim') == 'true') {
+        document.querySelector("#auto_claim").checked = localStorage.getItem('auto_claim');
+    }
+    if (localStorage.getItem('auto_claim_time') != null) {
+        document.getElementById("auto_claim_time").value = localStorage.getItem('auto_claim_time');
+    }
+}
+
+async function autoClaimNFT() {
+    let now = new Date().getTime();
+    var distance = claimCountdownFinishTime - now;
+    //var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    //var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    //document.getElementById("countdown").innerHTML = padLeadingZeros(minutes, 2) + 'm ' + padLeadingZeros(seconds, 2) + 's before mine'
+    if (distance <= 0) {
+        clearInterval(nftInterval);
+        claimCountdownFinishTime = new Date().getTime() + (document.getElementById("auto_claim_time").value * 60 * 1000);
+        let check = false;
+        console.log('Checking NFTs drop');
+        check = await checkNFT(userAccount);
+        if (check) {
+            let result = await claimNFT(userAccount, userAccount);
+            if (result != 0 && result != null) {
+                console.log('Complete: ' + result);
+            } else {
+                console.log('Error: Claimed NFT.');
+            }
+        }
+    }
+}
+function updateStatus(status) {
+    document.getElementById("status").textContent = status;
+    document.title = status + ': ' + userAccount;
+}
+
+async function updateAccStatus() {
+    try {
+        let status = await getAccount(userAccount);
+
+        if (status.cpu_limit) {
+            document.getElementById("cpu_limit").textContent = (status.cpu_limit.used / status.cpu_limit.max * 100).toFixed(2) + ' %';
+        }
+        else {
+            document.getElementById("cpu_limit").textContent = "cannot get cpu litmit";
+        }
+        if (status.total_resources) {
+            let stake = (status.total_resources.cpu_weight).split(" ");
+            document.getElementById("cpu_stake").textContent = parseFloat(stake[0]).toFixed(4) + ' ' + stake[1]
+        }
+        else {
+            document.getElementById("cpu_stake").textContent = "cannot cpu get stake";
+        }
+        if (status.core_liquid_balance) {
+            let wax = (status.core_liquid_balance).split(" ");
+            document.getElementById("wax_balance").textContent = parseFloat(wax[0]).toFixed(4) + ' ' + wax[1];
+        }
+        else {
+            document.getElementById("wax_balance").textContent = "cannot get wax balance"
+        }
+    } catch {
+        console.log('Error while update account details');
+    }
+}
+
+async function updateTLM() {
+    try {
+        let tlm = await getTLM(userAccount);
+        if (tlm) {
+            lastTLM = tlm;
+            document.getElementById("tlm_balance").textContent = tlm + ' TLM';
+        }
+        else {
+            document.getElementById("tlm_balance").textContent = "cannot get tlm balance";
+        }
+    } catch {
+        console.log('Error while update account details');
+    }
+}
+
+function updateNextMine(delay) {
+    const time = new Date().getTime()
+    const mineTime = new Date(time + delay)
+    document.getElementById("next_mine").textContent = padLeadingZeros(mineTime.getHours(), 2) + ':' + padLeadingZeros(mineTime.getMinutes(), 2) + ':' + padLeadingZeros(mineTime.getSeconds(), 2);
+}
+
+function clearTimer() {
+    if (loginInterval) {
+        clearInterval(loginInterval);
+    }
+    if (newMineInterval) {
+        clearInterval(newMineInterval);
+    }
+    if (mineInterval) {
+        clearInterval(mineInterval);
+    }
+    document.getElementById("countdown").innerHTML = "0m 0s";
+}
+
+function padLeadingZeros(num, size) {
+    var s = num + "";
+    while (s.length < size) s = "0" + s;
+    return s;
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function updateAccount(userAccount) {
+    document.getElementById("user_account").textContent = userAccount;
+    document.getElementById("wax_bloks").href = 'https://wax.bloks.io/account/' + userAccount
+    document.getElementById("atomic_hub").href = 'https://wax.atomichub.io/profile/' + userAccount
+}
+
+
+async function chargingCountdownfunction() {
+    if (newMineInterval) {
+        clearInterval(newMineInterval);
+    }
+    var now = new Date().getTime();
+    var distance = mineCountdownFinishTime - now;
+    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    document.getElementById("countdown").innerHTML = padLeadingZeros(minutes, 2) + 'm ' + padLeadingZeros(seconds, 2) + 's before mine'
+    if (distance < 0) {
+        clearTimer();
+        document.getElementById("countdown").innerHTML = "trying to mine";
+        await miner(document.querySelector('input[name="mining_with"]:checked').value);
+    }
+}
+
+async function miningCountdownfunction() {
+    if (mineInterval) {
+        clearInterval(mineInterval);
+    }
+    var now = new Date().getTime();
+    var distance = mineCountdownFinishTime - now;
+    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    document.getElementById("countdown").innerHTML = padLeadingZeros(minutes, 2) + 'm ' + padLeadingZeros(seconds, 2) + 's before new mine'
+    if (distance < 0) {
+        clearTimer();
+        await restart();
+        document.getElementById("countdown").innerHTML = "restarting";
+    }
+}
+
+async function loginCountdownfunction() {
+    var now = new Date().getTime();
+    var distance = loginCountdownFinishTime - now;
+    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    document.getElementById("countdown").innerHTML = padLeadingZeros(minutes, 2) + 'm ' + padLeadingZeros(seconds, 2) + 's before new login'
+    if (distance < 0) {
+        clearTimer()
+        window.location.reload();
+    }
+}
+
+async function login() {
+    try {
+        // document.getElementById("test").onclick = async function () {
+        //     try {
+        //         let result = await getAccount(userAccount);
+        //         updateAccStatus(result);
+        //     } catch (err) {
+        //         throw err;
+        //     }
+        // };
+        document.getElementById("update_detail").onclick = async function () {
+            try {
+                updateAccStatus();
+                updateTLM()
+            } catch (err) {
+                throw err;
+            }
+        };
+        document.getElementById("wax_server").textContent = 'Wax server: ' + url;
+        document.getElementById("swap_btn").onclick = async function () {
+            let result = await swap(userAccount, document.getElementById("swap_tlm").value)
+            if (result != 0 && result != null) {
+                console.log('Complete: ' + result);
+            } else {
+                console.log('Error: Cannot swap TLM.');
+            }
+        };
+        document.getElementById("land_btn").onclick = async function () {
+            let result = null
+            try {
+                result = await setLand(userAccount, document.getElementById("set_land").value)
+            } catch (error) {
+                console.log(error);
+            }
+            if (result != 0 && result != null) {
+                console.log('Complete: ' + result);
+            } else {
+                console.log('Error: Cannot set land.');
+            }
+        };
+        document.getElementById("send_btn").onclick = async function () {
+            let result = await transfer(userAccount, document.getElementById("send_wax").value, document.getElementById("to_acc").value, document.getElementById("memo").value)
+            if (result != 0 && result != null) {
+                console.log('Complete: ' + result);
+            } else {
+                console.log('Error: Cannot transfer.');
+            }
+        };
+        document.getElementById("claim_btn").onclick = async function () {
+            let result = await claimNFT(userAccount, document.getElementById("claim_nft_acc").value)
+            if (result != 0 && result != null) {
+                console.log('Complete: ' + result);
+            } else {
+                console.log('Error: Claimed NFT.');
+            }
+        };
+        document.getElementById("stake_btn").onclick = async function () {
+            let result = await stake(userAccount, document.getElementById("stake").value)
+            if (result != 0 && result != null) {
+                console.log('Complete: ' + result);
+            } else {
+                console.log('Error: Cannot stake.');
+            }
+        };
+        document.getElementById("run_btn").onclick = async function () {
+            onclickRun();
+        };
+        document.getElementById("save_config").onclick = async function () {
+            saveConfig();
+        };
+        document.getElementById("run_btn").disabled = true
+        clearTimer();
+        loginCountdownFinishTime = new Date().getTime() + loginCountdownTime;
+        loginInterval = setInterval(loginCountdownfunction, 1000);
+        userAccount = await wax.login();
+        updateAccount(userAccount);
+        if (userAccount != null) {
+            clearTimer();
+            document.getElementById("countdown").innerHTML = "0m 0s";
+            onclickRun();
+            document.getElementById("run_btn").disabled = false
+        }
+
+    } catch (err) {
+        console.log(err);
+        window.location.reload();
+    }
+
+}
+
+async function run() {
+    clearTimer();
+    if (!isMining) {
+        isMining = true
+        //calculate delay
+        if (delay == 0) {
+            console.log('getting cooldown');
+            delay = await getMineDelay(userAccount).then(function (response) {
+                if (response == -1) throw 'Cannot get cooldown'
+                return response;
+            }).catch((err) => {
+                // url = base_api[getRandom(0, base_api.length-2)];
+                // wax = new waxjs.WaxJS(url);
+                // document.getElementById("wax_server").textContent = 'Wax server: ' + url;
+                // console.log('change wax server to: ' + url);
+                return 0;
+            });
+            await sleep(3000);
+            let addRandom = Math.floor(Math.random() * 21000) + 4000;
+            let totalDelay = 0;
+            if (Number.isInteger(delay)) {
+                totalDelay = delay + addRandom;
+            } else {
+                totalDelay = addRandom;
+            }
+            if (document.getElementById("auto_claim").checked) {
+                if (document.getElementById("auto_claim_time").value >= 0) {
+                    let now = new Date().getTime();
+                    if((claimCountdownFinishTime - now) <=0){
+                        nftInterval = setInterval(autoClaimNFT,  1000);
+                    }
+                }
+            }
+            console.log('Cooldown total: ' + totalDelay / 1000 + 'sec Mine: ' + delay / 1000 + ' Add: ' + addRandom / 1000 + 'sec')
+            updateStatus('charging')
+            updateNextMine(totalDelay)
+            if (document.getElementById("auto_update").checked) {
+                updateAccStatus();
+            }
+            updateTLM();
+            mineCountdownFinishTime = new Date().getTime() + totalDelay;
+            mineInterval = setInterval(chargingCountdownfunction, 1000);
+        }
+
+    }
+}
+
+async function miner(mine_with) {
+    //Mining
+    updateStatus('waiting to mine...')
+    updateStatus('mining');
+    mineCountdownFinishTime = new Date().getTime() + mineCountdownTime;
+    newMineInterval = setInterval(miningCountdownfunction, 1000);
+    let nonce = null
+    if (mine_with == 'ninja' || mine_with == 'ninja_vip') {
+        try {
+            if (mine_with == 'ninja_vip') {
+                nonce = await ninja_server_mine(userAccount, true);
+            } else {
+                nonce = await ninja_server_mine(userAccount, false);
+            }
+            if (nonce == 'ninja') {
+                document.getElementById("self").checked = true;
+                throw 'Ninja server reach rate limit';
+            }
+        } catch (err) {
+            console.log('Error with ninja-sever mining: : ' + err);
+            try {
+                nonce = await self_mine(userAccount);
+            } catch (err) {
+                console.log('Error with self mining: ' + err);
+                nonce = null;
+            }
+        }
+    } else if (mine_with == 'lazy') {
+        try {
+            nonce = await lazy_server_mine(userAccount);
+            if (nonce == 'lazy') {
+                throw 'Cannot get answer';
+            }
+        } catch (err) {
+            console.log('Error with lazy-sever mining: : ' + err);
+            try {
+                nonce = await self_mine(userAccount);
+            } catch (err) {
+                console.log('Error with self mining: ' + err);
+                nonce = null;
+            }
+        }
+    }  else if (mine_with == 'self') {
+        try {
+            nonce = await self_mine(userAccount);
+        } catch (err) {
+            console.log('Error with self mining: ' + err);
+            nonce = null;
+        }
+    }
+
+    if (nonce != null) {
+        updateStatus('claiming')
+        let result = null
+        try {
+            console.log(`account:${userAccount} || answer:${nonce}`);
+            result = await claim(userAccount, nonce);
+            totalget += parseFloat(result);
+            minedCount += 1;
+            let currdate = new Date();
+            document.getElementById("last_mine").textContent = result + ' at ' + padLeadingZeros(currdate.getHours(), 2) + ':' + padLeadingZeros(currdate.getMinutes(), 2) + ':' + padLeadingZeros(currdate.getSeconds(), 2);
+            document.getElementById("toal_get").textContent = totalget.toFixed(4) + ' TLM with ' + minedCount + ' Times';
+        } catch (error) {
+            updateStatus(error)
+            const errorRes = handleError(error)
+            console.log('' + error);
+            if (errorRes == 'restart') {
+                updateStatus('Normal error wait: ' + 2 + ' min')
+                nextmine = 120 * 1000;
+                updateNextMine(nextmine)
+            } else if (errorRes == 'mining') {
+                updateStatus('Error while find answer wait: ' + 2 + ' min')
+                if (document.querySelector('input[name="mining_with"]:checked').value == 'ninja') {
+                    document.getElementById("self").checked = true;
+                }
+                nextmine = 120 * 1000;
+                updateNextMine(nextmine)
+            } else if (errorRes == 'cpu') {
+                if (document.getElementById("cpu_time").value > 0) {
+                    cpuDelay = document.getElementById("cpu_time").value * 60 * 1000;
+                }
+                updateStatus('Cpu full wait: ' + cpuDelay / (60 * 1000) + ' min')
+                nextmine = cpuDelay;
+                updateNextMine(nextmine)
+            } else if (errorRes == 'newTx') {
+                updateStatus('User start new transaction wait: ' + 10 + ' sec')
+                nextmine = 10 * 1000;
+                updateNextMine(nextmine)
+            }   else if (errorRes == 'declares') {
+                updateStatus('User transaction declares wait: ' + 30 + ' sec')
+                nextmine = 30 * 1000;
+                updateNextMine(nextmine)
+            }else if (errorRes == 'timeout') {
+                updateStatus('Approve timeout: ' + 10 + ' sec')
+                nextmine = 10 * 1000;
+                updateNextMine(nextmine)
+            }
+            else if (errorRes == 'wait') {
+                updateStatus('Unknow error wait: ' + errorDelay / (60 * 1000) + ' min')
+                nextmine = errorDelay;
+                updateNextMine(nextmine)
+            }
+            else if (errorRes == 'break') {
+                updateStatus('Nothing to be mine wait : ' + 60 + ' min')
+                nextmine = 60 * 60 * 1000;
+                updateNextMine(nextmine)
+            }
+            else {
+                updateStatus('Unknow error wait: ' + errorDelay / (60 * 1000) + ' min')
+                nextmine = errorDelay;
+                updateNextMine(nextmine)
+            }
+        }
+        console.log('-------------------');
+        if (result != null) {
+            delay = 0;
+            clearTimer();
+            updateStatus('mining success sleeping')
+            isMining = false;
+            await sleep(10000);
+            run();
+        }
+        else {
+            delay = 0;
+            clearTimer();
+            mineCountdownFinishTime = new Date().getTime() + nextmine;
+            newMineInterval = setInterval(miningCountdownfunction, 1000);
+        }
+
+    }
+}
+function handleError(error) {
+    const normalErr = ['declined', 'expired', 'soon', 'User', 'Failed']
+    const mining = ['Invalid', 'limit']
+    if (error.message.includes('CPU time')) {
+        return 'cpu'
+    }
+    else if (error.message.includes('started a new transaction')) {
+        return 'newTx'
+    }else if (error.message.includes('transaction declares')) {
+        return 'declares'
+    }
+    else if (mining.some(v => error.message.includes(v))) {
+        return 'mining';
+    }
+    else if (normalErr.some(v => error.message.includes(v))) {
+        return 'restart'
+    }
+    else if (error.message.includes('timeout')) {
+        return 'timeout'
+    }
+    else if (error.message.includes('nothing')) {
+        return 'break'
+    } else {
+        return 'wait'
+    }
+}
+
+function stop() {
+    clearTimer();
+    delay = 0;
+    isMining = false
+}
+
+function onclickRun() {
+    if (isMining) {
+        stop();
+        updateStatus('STOPPING')
+        console.log('**STOPPING**');
+        document.getElementById("run_btn").textContent = "Click to Start"
+        document.getElementById("run_btn").className = "btn btn-success"
+    } else {
+        updateStatus('RUNNING')
+        console.log('**RUNNING**');
+        document.getElementById("run_btn").textContent = "Click to STOP"
+        document.getElementById("run_btn").className = "btn btn-danger"
+        delay = 0;
+        run();
+    }
+
+}
+
+async function restart() {
+    stop();
+    await sleep(5000);
+    run();
+}
