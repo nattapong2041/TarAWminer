@@ -334,6 +334,7 @@ async function login() {
 
     } catch (err) {
         console.log(err);
+        await sleep(20000); 
         window.location.reload();
     }
 
