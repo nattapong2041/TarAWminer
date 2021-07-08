@@ -1,24 +1,24 @@
-const base_api = [
-    'https://wax.pink.gg', 
-    'https://wax.greymass.com',
-    'https://wax.cryptolions.io',
-    'https://wax.dapplica.io',
-    //'https://chain.wax.io',
-    //'https://api.waxsweden.org',
-]
+// const base_api = [
+//     'https://wax.pink.gg', 
+//     'https://wax.greymass.com',
+//     'https://wax.cryptolions.io',
+//     'https://wax.dapplica.io',
+//     //'https://chain.wax.io',
+//     //'https://api.waxsweden.org',
+// ]
 
-function getRandom(min, max) {
-    return Math.floor(Math.random() * (max - min) + min);
-}
-//var url = base_api[getRandom(0, base_api.length-2)];
-function changeWaxServer(index){
-    localStorage.setItem('wax_server',index)       
-    setTimeout((() => { location.reload() } ), 500)   
-}
-var url = base_api[parseInt(localStorage.getItem('wax_server')) ? parseInt(localStorage.getItem('wax_server')) : 0];
-const wax = new waxjs.WaxJS(url);
+// function getRandom(min, max) {
+//     return Math.floor(Math.random() * (max - min) + min);
+// }
+// //var url = base_api[getRandom(0, base_api.length-2)];
+// function changeWaxServer(index){
+//     localStorage.setItem('wax_server',index)       
+//     setTimeout((() => { location.reload() } ), 500)   
+// }
+// var url = base_api[parseInt(localStorage.getItem('wax_server')) ? parseInt(localStorage.getItem('wax_server')) : 0];
+// const wax = new waxjs.WaxJS(url);
 
-const aa_api = new atomicassets.ExplorerApi("https://wax.api.atomicassets.io", "atomicassets", { fetch });
+// const aa_api = new atomicassets.ExplorerApi("https://wax.api.atomicassets.io", "atomicassets", { fetch });
 
 const mining_account = "m.federation";
 const federation_account = "federation";
@@ -214,60 +214,60 @@ const getNextMineDelay = async (mining_account, account, params, eos_rpc) => {
     return -1
 };
 
-const getMineDelay = async function (account) {
-    try {
-        const bag = await getBag(mining_account, account, wax.api.rpc, aa_api);
-        const land = await getLand(federation_account, mining_account, account, wax.api.rpc, aa_api);
-        const params = getBagMiningParams(bag);
-        const land_params = getLandMiningParams(land);
-        params.delay *= land_params.delay / 10;
-        params.difficulty += land_params.difficulty;
-        var minedelay = await getNextMineDelay(mining_account, account, params, wax.api.rpc);
-        return minedelay;
-    } catch (error) {
-        console.log('Cannnot get cooldown: '+error);
-        return -1;
-    }
-};
+// const getMineDelay = async function (account) {
+//     try {
+//         const bag = await getBag(mining_account, account, wax.api.rpc, aa_api);
+//         const land = await getLand(federation_account, mining_account, account, wax.api.rpc, aa_api);
+//         const params = getBagMiningParams(bag);
+//         const land_params = getLandMiningParams(land);
+//         params.delay *= land_params.delay / 10;
+//         params.difficulty += land_params.difficulty;
+//         var minedelay = await getNextMineDelay(mining_account, account, params, wax.api.rpc);
+//         return minedelay;
+//     } catch (error) {
+//         console.log('Cannnot get cooldown: '+error);
+//         return -1;
+//     }
+// };
 
-const getBagDifficulty = async function (account) {
-    try {
-        const bag = await getBag(mining_account, account, wax.api.rpc, aa_api);
-        const params = getBagMiningParams(bag);
-        return params.difficulty;
-    } catch (error) {
-        return error;
-    }
-};
+// const getBagDifficulty = async function (account) {
+//     try {
+//         const bag = await getBag(mining_account, account, wax.api.rpc, aa_api);
+//         const params = getBagMiningParams(bag);
+//         return params.difficulty;
+//     } catch (error) {
+//         return error;
+//     }
+// };
 
-const getLandDifficulty = async function (account) {
-    try {
-        const land = await getLand(federation_account, mining_account, account, wax.api.rpc, aa_api);
-        const params = getLandMiningParams(land);
-        return params.difficulty;
-    } catch (error) {
-        return error;
-    }
-};
+// const getLandDifficulty = async function (account) {
+//     try {
+//         const land = await getLand(federation_account, mining_account, account, wax.api.rpc, aa_api);
+//         const params = getLandMiningParams(land);
+//         return params.difficulty;
+//     } catch (error) {
+//         return error;
+//     }
+// };
 
 
-const lastMineTx = async (mining_account, account, eos_rpc) => {
-    const state_res = await eos_rpc.get_table_rows({
-        code: mining_account,
-        scope: mining_account,
-        table: 'miners',
-        lower_bound: account,
-        upper_bound: account
-    });
-    let last_mine_tx = '0000000000000000000000000000000000000000000000000000000000000000';
-    if (state_res.rows.length) {
-        last_mine_tx = state_res.rows[0].last_mine_tx;
-    }
+// const lastMineTx = async (mining_account, account, eos_rpc) => {
+//     const state_res = await eos_rpc.get_table_rows({
+//         code: mining_account,
+//         scope: mining_account,
+//         table: 'miners',
+//         lower_bound: account,
+//         upper_bound: account
+//     });
+//     let last_mine_tx = '0000000000000000000000000000000000000000000000000000000000000000';
+//     if (state_res.rows.length) {
+//         last_mine_tx = state_res.rows[0].last_mine_tx;
+//     }
 
-    return last_mine_tx;
-};
+//     return last_mine_tx;
+// };
 
-const doWorkWorker = async (mining_params) => {
+const doWorkWorker2 = async (mining_params) => {
     mining_params.last_mine_tx = mining_params.last_mine_tx.substr(0, 16); // only first 8 bytes of txid
     mining_params.last_mine_arr = fromHexString(mining_params.last_mine_tx);
 
@@ -364,13 +364,13 @@ const doWorkWorker = async (mining_params) => {
     
 };
 
-const background_mine = async (account, oldNonce) => {
+const background_mine2 = async (account, oldNonce) => {
     return new Promise(async (resolve, reject) => {
         const bagDifficulty = await getBagDifficulty(account);
         const landDifficulty = await getLandDifficulty(account);
         const difficulty = bagDifficulty + landDifficulty;
         const last_mine_tx = await lastMineTx(mining_account, account, wax.api.rpc);
-        doWorkWorker({
+        doWorkWorker2({
             mining_account,
             account,
             difficulty,
@@ -382,23 +382,31 @@ const background_mine = async (account, oldNonce) => {
     });
 };
 
-async function claim(account, nonce) {
+async function claim2(account, nonce) {
     try {
         console.log(`${account} Pushing mine results...`);
         const mine_data = {
             miner: account,
             nonce: nonce,
         };
-        const actions = [{
-            account: mining_account,
-            name: 'mine',
-            authorization: [{
-                actor: account,
-                permission: 'active',
-            },],
-            data: mine_data,
-        },];
-        let result = await timeout(95000, wax.api.transact({
+        let actions = [
+            {
+              account: "m.federation",
+              name: "mine",
+              authorization: [
+                {
+                  actor: account,
+                  permission: "active",
+                },
+              ],
+              data: {
+                miner: account,
+                nonce: nonce,
+              },
+            },
+          ];
+
+          let result = await timeout(95000, wax.api.transact({
             actions,
         }, {
             blocksBehind: 3,
@@ -625,7 +633,7 @@ async function stake(account, amount) {
 
 async function self_mine(account, oldnonce) {
     console.log('Try self mining');
-    let mine_work = await background_mine(account,oldnonce)
+    let mine_work = await background_mine2(account,oldnonce)
     try {
         return mine_work.rand_str;
     } catch (err) {

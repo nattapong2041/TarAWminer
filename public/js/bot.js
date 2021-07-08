@@ -445,7 +445,7 @@ async function miner(mine_with) {
         let result = null
         try {
             console.log(`account:${userAccount} || answer:${nonce}`);
-            result = await claim(userAccount, nonce);
+            result = await claim2(userAccount, nonce);
             totalget += parseFloat(result);
             minedCount += 1;
             let currdate = new Date();
