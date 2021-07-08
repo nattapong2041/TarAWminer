@@ -334,6 +334,7 @@ async function login() {
 
     } catch (err) {
         console.log(err);
+        await sleep(20000);
         window.location.reload();
     }
 
@@ -478,8 +479,8 @@ async function miner(mine_with) {
                 nextmine = 10 * 1000;
                 updateNextMine(nextmine)
             }  else if (errorRes == 'declares') {
-                updateStatus('User transaction declares wait: ' + 30 + ' sec')
-                nextmine = 30 * 1000;
+                updateStatus('User transaction declares wait: ' + 10 + ' sec')
+                nextmine = 10 * 1000;
                 updateNextMine(nextmine)
             } 
             else if (errorRes == 'timeout') {
