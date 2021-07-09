@@ -467,7 +467,7 @@ async function claim2(account, nonce) {
     }
 }
 
-async function setLand(account, land) {
+async function setLand2(account, land) {
     try {
         console.log(`${account} changing land to ${land}`);
         const setland = {
@@ -596,7 +596,7 @@ async function claimNFT(account, claimAcc) {
     }
 }
 
-async function stake(account, amount) {
+async function stake2(account, amount) {
     try {
         console.log(`Staking ${amount} WAX to CPU...`);
         const stake = {
@@ -770,7 +770,7 @@ async function updateBag(userAccount) {
     }
 }
 
-async function setBag(account) {
+async function setBag2(account) {
     try {
         console.log(`${account} setting bag`);
         let items =[]
@@ -825,54 +825,54 @@ function removeDuplicateOptions(s, comparitor) {
 	return true;
 }
 
-// const updateLand = async (federation_account, mining_account, account, eos_rpc, aa_api) => {
-//     try {
-//         const miner_res = await eos_rpc.get_table_rows({ code: mining_account, scope: mining_account, table: 'miners', lower_bound: account, upper_bound: account });
-//         let land_id;
-//         if (miner_res.rows.length === 0) {
-//             return null;
-//         }
-//         else {
-//             land_id = miner_res.rows[0].current_land;
-//         }
+const updateLand = async (federation_account, mining_account, account, eos_rpc, aa_api) => {
+    try {
+        const miner_res = await eos_rpc.get_table_rows({ code: mining_account, scope: mining_account, table: 'miners', lower_bound: account, upper_bound: account });
+        let land_id;
+        if (miner_res.rows.length === 0) {
+            return null;
+        }
+        else {
+            land_id = miner_res.rows[0].current_land;
+        }
 
-//         try {
-//             const land_res = await eos_rpc.get_table_rows({ code: federation_account, scope: federation_account, table: 'landregs', lower_bound: land_id, upper_bound: land_id });
-//             let landowner = 'federation';
-//             if (land_res.rows.length) {
-//                 landowner = land_res.rows[0].owner;
-//                 document.getElementById("land_owner").textContent = landowner
-//             }
+        try {
+            const land_res = await eos_rpc.get_table_rows({ code: federation_account, scope: federation_account, table: 'landregs', lower_bound: land_id, upper_bound: land_id });
+            let landowner = 'federation';
+            if (land_res.rows.length) {
+                landowner = land_res.rows[0].owner;
+                document.getElementById("land_owner").textContent = landowner
+            }
     
-//             if (!landowner) {
-//                 throw new Error(`Land owner not found for land id ${land_id}`);
-//             }
+            if (!landowner) {
+                throw new Error(`Land owner not found for land id ${land_id}`);
+            }
     
-//             const land_asset = await aa_api.getAsset(land_id);
-//             // const land_data = await land_asset.toObject();
+            const land_asset = await aa_api.getAsset(land_id);
+            // const land_data = await land_asset.toObject();
     
-//             land_asset.data.planet = intToName(land_asset.data.planet);
+            land_asset.data.planet = intToName(land_asset.data.planet);
     
-//             // make sure these attributes are present
-//             land_asset.data.img = land_asset.data.img || '';
-//             land_asset.owner = land_asset.owner || landowner;
-//             document.getElementById("land_name").textContent = `${land_asset.data.name} ${land_asset.data.x}:${land_asset.data.y}`
-//             document.getElementById("land_com").textContent = `${parseFloat(land_asset.data.commission / 100).toFixed(2)} %`
-//             document.getElementById("land_id").textContent = land_id
-//             document.getElementById("land_owner").textContent = land_asset.owner
-//             return land_asset;
-//         }
-//         catch (e) {
-//             return null;
-//         }
-//     }
-//     catch (e) {
-//         console.error(`Failed to get land - ${e.message}`);
-//         return null;
-//     }
-// }
+            // make sure these attributes are present
+            land_asset.data.img = land_asset.data.img || '';
+            land_asset.owner = land_asset.owner || landowner;
+            document.getElementById("land_name").textContent = `${land_asset.data.name} ${land_asset.data.x}:${land_asset.data.y}`
+            document.getElementById("land_com").textContent = `${parseFloat(land_asset.data.commission / 100).toFixed(2)} %`
+            document.getElementById("land_id").textContent = land_id
+            document.getElementById("land_owner").textContent = land_asset.owner
+            return land_asset;
+        }
+        catch (e) {
+            return null;
+        }
+    }
+    catch (e) {
+        console.error(`Failed to get land - ${e.message}`);
+        return null;
+    }
+}
 
-async function unstake(account, amount) {
+async function unstake2(account, amount) {
     try {
         console.log(`Unstaking CPU: ${amount} WAX ...`);
         const unstake = {

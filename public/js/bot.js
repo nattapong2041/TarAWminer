@@ -127,13 +127,13 @@ async function updateLandInfo() {
     }
 }
 
-// async function updateItemInfo() {
-//     try {
-//         await updateBag(userAccount)
-//     } catch (error) {
-//         console.log('Cannot update item');
-//     }
-// }
+async function updateItemInfo() {
+    try {
+        await updateBag(userAccount)
+    } catch (error) {
+        console.log('Cannot update item');
+    }
+}
 
 async function updateTLM() {
     try {
@@ -244,21 +244,21 @@ async function login() {
             try {
                 updateAccStatus();
                 updateTLM()
-                //updateLandInfo()
-                // updateItemInfo()
+                updateLandInfo()
+                updateItemInfo()
             } catch (err) {
                 throw err;
             }
         };
-        // document.getElementById("save_bag").onclick = async function () {
-        //     try {
-        //         await setBag(userAccount)
-        //     } catch (err) {
-        //         throw err;
-        //     }
-        // };
+        document.getElementById("save_bag").onclick = async function () {
+            try {
+                await setBag2(userAccount)
+            } catch (err) {
+                throw err;
+            }
+        };
         document.getElementById("unstake_btn").onclick = async function () {
-            let result = await unstake(userAccount, document.getElementById("stake").value)
+            let result = await unstake2(userAccount, document.getElementById("stake").value)
             if (result != 0 && result != null) {
                 console.log('' + result);
             } else {
@@ -276,7 +276,7 @@ async function login() {
         document.getElementById("land_btn").onclick = async function () {
             let result = null
             try {
-                result = await setLand(userAccount, document.getElementById("set_land").value)
+                result = await setLand2(userAccount, document.getElementById("set_land").value)
             } catch (error) {
                 console.log(error);
             }
@@ -303,7 +303,7 @@ async function login() {
             }
         };
         document.getElementById("stake_btn").onclick = async function () {
-            let result = await stake(userAccount, document.getElementById("stake").value)
+            let result = await stake2(userAccount, document.getElementById("stake").value)
             if (result != 0 && result != null) {
                 console.log('Complete: ' + result);
             } else {
