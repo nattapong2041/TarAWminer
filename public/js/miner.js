@@ -82,6 +82,7 @@ const background_mine2 = async (account) => {
     });
 };
 
+
 const fromHexString = hexString =>
     new Uint8Array(hexString.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
 
