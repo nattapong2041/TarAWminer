@@ -166,7 +166,7 @@ function clearTimer() {
     if (mineInterval) {
         clearInterval(mineInterval);
     }
-    document.getElementById("countdown").innerHTML = "0m 0s";
+    document.getElementById("countdown").innerHTML = "0h 0m 0s";
 }
 
 function padLeadingZeros(num, size) {
@@ -192,9 +192,10 @@ async function chargingCountdownfunction() {
     }
     var now = new Date().getTime();
     var distance = mineCountdownFinishTime - now;
+    var hour = Math.floor((distance % (1000 * 60 * 60 * 60)) / (1000 * 60 * 60));
     var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-    document.getElementById("countdown").innerHTML = padLeadingZeros(minutes, 2) + 'm ' + padLeadingZeros(seconds, 2) + 's before mine'
+    document.getElementById("countdown").innerHTML = padLeadingZeros(hour, 2) + 'h '   + padLeadingZeros(minutes, 2) + 'm ' + padLeadingZeros(seconds, 2) + 's before mine'
     if (distance < 0) {
         clearTimer();
         document.getElementById("countdown").innerHTML = "trying to mine";
@@ -208,9 +209,10 @@ async function miningCountdownfunction() {
     }
     var now = new Date().getTime();
     var distance = mineCountdownFinishTime - now;
+    var hour = Math.floor((distance % (1000 * 60 * 60 * 60)) / (1000 * 60 * 60));
     var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-    document.getElementById("countdown").innerHTML = padLeadingZeros(minutes, 2) + 'm ' + padLeadingZeros(seconds, 2) + 's before new mine'
+    document.getElementById("countdown").innerHTML = padLeadingZeros(hour, 2) + padLeadingZeros(minutes, 2) + 'm ' + padLeadingZeros(seconds, 2) + 's before mine'
     if (distance < 0) {
         clearTimer();
         await restart();
@@ -221,8 +223,10 @@ async function miningCountdownfunction() {
 async function loginCountdownfunction() {
     var now = new Date().getTime();
     var distance = loginCountdownFinishTime - now;
+    var hour = Math.floor((distance % (1000 * 60 * 60 * 60)) / (1000 * 60 * 60));
     var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    document.getElementById("countdown").innerHTML = padLeadingZeros(hour, 2) + 'h '  + padLeadingZeros(minutes, 2) + 'm ' + padLeadingZeros(seconds, 2) + 's before mine'
     document.getElementById("countdown").innerHTML = padLeadingZeros(minutes, 2) + 'm ' + padLeadingZeros(seconds, 2) + 's before new login'
     if (distance < 0) {
         clearTimer()
@@ -327,7 +331,7 @@ async function login() {
         updateAccount(userAccount);
         if (userAccount != null) {
             clearTimer();
-            document.getElementById("countdown").innerHTML = "0m 0s";
+            document.getElementById("countdown").innerHTML = "0h 0m 0s";
             onclickRun();
             document.getElementById("run_btn").disabled = false
         }
