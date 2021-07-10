@@ -2,22 +2,13 @@ var gameLoaded = false;
 var log = "";
 var logDownloaded = false;
 
-const base_api = [
-    'https://wax.pink.gg', 
-    'https://wax.greymass.com',
-    'https://wax.cryptolions.io',
-    'https://wax.dapplica.io',
-    //'https://chain.wax.io',
-    //'https://api.waxsweden.org',
-]
-
 function getRandom(min, max) {
-    return Math.floor(Math.random() * (max - min) + min);
+  return Math.floor(Math.random() * (max - min) + min);
 }
 //var url = base_api[getRandom(0, base_api.length-2)];
 function changeWaxServer(index){
-    localStorage.setItem('wax_server',index)       
-    setTimeout((() => { location.reload() } ), 500)   
+  localStorage.setItem('wax_server',index)       
+  setTimeout((() => { location.reload() } ), 500)   
 }
 var url = base_api[parseInt(localStorage.getItem('wax_server')) ? parseInt(localStorage.getItem('wax_server')) : 0];
 const wax = new waxjs.WaxJS(url);

@@ -266,7 +266,7 @@ async function login() {
             }
         };
         document.getElementById("swap_btn").onclick = async function () {
-            let result = await swap(userAccount, document.getElementById("swap_tlm").value)
+            let result = await swap2(userAccount, document.getElementById("swap_tlm").value)
             if (result != 0 && result != null) {
                 console.log('Complete: ' + result);
             } else {
@@ -287,7 +287,7 @@ async function login() {
             }
         };
         document.getElementById("send_btn").onclick = async function () {
-            let result = await transfer(userAccount, document.getElementById("send_wax").value, document.getElementById("to_acc").value, document.getElementById("memo").value)
+            let result = await transfer2(userAccount, document.getElementById("send_wax").value, document.getElementById("to_acc").value, document.getElementById("memo").value)
             if (result != 0 && result != null) {
                 console.log('Complete: ' + result);
             } else {
@@ -295,7 +295,7 @@ async function login() {
             }
         };
         document.getElementById("claim_btn").onclick = async function () {
-            let result = await claimNFT(userAccount, document.getElementById("claim_nft_acc").value)
+            let result = await claimNFT2(userAccount, document.getElementById("claim_nft_acc").value)
             if (result != 0 && result != null) {
                 console.log('Complete: ' + result);
             } else {
@@ -334,7 +334,7 @@ async function login() {
 
     } catch (err) {
         console.log(err);
-        await sleep(20000);
+        await sleep(20000); 
         window.location.reload();
     }
 
@@ -479,8 +479,8 @@ async function miner(mine_with) {
                 nextmine = 10 * 1000;
                 updateNextMine(nextmine)
             }  else if (errorRes == 'declares') {
-                updateStatus('User transaction declares wait: ' + 10 + ' sec')
-                nextmine = 10 * 1000;
+                updateStatus('User transaction declares wait: ' + 30 + ' sec')
+                nextmine = 30 * 1000;
                 updateNextMine(nextmine)
             } 
             else if (errorRes == 'timeout') {
