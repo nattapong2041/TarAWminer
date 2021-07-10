@@ -212,7 +212,7 @@ async function miningCountdownfunction() {
     var hour = Math.floor((distance % (1000 * 60 * 60 * 60)) / (1000 * 60 * 60));
     var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-    document.getElementById("countdown").innerHTML = padLeadingZeros(hour, 2) + padLeadingZeros(minutes, 2) + 'm ' + padLeadingZeros(seconds, 2) + 's before mine'
+    document.getElementById("countdown").innerHTML = padLeadingZeros(hour, 2) + 'h ' + padLeadingZeros(minutes, 2) + 'm ' + padLeadingZeros(seconds, 2) + 's before mine'
     if (distance < 0) {
         clearTimer();
         await restart();
