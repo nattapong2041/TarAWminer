@@ -286,7 +286,7 @@ async function setBag2(account) {
     }
 }
 
-async function unstake(account, amount) {
+async function unstake2(account, amount) {
     try {
         console.log(`Unstaking CPU: ${amount} WAX ...`);
         const unstake = {
