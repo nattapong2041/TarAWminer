@@ -336,7 +336,7 @@ const doWorkWorker = async (mining_params) => {
         if (!good) {
             hash = null;
         }
-        if (itr >= 1000000 * 7) break;
+        if (itr >= 1000000 * 8) break;
     }
 
 
