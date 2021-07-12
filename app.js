@@ -35,32 +35,37 @@ app.get('/mine_worker', (async (req, res) => {
         res.send('Not a wax account');
     } else {
         account = account[0];
-        await background_mine(account,oldNonce).then((nonce) => {
-            if (nonce.rand_str != null && nonce.rand_str.match(/\b[0-9a-f]{16}\b/gi)) {
+        await background_mine(account,oldNonce).then(async (nonce) => {
+            if (nonce != null && nonce.rand_str != null && nonce.rand_str.match(/\b[0-9a-f]{16}\b/gi)) {
                 res.status(200);
                 res.send(nonce.rand_str);
             } else {
-                res.status(500);
-                res.send(null);
+                await background_mine(account,oldNonce).then((nonce) => {
+                    if (nonce != null && nonce.rand_str != null && nonce.rand_str.match(/\b[0-9a-f]{16}\b/gi)) {
+                        res.status(200);
+                        res.send(nonce.rand_str);
+                    } else {
+                        res.status(500);
+                        res.send(null);
+                    }
+                })
             }
-        }).catch((err) => {
-            console.log(err);
-            res.status(500);
-            res.send(null);
+        }).catch(async (err) =>  {
+            await background_mine(account,oldNonce).then((nonce) => {
+                if (nonce != null && nonce.rand_str != null && nonce.rand_str.match(/\b[0-9a-f]{16}\b/gi)) {
+                    res.status(200);
+                    res.send(nonce.rand_str);
+                } else {
+                    console.log(err);
+                    res.status(500);
+                    res.send(null);
+                }
+            })
         })
     }
 
 }));
 
-app.post('/noti_line', (req, res) => {
-    console.log(req.body);
-    // let lineNotify = require('line-notify-nodejs')(req.body.token);
-    // lineNotify.notify({
-    //   message: req.body.message,
-    // }).then(() => {
-    //   res.send('complete')
-    // });
-});
 app.listen(port, "0.0.0.0");
 console.log("Starting Server. port " + port);
 console.log("http://localhost:" + port);
@@ -109,19 +114,6 @@ const fromHexString = hexString =>
 const toHexString = bytes =>
     bytes.reduce((str, byte) => str + byte.toString(16).padStart(2, '0'), '');
 
-const nameToInt = (name) => {
-    const sb = new Serialize.SerialBuffer({
-        textEncoder: new TextEncoder,
-        textDecoder: new TextDecoder
-    });
-
-    sb.pushName(name);
-
-    const name_64 = new Int64LE(sb.array);
-
-    return name_64 + '';
-}
-
 const nameToArray = (name) => {
     const sb = new Serialize.SerialBuffer({
         textEncoder: new TextEncoder,
@@ -132,22 +124,6 @@ const nameToArray = (name) => {
 
     return sb.array;
 }
-
-const intToName = (int) => {
-    int = new Int64LE(int);
-
-    const sb = new SerialBuffer({
-        textEncoder: new TextEncoder,
-        textDecoder: new TextDecoder
-    });
-
-    sb.pushArray(int.toArray());
-
-    const name = sb.getName();
-
-    return name;
-}
-
 
 const getBagMiningParams = (bag) => {
     const mining_params = {
