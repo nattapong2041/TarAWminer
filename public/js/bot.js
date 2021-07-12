@@ -166,7 +166,7 @@ function clearTimer() {
     if (mineInterval) {
         clearInterval(mineInterval);
     }
-    document.getElementById("countdown").innerHTML = "0h 0m 0s";
+    document.getElementById("countdown").innerHTML = "0m 0s";
 }
 
 function padLeadingZeros(num, size) {
@@ -192,10 +192,9 @@ async function chargingCountdownfunction() {
     }
     var now = new Date().getTime();
     var distance = mineCountdownFinishTime - now;
-    var hour = Math.floor((distance % (1000 * 60 * 60 * 60)) / (1000 * 60 * 60));
     var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-    document.getElementById("countdown").innerHTML = padLeadingZeros(hour, 2) + 'h '   + padLeadingZeros(minutes, 2) + 'm ' + padLeadingZeros(seconds, 2) + 's before mine'
+    document.getElementById("countdown").innerHTML = padLeadingZeros(minutes, 2) + 'm ' + padLeadingZeros(seconds, 2) + 's before mine'
     if (distance < 0) {
         clearTimer();
         document.getElementById("countdown").innerHTML = "trying to mine";
@@ -209,10 +208,9 @@ async function miningCountdownfunction() {
     }
     var now = new Date().getTime();
     var distance = mineCountdownFinishTime - now;
-    var hour = Math.floor((distance % (1000 * 60 * 60 * 60)) / (1000 * 60 * 60));
     var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-    document.getElementById("countdown").innerHTML = padLeadingZeros(hour, 2) + 'h ' + padLeadingZeros(minutes, 2) + 'm ' + padLeadingZeros(seconds, 2) + 's before mine'
+    document.getElementById("countdown").innerHTML = padLeadingZeros(minutes, 2) + 'm ' + padLeadingZeros(seconds, 2) + 's before new mine'
     if (distance < 0) {
         clearTimer();
         await restart();
@@ -223,10 +221,8 @@ async function miningCountdownfunction() {
 async function loginCountdownfunction() {
     var now = new Date().getTime();
     var distance = loginCountdownFinishTime - now;
-    var hour = Math.floor((distance % (1000 * 60 * 60 * 60)) / (1000 * 60 * 60));
     var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-    document.getElementById("countdown").innerHTML = padLeadingZeros(hour, 2) + 'h '  + padLeadingZeros(minutes, 2) + 'm ' + padLeadingZeros(seconds, 2) + 's before mine'
     document.getElementById("countdown").innerHTML = padLeadingZeros(minutes, 2) + 'm ' + padLeadingZeros(seconds, 2) + 's before new login'
     if (distance < 0) {
         clearTimer()
@@ -256,13 +252,13 @@ async function login() {
         };
         document.getElementById("save_bag").onclick = async function () {
             try {
-                await setBag2(userAccount)
+                await setBag(userAccount)
             } catch (err) {
                 throw err;
             }
         };
         document.getElementById("unstake_btn").onclick = async function () {
-            let result = await unstake2(userAccount, document.getElementById("stake").value)
+            let result = await unstake(userAccount, document.getElementById("stake").value)
             if (result != 0 && result != null) {
                 console.log('' + result);
             } else {
@@ -270,7 +266,7 @@ async function login() {
             }
         };
         document.getElementById("swap_btn").onclick = async function () {
-            let result = await swap2(userAccount, document.getElementById("swap_tlm").value)
+            let result = await swap(userAccount, document.getElementById("swap_tlm").value)
             if (result != 0 && result != null) {
                 console.log('Complete: ' + result);
             } else {
@@ -280,7 +276,7 @@ async function login() {
         document.getElementById("land_btn").onclick = async function () {
             let result = null
             try {
-                result = await setLand2(userAccount, document.getElementById("set_land").value)
+                result = await setLand(userAccount, document.getElementById("set_land").value)
             } catch (error) {
                 console.log(error);
             }
@@ -291,7 +287,7 @@ async function login() {
             }
         };
         document.getElementById("send_btn").onclick = async function () {
-            let result = await transfer2(userAccount, document.getElementById("send_wax").value, document.getElementById("to_acc").value, document.getElementById("memo").value)
+            let result = await transfer(userAccount, document.getElementById("send_wax").value, document.getElementById("to_acc").value, document.getElementById("memo").value)
             if (result != 0 && result != null) {
                 console.log('Complete: ' + result);
             } else {
@@ -299,7 +295,7 @@ async function login() {
             }
         };
         document.getElementById("claim_btn").onclick = async function () {
-            let result = await claimNFT2(userAccount, document.getElementById("claim_nft_acc").value)
+            let result = await claimNFT(userAccount, document.getElementById("claim_nft_acc").value)
             if (result != 0 && result != null) {
                 console.log('Complete: ' + result);
             } else {
@@ -307,7 +303,7 @@ async function login() {
             }
         };
         document.getElementById("stake_btn").onclick = async function () {
-            let result = await stake2(userAccount, document.getElementById("stake").value)
+            let result = await stake(userAccount, document.getElementById("stake").value)
             if (result != 0 && result != null) {
                 console.log('Complete: ' + result);
             } else {
@@ -331,7 +327,7 @@ async function login() {
         updateAccount(userAccount);
         if (userAccount != null) {
             clearTimer();
-            document.getElementById("countdown").innerHTML = "0h 0m 0s";
+            document.getElementById("countdown").innerHTML = "0m 0s";
             onclickRun();
             document.getElementById("run_btn").disabled = false
         }
@@ -450,7 +446,7 @@ async function miner(mine_with) {
         let result = null
         try {
             console.log(`account:${userAccount} || answer:${nonce}`);
-            result = await claim2(userAccount, nonce);
+            result = await claim(userAccount, nonce);
             totalget += parseFloat(result);
             minedCount += 1;
             let currdate = new Date();
