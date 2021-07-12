@@ -386,18 +386,18 @@ async function claim(account, nonce) {
     try {
         console.log(`${account} Pushing mine results...`);
         const mine_data = {
-            miner: account,
+            miner: wax.userAccount,
             nonce: nonce,
         };
-        const actions = [{
-            account: mining_account,
-            name: 'mine',
+        let actions = [{
+            account: "m.federation",
+            name: "mine",
             authorization: [{
-                actor: account,
-                permission: 'active',
-            },],
+                actor: wax.userAccount,
+                permission: "active",
+            }, ],
             data: mine_data,
-        },];
+        }, ];
         let result = await timeout(95000, wax.api.transact({
             actions,
         }, {
