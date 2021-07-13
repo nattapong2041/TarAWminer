@@ -2,7 +2,7 @@ from flask import Flask, render_template, request,jsonify, url_for, redirect, se
 import pymongo
 from pymongo import MongoClient
 from hashlib import sha256
-import json
+import json 
 import asyncio
 import requests
 import urllib
@@ -254,7 +254,7 @@ def addcode():
 def mineworker():
     wam = []
     nonce = []
-    texxt = ''
+    texxt = 'aaaaa'
     yo = ''
     #minurl = mineurl[random.randint(0,1)]
     user = request.args.get('account')
@@ -300,28 +300,80 @@ def gencode():
     message = 'error'
     return Response(message, status=500)
 
-@app.route('/getnonce', methods=['GET','POST'])
-async def getnonce():
-    while True:
-        wam = []
-        nonce = []
-        dataA = list(db.testvip.find())
-        for item in dataA :  
+
+@app.route('/getallvip', methods=['GET','POST'])
+def getallvip():
+    wam = []
+    nonce = []
+    dataA = list(db.testvip.find())
+    for item in dataA :  
+        wam.append(item['wam']) 
+        nonce.append(item['nonce'])
+    #print(wam)
+    #print(nonce)
+    x = zip(wam,nonce)
+    #print(tuple(x))
+
+    a = tuple(x)
+    yoo = json.dumps(a)
+    return Response(yoo, status=200)
+    
+@app.route('/mineupdate', methods=['GET','POST'])
+def mineupdate():
+    wwam = request.json.get("wam")
+    nnonce = request.json.get("nonce")
+    wam = []
+    nonce = []
+    texxt = 'aaaaa'
+    yo = ''
+    #minurl = mineurl[random.randint(0,1)]
+    user = request.args.get('account')
+    dataA = list(db.testvip.find({'wam': wwam }))
+    if dataA is None: 
+        texxt = 'id not found'
+        return Response(texxt, status=500)
+    else :
+        for item in dataA :
             wam.append(item['wam']) 
             nonce.append(item['nonce'])
-        try:      
-            for x in range(len(wam))  :
-                url = 'http://139.180.187.234/mine_worker?account='+wam[x]+'&nonce='+nonce[x] 
-                r = requests.get(url)
-                texxt = r.text
-                print(r.text) 
-                if len(texxt) >= 20 :
+            if nnonce == nonce[0] :
+                texxt = 'same nonce'
+                return Response(texxt, status=500)
+            else :
+                try:
+                    yo = "%s"%(mineurl[0])+wam[0]+'&nonce='+nonce[0]
+                    r = requests.get(yo)
+                    texxxt = r.text
+                    print(r.text) 
+                    if len(texxxt) >= 20 :
+                        pass
+                    else : 
+                        db.testvip.update_one({'wam' : wam[0]},{'$set':{'nonce':texxxt}})
+                        texxt = 'update leaw'
+                        return Response(texxt, status=200)
+                except :     
                     pass
-                else : 
-                    db.testvip.update_one({'wam' : wam[x]},{'$set':{'nonce':texxt}})
-        except :
-            pass   
-        await time.sleep(240)
+    return Response(texxt, status=500)
+
+@app.route('/allcode', methods=['GET','POST'])
+def allcode():
+    y = []
+    dataA = db.testcode.find()
+    for item in dataA :
+        y.append(item['code'])
+    x =json.dumps(y)
+    return Response(x, status=200)
+
+@app.route('/codeinfo', methods=['GET','POST'])
+def codeinfo():
+    code = request.args.get('code')
+    y = []
+    dataA = db.testcode.find({'code': code })
+    for item in dataA :
+        item = str(item)
+        y.append(item)
+    x =json.dumps(y)
+    return Response(x, status=200)
 
 
 @app.route('/pups', methods=['GET'])
@@ -329,4 +381,4 @@ def pups():
     return render_template('index.html')
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0',port=8080, debug=False)
+    app.run(host='0.0.0.0',port=8080, debug=True)

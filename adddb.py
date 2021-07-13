@@ -1,4 +1,4 @@
-from flask.json import jsonify
+#from flask.json import jsonify
 import pymongo
 from pymongo import MongoClient
 import json
@@ -7,6 +7,7 @@ import time
 from hashlib import sha256
 import asyncio
 import requests
+import random
 import urllib
 client = MongoClient('mongodb://localhost:27017/dbtests')
 db = client.dbtests
@@ -155,6 +156,47 @@ def testquery():
         pass            
     #print(wam)
     #print(nonce)
+
+def getallvip():
+    wam = []
+    nonce = []
+    dataA = list(db.testvip.find())
+    for item in dataA :  
+        wam.append(item['wam']) 
+        nonce.append(item['nonce'])
+    #print(wam)
+    #print(nonce)
+    x = zip(wam,nonce)
+    #print(tuple(x))
+
+    a = set(x)
+
+    print(a)
+
+def dwoi3():
+    y = []
+    dataA = db.testcode.find()
+    for item in dataA :
+        y.append(item['code'])
+    print(y)
+
+def dwoi4():
+    y =[]
+    dataA = db.testcode.find({'code': 'lazy-01-50' })
+    for item in dataA :
+        item = str(item)
+        y.append(item)
+    x =json.dumps(y)
+    print (y)
+    print (x)
+
+
+
+def dwoi2 ():
+    text = ['yoyo','momo','mama','meme']
+    yoe = random.choice(text)+'dlub'
+    print(yoe)
+
 # In[ ]:
 if __name__ == '__main__':
-    dwoi()  
+    dwoi4()  

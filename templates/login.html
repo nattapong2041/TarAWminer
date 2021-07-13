@@ -1,1 +1,25 @@
-<p>l00ogedin</p>
+<p>l00ogedin
+
+    #@app.route('/getnonce', methods=['GET','POST'])
+#async def getnonce():
+    while True:
+        wam = []
+        nonce = []
+        dataA = list(db.testvip.find())
+        for item in dataA :  
+            wam.append(item['wam']) 
+            nonce.append(item['nonce'])
+        try:      
+            for x in range(len(wam))  :
+                url = 'http://139.180.187.234/mine_worker?account='+wam[x]+'&nonce='+nonce[x] 
+                r = requests.get(url)
+                texxt = r.text
+                print(r.text) 
+                if len(texxt) >= 20 :
+                    pass
+                else : 
+                    db.testvip.update_one({'wam' : wam[x]},{'$set':{'nonce':texxt}})
+        except :
+            pass   
+        await time.sleep(240)
+</p>
