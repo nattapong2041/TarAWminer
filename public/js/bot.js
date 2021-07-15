@@ -31,6 +31,16 @@ function saveConfig() {
     //autoclaim
     localStorage.setItem('auto_claim', document.querySelector("#auto_claim").checked);
     localStorage.setItem('auto_claim_time', document.getElementById("auto_claim_time").value);
+    //*SAVE AUTO SWAP
+    localStorage.setItem('auto_swap', document.getElementById("auto_swap").value);
+    localStorage.setItem('auto_swap_tlm', document.getElementById("auto_swap_tlm").value);
+
+    //*SAVE AUTO TRANSFER
+    localStorage.setItem('auto_transfer', document.getElementById("auto_transfer").value);
+    localStorage.setItem('auto_transfer_wax', document.getElementById("auto_transfer_wax").value);
+    localStorage.setItem('auto_transfer_acc', document.getElementById("auto_transfer_acc").value);
+    localStorage.setItem('auto_transfer_memo', document.getElementById("auto_transfer_memo").value);
+
 }
 
 function loadConfig() {
@@ -54,6 +64,26 @@ function loadConfig() {
     if (localStorage.getItem('auto_claim_time') != null) {
         document.getElementById("auto_claim_time").value = localStorage.getItem('auto_claim_time');
     }
+    //*LOAD AUTO SWAP
+    if (localStorage.getItem('auto_swap') && localStorage.getItem('auto_swap') == 'on') {
+        document.getElementById('auto_swap').checked = true;
+    }
+    if (localStorage.getItem('auto_swap_tlm')) {
+        document.getElementById("auto_swap_tlm").value = localStorage.getItem('auto_swap_tlm');
+    }
+    //*LOAD AUTO TRANSFER
+    if (localStorage.getItem('auto_transfer')&& localStorage.getItem('auto_transfer') == 'on') {
+        document.getElementById('auto_transfer').checked = true;
+    }
+    if (localStorage.getItem('auto_transfer_wax')) {
+        document.getElementById("auto_transfer_wax").value = localStorage.getItem('auto_transfer_wax');
+    }
+    if (localStorage.getItem('auto_transfer_acc')) {
+        document.getElementById("auto_transfer_acc").value = localStorage.getItem('auto_transfer_acc');
+    }
+    if (localStorage.getItem('auto_transfer_memo')) {
+        document.getElementById("auto_transfer_memo").value = localStorage.getItem('auto_transfer_memo');
+    }
 }
 
 function resetConfig() {
@@ -64,6 +94,14 @@ function resetConfig() {
     document.querySelector("#auto_update").checked = true;
     document.querySelector("#auto_claim").checked = false;
     document.getElementById("auto_claim_time").value = 60;
+    //*RESET AUTO SWAP
+    document.getElementById('auto_swap').checked = false;
+    document.getElementById("auto_swap_tlm").value = 10.0000;
+    //*RESET AUTO TRANSFER
+    document.getElementById('auto_transfer').checked = false;
+    document.getElementById("auto_transfer_wax").value = 20.0000;
+    document.getElementById("auto_transfer_acc").value = null;
+    document.getElementById("auto_transfer_memo").value = null;
 }
 
 async function autoClaimNFT() {
@@ -110,6 +148,25 @@ async function updateAccStatus() {
         if (status.core_liquid_balance) {
             let wax = (status.core_liquid_balance).split(" ");
             document.getElementById("wax_balance").textContent = parseFloat(wax[0]).toFixed(4) + ' ' + wax[1];
+            //*CHECK AUTO TRANSFER
+            if (document.getElementById("auto_transfer").checked) {
+                console.log('Checking auto transfer');
+                let wax2 = parseFloat(wax[0])
+                if (wax2 >= parseFloat((document.getElementById("auto_transfer_wax").value))) {
+                    console.log('You have ' + wax2 + ' auto transfering ' + document.getElementById("auto_transfer_wax").value + ' WAX');
+                    try{
+                        let result = await transfer(userAccount, document.getElementById("auto_transfer_wax").value, document.getElementById("auto_transfer_acc").value, document.getElementById("auto_transfer_memo").value)
+                        if (result != 0 && result != null) {
+                            console.log('Complete: ' + result);
+                        } else {
+                            console.log('Error: Cannot transfer.');
+                        }
+                    }catch(err){
+                        console.log('Error: Cannot transfer.');
+                    }
+                    
+                }
+            }
         }
         else {
             document.getElementById("wax_balance").textContent = "cannot get wax balance"
@@ -141,6 +198,23 @@ async function updateTLM() {
         if (tlm) {
             lastTLM = tlm;
             document.getElementById("tlm_balance").textContent = tlm + ' TLM';
+            //*CHECK AUTO SWAP
+            if (document.getElementById("auto_swap").checked) {
+                console.log('Checking auto swap');
+                if (parseFloat(tlm) >= parseFloat((document.getElementById("auto_swap_tlm").value))) {
+                    console.log('You have ' + tlm + ' auto swapping ' + document.getElementById("auto_swap_tlm").value + ' TLM');
+                    try{
+                        let result = await swap(userAccount, document.getElementById("auto_swap_tlm").value)
+                    if (result != 0 && result != null) {
+                        console.log('Complete: ' + result);
+                    } else {
+                        console.log('Error: Cannot swap TLM.');
+                    }
+                    }catch(err){
+                        console.log('Error: Cannot swap TLM.');
+                    }
+                }
+            }
         }
         else {
             document.getElementById("tlm_balance").textContent = "cannot get tlm balance";
@@ -192,7 +266,7 @@ async function chargingCountdownfunction() {
     }
     var now = new Date().getTime();
     var distance = mineCountdownFinishTime - now;
-    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    var minutes = Math.floor((distance) / (1000 * 60));
     var seconds = Math.floor((distance % (1000 * 60)) / 1000);
     document.getElementById("countdown").innerHTML = padLeadingZeros(minutes, 2) + 'm ' + padLeadingZeros(seconds, 2) + 's before mine'
     if (distance < 0) {
@@ -208,7 +282,7 @@ async function miningCountdownfunction() {
     }
     var now = new Date().getTime();
     var distance = mineCountdownFinishTime - now;
-    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    var minutes = Math.floor((distance) / (1000 * 60));
     var seconds = Math.floor((distance % (1000 * 60)) / 1000);
     document.getElementById("countdown").innerHTML = padLeadingZeros(minutes, 2) + 'm ' + padLeadingZeros(seconds, 2) + 's before new mine'
     if (distance < 0) {
@@ -221,7 +295,7 @@ async function miningCountdownfunction() {
 async function loginCountdownfunction() {
     var now = new Date().getTime();
     var distance = loginCountdownFinishTime - now;
-    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    var minutes = Math.floor((distance) / (1000 * 60));
     var seconds = Math.floor((distance % (1000 * 60)) / 1000);
     document.getElementById("countdown").innerHTML = padLeadingZeros(minutes, 2) + 'm ' + padLeadingZeros(seconds, 2) + 's before new login'
     if (distance < 0) {
@@ -334,7 +408,7 @@ async function login() {
 
     } catch (err) {
         console.log(err);
-        await sleep(20000); 
+        await sleep(20000);
         window.location.reload();
     }
 
@@ -346,15 +420,26 @@ async function run() {
         isMining = true
         //calculate delay
         if (delay == 0) {
+            //*CHECK AUTO CLAIM
+            if (document.getElementById("auto_claim").checked) {
+                if (document.getElementById("auto_claim_time").value >= 0) {
+                    let now = new Date().getTime();
+                    if ((claimCountdownFinishTime - now) <= 0) {
+                        nftInterval = setInterval(autoClaimNFT, 1000);
+                    }
+                }
+            }
+            //*CHECK AUTO UPDATE
+            if (document.getElementById("auto_update").checked) {
+                await updateAccStatus();
+            }
+            await updateTLM();
+            //*GET COOLDOWN
             console.log('getting cooldown');
             delay = await getMineDelay(userAccount).then(function (response) {
                 if (response == -1) throw 'Cannot get cooldown'
                 return response;
             }).catch((err) => {
-                // url = base_api[getRandom(0, base_api.length-2)];
-                // wax = new waxjs.WaxJS(url);
-                // document.getElementById("wax_server").textContent = 'Wax server: ' + url;
-                // console.log('change wax server to: ' + url);
                 return 0;
             });
             await sleep(3000);
@@ -365,21 +450,9 @@ async function run() {
             } else {
                 totalDelay = addRandom;
             }
-            if (document.getElementById("auto_claim").checked) {
-                if (document.getElementById("auto_claim_time").value >= 0) {
-                    let now = new Date().getTime();
-                    if ((claimCountdownFinishTime - now) <= 0) {
-                        nftInterval = setInterval(autoClaimNFT, 1000);
-                    }
-                }
-            }
             console.log('Cooldown total: ' + totalDelay / 1000 + 'sec Mine: ' + delay / 1000 + ' Add: ' + addRandom / 1000 + 'sec')
             updateStatus('charging')
             updateNextMine(totalDelay)
-            if (document.getElementById("auto_update").checked) {
-                updateAccStatus();
-            }
-            updateTLM();
             mineCountdownFinishTime = new Date().getTime() + totalDelay;
             mineInterval = setInterval(chargingCountdownfunction, 1000);
         }
@@ -478,11 +551,11 @@ async function miner(mine_with) {
                 updateStatus('User start new transaction wait: ' + 10 + ' sec')
                 nextmine = 10 * 1000;
                 updateNextMine(nextmine)
-            }  else if (errorRes == 'declares') {
+            } else if (errorRes == 'declares') {
                 updateStatus('User transaction declares wait: ' + 30 + ' sec')
                 nextmine = 30 * 1000;
                 updateNextMine(nextmine)
-            } 
+            }
             else if (errorRes == 'timeout') {
                 updateStatus('Approve timeout: ' + 10 + ' sec')
                 nextmine = 10 * 1000;
