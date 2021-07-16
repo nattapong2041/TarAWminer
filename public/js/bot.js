@@ -207,12 +207,10 @@ async function updateTLM() {
                         let result = await swap(userAccount, document.getElementById("auto_swap_tlm").value)
                     if (result != 0 && result != null) {
                         console.log('Complete: ' + result);
-                        tlm = await getTLM(userAccount);
-                        if (tlm) {
-                            lastTLM = tlm;
-                            document.getElementById("tlm_balance").textContent = tlm + ' TLM';
-                        }else {
-                            document.getElementById("tlm_balance").textContent = "cannot get tlm balance";
+                        let tlm2 = await getTLM(userAccount);
+                        if (tlm2) {
+                            lastTLM = tlm2;
+                            document.getElementById("tlm_balance").textContent = tlm2 + ' TLM';
                         }
                     } else {
                         console.log('Error: Cannot swap TLM.');
@@ -222,9 +220,6 @@ async function updateTLM() {
                     }
                 }
             }
-        }
-        else {
-            document.getElementById("tlm_balance").textContent = "cannot get tlm balance";
         }
     } catch {
         console.log('Error while update account details');
