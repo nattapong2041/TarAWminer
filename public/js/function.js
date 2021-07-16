@@ -448,13 +448,6 @@ async function claim(account, nonce) {
         }
         return 0.00;
     } catch (error) {
-        // delete(wax)
-        // url = base_api[getRandom(0, base_api.length-2)];
-        // wax = new waxjs.WaxJS(url);
-        // await sleep(3000);
-        // document.getElementById("wax_server").textContent = 'Wax server: '+url;
-        // console.log('change wax server to: '+ url);
-        console.log(error.message); 
         throw error
     }
 }
@@ -509,11 +502,15 @@ async function swap(account, amount) {
             }],
             'data': swapdata
         }];
-        let result = await wax.api.transact({
+        let result = await timeout(95000, wax.api.transact({
             actions,
         }, {
             blocksBehind: 3,
             expireSeconds: 90,
+        })).then(function (response) {
+            return response;
+        }).catch((err) => {
+            throw err;
         });
         if (result && result.processed) {
             let wax = result.processed.action_traces[0].inline_traces[2].act.data.quantity
@@ -527,7 +524,7 @@ async function swap(account, amount) {
 
 async function transfer(account, amount, toAcc, memo) {
     try {
-        console.log(`${account} Transfering ${amount} WAX to ${toAcc} ...`);
+        console.log(`${account} Transfering ${amount} WAX to ${toAcc} memo ${memo} ...`);
         const transferWAX = {
             'from': account,
             'to': toAcc,
@@ -543,14 +540,18 @@ async function transfer(account, amount, toAcc, memo) {
             }],
             'data': transferWAX
         }];
-        let result = await wax.api.transact({
+        let result = await timeout(95000, wax.api.transact({
             actions,
         }, {
             blocksBehind: 3,
             expireSeconds: 90,
+        })).then(function (response) {
+            return response;
+        }).catch((err) => {
+            throw err;
         });
         if (result && result.processed) {
-            return `Transfer ${amount} WAX from ${account} to ${toAcc}`
+            return `Transfer ${amount} WAX from ${account} to ${toAcc} memo ${memo}`
         }
         return 0;
     } catch (error) {
