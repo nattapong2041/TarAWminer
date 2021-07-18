@@ -32,11 +32,11 @@ function saveConfig() {
     localStorage.setItem('auto_claim', document.querySelector("#auto_claim").checked);
     localStorage.setItem('auto_claim_time', document.getElementById("auto_claim_time").value);
     //*SAVE AUTO SWAP
-    localStorage.setItem('auto_swap', document.getElementById("auto_swap").value);
+    localStorage.setItem('auto_swap', document.getElementById("auto_swap").checked);
     localStorage.setItem('auto_swap_tlm', document.getElementById("auto_swap_tlm").value);
 
     //*SAVE AUTO TRANSFER
-    localStorage.setItem('auto_transfer', document.getElementById("auto_transfer").value);
+    localStorage.setItem('auto_transfer', document.getElementById("auto_transfer").checked);
     localStorage.setItem('auto_transfer_wax', document.getElementById("auto_transfer_wax").value);
     localStorage.setItem('auto_transfer_acc', document.getElementById("auto_transfer_acc").value);
     localStorage.setItem('auto_transfer_memo', document.getElementById("auto_transfer_memo").value);
@@ -65,18 +65,18 @@ function loadConfig() {
         document.getElementById("auto_claim_time").value = localStorage.getItem('auto_claim_time');
     }
     //*LOAD AUTO SWAP
-    if (localStorage.getItem('auto_swap') && localStorage.getItem('auto_swap') == 'on') {
-        document.getElementById('auto_swap').checked = true;
+    if (localStorage.getItem('auto_swap') != null && localStorage.getItem('auto_swap') == 'true') {
+        document.querySelector("#auto_swap").checked = localStorage.getItem('auto_swap');
     }
     if (localStorage.getItem('auto_swap_tlm')) {
         document.getElementById("auto_swap_tlm").value = localStorage.getItem('auto_swap_tlm');
     }
     //*LOAD AUTO TRANSFER
-    if (localStorage.getItem('auto_transfer')&& localStorage.getItem('auto_transfer') == 'on') {
-        document.getElementById('auto_transfer').checked = true;
+    if (localStorage.getItem('auto_transfer') != null && localStorage.getItem('auto_transfer') == 'true') {
+        document.querySelector("#auto_transfer").checked = localStorage.getItem('auto_transfer');
     }
     if (localStorage.getItem('auto_transfer_wax')) {
-        document.getElementById("auto_transfer_wax").value = localStorage.getItem('auto_transfer_wax');
+        document.getElementById("auto_transfer_wax").value = localStorage.getItem('auto_transfer_wax')
     }
     if (localStorage.getItem('auto_transfer_acc')) {
         document.getElementById("auto_transfer_acc").value = localStorage.getItem('auto_transfer_acc');
