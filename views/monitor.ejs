@@ -75,12 +75,12 @@
                                 <th scope="col">Remove</th>
                                 <th scope="col">#</th>
                                 <th scope="col">Wallet</th>
-                                <th scope="col">CPU</th>
+                                <!-- <th scope="col">CPU</th>
                                 <th scope="col">STAKE</th>
                                 <th scope="col">TLM</th>
                                 <th scope="col">WAX</th>
                                 <th scope="col">LAST MINE</th>
-                                <th scope="col">NFT</th>
+                                <th scope="col">NFT</th> -->
                                 <th scope="col">isVIP</th>
                                 <th scope="col">VIP code</th>
                                 <th scope="col">VIP start</th>
@@ -93,7 +93,7 @@
                                     <td class='p-3'>
                                         <button type='button' onclick=deleteAcc('<%=data.id %>','<%=data.code %>')
                                                 class='btn btn-danger btn-sm fs-6' style='margin-left: 10px;width:
-                                                20px'>D</button>
+                                                80px'>Delete</button>
                                     </td>
                                     <td>
                                         <%=i; %>
@@ -101,7 +101,7 @@
                                     <td>
                                         <%=data.id %>
                                     </td>
-                                    <td>
+                                    <!-- <td>
                                         <button type='button' id="cpu" class='btn btn-success
                                             btn-sm fs-6' style='width: 85px'>130.00%</button>
                                     </td>
@@ -121,7 +121,7 @@
                                         2 NFTs
                                         <button type='button' onclick=saveCode("<%=data.id %>") class='btn btn-success
                                             btn-sm fs-6' style='width: 70px'>claim</button>
-                                    </td>
+                                    </td> -->
                                     <td>
                                         <%=data.vip==1? "true" : "false" %>
                                     </td>
