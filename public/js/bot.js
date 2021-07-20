@@ -550,8 +550,8 @@ async function miner(mine_with) {
                 nextmine = cpuDelay;
                 updateNextMine(nextmine)
             } else if (errorRes == 'newTx') {
-                updateStatus('User start new transaction wait: ' + 10 + ' sec')
-                nextmine = 10 * 1000;
+                updateStatus('User start new transaction wait: ' + 20 + ' sec')
+                nextmine = 20 * 1000;
                 updateNextMine(nextmine)
             } else if (errorRes == 'declares') {
                 updateStatus('User transaction declares wait: ' + 30 + ' sec')

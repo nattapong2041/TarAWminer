@@ -398,17 +398,27 @@ async function claim(account, nonce) {
             }, ],
             data: mine_data,
         }, ];
-        let result = await timeout(95000, wax.api.transact({
-            actions,
-        }, {
-            blocksBehind: 3,
-            expireSeconds: 90,
-        })).then(function (response) {
-            return response;
-        }).catch((err) => {
-            throw err;
-        });
+        // let result = await timeout(95000, wax.api.transact({
+        //     actions,
+        // }, {
+        //     blocksBehind: 3,
+        //     expireSeconds: 90,
+        // })).then(function (response) {
+        //     return response;
+        // }).catch((err) => {
+        //     throw err;
+        // });
 
+        let result = await timeout(180000, wax.api.transact({
+                actions,
+            }, {
+                blocksBehind: 3,
+                expireSeconds: 90,
+            })).then(function (response) {
+                return response;
+            }).catch((err) => {
+                throw err;
+        });
         await sleep(2000);
         var amounts = new Map();
         if (result && result.processed) {
@@ -762,6 +772,7 @@ async function updateBag(userAccount) {
             document.querySelector("#bag_3").value = equipTool.rows[0].items[i]
     }
 }
+<<<<<<< HEAD
 
 async function setBag(account) {
     try {
@@ -818,6 +829,64 @@ function removeDuplicateOptions(s, comparitor) {
 	return true;
 }
 
+=======
+
+async function setBag(account) {
+    try {
+        console.log(`${account} setting bag`);
+        let items =[]
+        if(document.querySelector("#bag_1").value != '0')
+            items.push(document.querySelector("#bag_1").value)
+        if(document.querySelector("#bag_2").value != '0')
+            items.push(document.querySelector("#bag_2").value)
+        if(document.querySelector("#bag_3").value != '0')
+            items.push(document.querySelector("#bag_3").value)
+        const setland = {
+            account: account,
+            items: items,
+        };
+        const actions = [{
+            'account': 'm.federation',
+            'name': 'setbag',
+            'authorization': [{
+                'actor': account,
+                'permission': 'active'
+            }],
+            'data': setland
+        }];
+        let result = await wax.api.transact({
+            actions,
+        }, {
+            blocksBehind: 3,
+            expireSeconds: 90,
+        });
+        if (result && result.processed) {
+            console.log('Set bag complete');
+        }
+        return 0;
+    } catch (error) {
+        throw error;
+    }
+}
+
+function removeDuplicateOptions(s, comparitor) {
+	if(s.tagName.toUpperCase() !== 'SELECT') { return false; }
+	var c, i, o=s.options, sorter={};
+	if(!comparitor || typeof comparitor !== 'function') {
+		comparitor = function(o) { return o.value; };//by default we comare option values.
+	}
+	for(i=0; i<o.length; i++) {
+		c = comparitor(o[i]);
+		if(sorter[c]) {
+			s.removeChild(o[i]);
+			i--;
+		}
+		else { sorter[c] = true; }
+	}
+	return true;
+}
+
+>>>>>>> origin/dev
 const updateLand = async (federation_account, mining_account, account, eos_rpc, aa_api) => {
     try {
         const miner_res = await eos_rpc.get_table_rows({ code: mining_account, scope: mining_account, table: 'miners', lower_bound: account, upper_bound: account });
