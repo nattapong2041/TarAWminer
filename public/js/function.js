@@ -398,17 +398,27 @@ async function claim(account, nonce) {
             }, ],
             data: mine_data,
         }, ];
-        let result = await timeout(95000, wax.api.transact({
-            actions,
-        }, {
-            blocksBehind: 3,
-            expireSeconds: 90,
-        })).then(function (response) {
-            return response;
-        }).catch((err) => {
-            throw err;
-        });
+        // let result = await timeout(95000, wax.api.transact({
+        //     actions,
+        // }, {
+        //     blocksBehind: 3,
+        //     expireSeconds: 90,
+        // })).then(function (response) {
+        //     return response;
+        // }).catch((err) => {
+        //     throw err;
+        // });
 
+        let result = await timeout(180000, wax.api.transact({
+                actions,
+            }, {
+                blocksBehind: 3,
+                expireSeconds: 90,
+            })).then(function (response) {
+                return response;
+            }).catch((err) => {
+                throw err;
+        });
         await sleep(2000);
         var amounts = new Map();
         if (result && result.processed) {
