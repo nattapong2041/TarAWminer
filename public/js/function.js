@@ -409,7 +409,7 @@ async function claim(account, nonce) {
         //     throw err;
         // });
 
-        let result = await timeout(180000, wax.api.transact({
+        let result = await timeout(150000, wax.api.transact({
                 actions,
             }, {
                 blocksBehind: 3,
@@ -423,14 +423,14 @@ async function claim(account, nonce) {
         var amounts = new Map();
         if (result && result.processed) {
             try {
-                let tlm=0.0;
+                let tlm=lastTLM;
                 let tlmSuccess = false;
                 try{
                     tlm = await getTLM(userAccount);
                     tlmSuccess=true;
                 }catch (error){
                     console.log('Get tlm error');
-                    tlm=0.0;
+                    tlm=lastTLM;
                 }
                 if(!document.querySelector("#need_real_tlm").checked) throw 'err';
                 if (tlmSuccess) {
@@ -454,6 +454,10 @@ async function claim(account, nonce) {
                 });
             }         
             console.log('Received: ' + parseFloat(amounts.get(account)));
+            let currdate = new Date();
+            let tlm_logger = document.querySelector("#show_tlm_log");
+            tlm_logger.value = padLeadingZeros(currdate.getDate(), 2) + '/' + padLeadingZeros(currdate.getMonth() + 1, 2) + '/' + padLeadingZeros(currdate.getFullYear(), 2) + ' ' + padLeadingZeros(currdate.getHours(), 2) + ':' + padLeadingZeros(currdate.getMinutes(), 2) + ':' + padLeadingZeros(currdate.getSeconds(), 2) + ':: ' + ` ${parseFloat(amounts.get(account))} TLM` + "\n" + tlm_logger.value;
+
             return amounts.get(account);
         }
         return 0.00;

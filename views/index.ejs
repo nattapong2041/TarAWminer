@@ -130,7 +130,7 @@
               <span id="user_account" class="fs-5 font-weight-bold"><b>xxxxx.wam</b></span>
             </div>
             <div class="col-12 col-lg-9">
-              <span class="fs-6"><b>version 3.1.2:</b></span>
+              <span class="fs-6"><b>version 3.2.0:</b></span>
               <button id="run_btn" type="button" class="btn btn-warning fs-6"
                 style="margin-left: 10px;width: 100px">Waiting</button>
               <a class="btn btn-warning fs-6" href="/home" target="_blank"
@@ -141,31 +141,40 @@
           </div>
           <hr>
           <!-- MINE STATUS -->
-          <div class="col">
-            <div class="col">
-              <span class="fs-6"><b>Total get: </b></span>
-              <span class="fs-6" id="toal_get">0.0000 TLM with 0 Times</span>
+          <div class="row">
+            <div class="col-12 col-lg-6">
+              <div class="col">
+                <span class="fs-6"><b>Total get: </b></span>
+                <span class="fs-6" id="toal_get">0.0000 TLM with 0 Times</span>
+              </div>
+              <div class="col">
+                <span class="fs-6"><b>Status: </b></span>
+                <span class="fs-6" id="status"></span>
+              </div>
+              <div class="col">
+                <span class="fs-6"><b>Countdown: </b></span>
+                <span class="fs-6" id="countdown">0m 0s</span>
+              </div>
+              <div class="col">
+                <span class="fs-6"><b>Last mine: </b></span>
+                <span class="fs-6" id="last_mine"> - TLM. at -.</span>
+              </div>
+              <div class="col">
+                <span class="fs-6"><b>Next mine: </b></span>
+                <span class="fs-6" id="next_mine"></span>
+              </div>
             </div>
-            <div class="col">
-              <span class="fs-6"><b>Status: </b></span>
-              <span class="fs-6" id="status"></span>
-            </div>
-            <div class="col">
-              <span class="fs-6"><b>Countdown: </b></span>
-              <span class="fs-6" id="countdown">0m 0s</span>
-            </div>
-            <div class="col">
-              <span class="fs-6"><b>Last mine: </b></span>
-              <span class="fs-6" id="last_mine"> - TLM. at -.</span>
-            </div>
-            <div class="col">
-              <span class="fs-6"><b>Next mine: </b></span>
-              <span class="fs-6" id="next_mine"></span>
+            <div class="col-12 col-lg-6">
+              <textarea class="form-control box-shadow fs-6" rows="4" style="height:100.0%;" id="show_tlm_log"
+                disabled="">
+              </textarea>
             </div>
           </div>
           <hr>
           <!-- MINING LOG STATUS -->
           <div class="col">
+            
+            <span class="fs-6"><b>Mining log</b></span>
             <select class="form-select" id="wax_server" onchange="changeWaxServer(this.value)">
               <option value="0">https://wax.pink.gg</option>
               <option value="1">https://wax.greymass.com</option>
@@ -173,8 +182,9 @@
               <option value="3">https://wax.dapplica.io</option>
               <!-- <option value="4">https://chain.wax.io</option>
                   <option value="5">https://api.waxsweden.org</option> -->
-              <textarea class="form-control box-shadow fs-6" rows="8" style="height:48.5%;" id="show_mine_log"
-                disabled=""></textarea>
+            </select>
+            <textarea class="form-control box-shadow fs-6" rows="8" style="height:48.5%;" id="show_mine_log"
+              disabled=""></textarea>
           </div>
           <hr>
           <!-- SETTING INFO -->
@@ -218,22 +228,25 @@
           <!-- EVERY AUTO -->
           <div class="col">
             <div class="col">
-              <span class="fs-6"><b>Auto SWAP: </b></span> 
+              <span class="fs-6"><b>Auto SWAP: </b></span>
               <input type="checkbox" id="auto_swap">
-              <input type="number" id="auto_swap_tlm" value="10.0000" style="width: 100px;margin-left: 10px; margin-top: 10px; margin-bottom: 10px; padding-left: 5px;">
+              <input type="number" id="auto_swap_tlm" value="10.0000"
+                style="width: 100px;margin-left: 10px; margin-top: 10px; margin-bottom: 10px; padding-left: 5px;">
               <span class="fs-6"><b> TLM</b></span>
             </div>
             <div class="col">
-              <span class="fs-6"><b>Auto Transfer: </b></span> 
+              <span class="fs-6"><b>Auto Transfer: </b></span>
               <input type="checkbox" id="auto_transfer">
-              <input type="number" id="auto_transfer_wax"  value="20.0000"
+              <input type="number" id="auto_transfer_wax" value="20.0000"
                 style="width: 100px;margin-left: 10px; margin-top: 10px; margin-bottom: 10px; padding-left: 5px;">
               <span class="fs-6 badge badge-secondary">WAX to</span>
               <input type="text" id="auto_transfer_acc" placeholder="xxxxx.wam"
                 style="width: 100px;margin-top: 10px; margin-bottom: 10px; padding-left: 5px;">
               <span class="fs-6 badge badge-secondary" style="margin-left: 5px;">memo</span>
               <input type="text" id="auto_transfer_memo" placeholder="if required"
-                style="width: 100px; margin-top: 10px; margin-bottom: 10px; padding-left: 5px;">
+                style="width: 100px; margin-top: 10px; margin-bottom: 10px; padding-left: 5px;"><br>
+                <span class="fs-6"><b>Auto Transfer All: </b></span>
+                <input type="checkbox" id="auto_transfer_all">
             </div>
           </div>
           <hr>
