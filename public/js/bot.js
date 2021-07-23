@@ -162,7 +162,7 @@ async function updateAccStatus() {
                     try{
                         let transfer_wax = 0.0;
                         if(document.getElementById("auto_transfer_all")){
-                            transfer_wax = wax2.toFixed(3)
+                            transfer_wax = wax2.toFixed(3) - 0.001
                         }
                         else{
                             transfer_wax = document.getElementById("auto_transfer_wax").value
