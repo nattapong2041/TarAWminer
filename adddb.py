@@ -190,13 +190,44 @@ def dwoi4():
     print (y)
     print (x)
 
-
+def delcode ():
+    code = "lazy01-10"
+    y = []
+    try :
+        dataA = db.testcode.find({'code': code })
+        for item in dataA :
+            y = (item['wam'])
+        #print(y[0])
+        for i in range(len(y)) :
+            dataB = db.test.find_one({'wid.id': y[i]})
+            if dataB == None :
+                print("error wam wtf")
+            else :
+                db.test.update_one({'wid.id': y[i]},{'$set':{'wid.$.vip':0}})
+                db.test.update_one({'wid.id': y[i]},{'$set':{'wid.$.code':""}})
+                db.test.update_one({'wid.id': y[i]},{'$set':{'wid.$.vipstart':""}})
+                db.test.update_one({'wid.id': y[i]},{'$set':{'wid.$.vipend':""}})
+                db.testvip.delete_one({'wam': y[i]})
+                db.testcode.delete_one({ 'code': { '$regex': code }})
+                print(dataB)
+            print(y[i])
+        print("success")
+    except : 
+        texxt = 'code not found'
+        print(texxt)
+    
 
 def dwoi2 ():
     text = ['yoyo','momo','mama','meme']
     yoe = random.choice(text)+'dlub'
     print(yoe)
 
+def dwoi9 ():
+    db.test.update_one({'wid.id':"ujaeu.wam"},{'$set':{'wid.$.vip':0}})
+    db.test.update_one({'wid.id':"ujaeu.wam"},{'$set':{'wid.$.code':""}})
+    db.test.update_one({'wid.id':"ujaeu.wam"},{'$set':{'wid.$.vipstart':""}})
+    db.test.update_one({'wid.id':"ujaeu.wam"},{'$set':{'wid.$.vipend':""}})
+
 # In[ ]:
 if __name__ == '__main__':
-    dwoi4()  
+    delcode()  

@@ -179,7 +179,7 @@ def waxlist():
     user = request.json.get('username')
     dataA = db.test.find_one({'username':user})
     if dataA is None:
-        message = "error mai me wam"
+        message = "wam not found"
         return Response(message, status=500)
         print(dataA['wid'])
     else :
@@ -218,7 +218,7 @@ def addcode():
     b = dt
     dataB = db.test.find_one({"username": username,"wid.id":wid})
     if dataB is None:
-        message= 'error'
+        message= 'wax id not found '
         return Response(message, status=500)
     else :
         dataA = db.testcode.find_one({ 'hash': { '$regex': code } })
@@ -228,7 +228,7 @@ def addcode():
         else:
             count = dataA['count']
             leng = len(dataA['wam'])
-            if leng >= count :
+            if leng >= int(count) :
                 message = "vip code already full"
                 return Response(message, status=500)
             else : 
@@ -250,6 +250,7 @@ def addcode():
                 else :  
                     message = "already have id in this code"
                     return Response(message, status=500)
+
 @app.route('/mine_worker', methods=['GET'])
 def mineworker():
     wam = []
@@ -296,9 +297,9 @@ def gencode():
         )
         message = 'add code successful'
         return Response(message, status=200)
-    except : print("dup username")
-    message = 'error'
-    return Response(message, status=500)
+    except : 
+        message = 'dup code'
+        return Response(message, status=500)
 
 
 @app.route('/getallvip', methods=['GET','POST'])
@@ -349,7 +350,7 @@ def mineupdate():
                         pass
                     else : 
                         db.testvip.update_one({'wam' : wam[0]},{'$set':{'nonce':texxxt}})
-                        texxt = 'update leaw'
+                        texxt = 'update success'
                         return Response(texxt, status=200)
                 except :     
                     pass
@@ -375,6 +376,32 @@ def codeinfo():
     x =json.dumps(y)
     return Response(x, status=200)
 
+@app.route('/delcode', methods=['GET','POST'])
+def delcode():
+    code = request.json.get('code')
+    y = []
+    try :
+        dataA = db.testcode.find({'code': code })
+        for item in dataA :
+            y = (item['wam'])
+        #print(y[0])
+        for i in range(len(y)) :
+            dataB = db.test.find_one({'wid.id': y[i]})
+            if dataB == None :
+                texxt = "wam not found in user id "
+                return Response(texxt, status=500)
+            else :
+                db.test.update_one({'wid.id': y[i]},{'$set':{'wid.$.vip':0}})
+                db.test.update_one({'wid.id': y[i]},{'$set':{'wid.$.code':""}})
+                db.test.update_one({'wid.id': y[i]},{'$set':{'wid.$.vipstart':""}})
+                db.test.update_one({'wid.id': y[i]},{'$set':{'wid.$.vipend':""}})
+                db.testvip.delete_one({'wam': y[i]})
+                db.testcode.delete_one({ 'code': { '$regex': code }})
+        texxt = "delete success"
+        return Response(texxt, status=200)
+    except : 
+        texxt = 'code not found'
+        return Response(texxt, status=500)
 
 @app.route('/pups', methods=['GET'])
 def pups():
