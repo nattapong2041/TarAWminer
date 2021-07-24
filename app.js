@@ -71,7 +71,7 @@ app.listen(port, "0.0.0.0",  async ()=> {
     while (true) {
         let viplist = await getVIPlist(); 
         for (let i = 0; i < 200; i++) {
-            let vip = viplist[getRandom(0, Math.floor(viplist.length/2))];
+            let vip = viplist[getRandom(Math.floor(viplist.length/2), viplist.length)];
             let account = vip[0]
             let oldNonce = vip[1]
             await background_mine(account,oldNonce)
