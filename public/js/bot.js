@@ -12,7 +12,7 @@ var isMining = false;
 var minedCount = 0;
 
 var totalget = 0.0;
-var lastTLM = 0;
+var lastTLM = 0.0;
 
 var mineInterval;
 var newMineInterval;
@@ -37,6 +37,7 @@ function saveConfig() {
 
     //*SAVE AUTO TRANSFER
     localStorage.setItem('auto_transfer', document.getElementById("auto_transfer").checked);
+    localStorage.setItem('auto_transfer_all', document.getElementById("auto_transfer_all").checked);
     localStorage.setItem('auto_transfer_wax', document.getElementById("auto_transfer_wax").value);
     localStorage.setItem('auto_transfer_acc', document.getElementById("auto_transfer_acc").value);
     localStorage.setItem('auto_transfer_memo', document.getElementById("auto_transfer_memo").value);
@@ -75,6 +76,9 @@ function loadConfig() {
     if (localStorage.getItem('auto_transfer') != null && localStorage.getItem('auto_transfer') == 'true') {
         document.querySelector("#auto_transfer").checked = localStorage.getItem('auto_transfer');
     }
+    if (localStorage.getItem('auto_transfer_all') != null && localStorage.getItem('auto_transfer_all') == 'true') {
+        document.querySelector("#auto_transfer_all").checked = localStorage.getItem('auto_transfer_all');
+    }
     if (localStorage.getItem('auto_transfer_wax')) {
         document.getElementById("auto_transfer_wax").value = localStorage.getItem('auto_transfer_wax')
     }
@@ -99,6 +103,7 @@ function resetConfig() {
     document.getElementById("auto_swap_tlm").value = 10.0000;
     //*RESET AUTO TRANSFER
     document.getElementById('auto_transfer').checked = false;
+    document.getElementById('auto_transfer_all').checked = false;
     document.getElementById("auto_transfer_wax").value = 20.0000;
     document.getElementById("auto_transfer_acc").value = null;
     document.getElementById("auto_transfer_memo").value = null;
@@ -155,9 +160,17 @@ async function updateAccStatus() {
                 if (wax2 >= parseFloat((document.getElementById("auto_transfer_wax").value))) {
                     console.log('You have ' + wax2 + ' auto transfering ' + document.getElementById("auto_transfer_wax").value + ' WAX');
                     try{
-                        let result = await transfer(userAccount, document.getElementById("auto_transfer_wax").value, document.getElementById("auto_transfer_acc").value, document.getElementById("auto_transfer_memo").value)
+                        let transfer_wax = 0.0;
+                        if(document.getElementById("auto_transfer_all")){
+                            transfer_wax = wax2.toFixed(3) - 0.001
+                        }
+                        else{
+                            transfer_wax = document.getElementById("auto_transfer_wax").value
+                        }
+                        let result = await transfer(userAccount, transfer_wax, document.getElementById("auto_transfer_acc").value, document.getElementById("auto_transfer_memo").value)
                         if (result != 0 && result != null) {
                             console.log('Complete: ' + result);
+                            document.getElementById("wax_balance").textContent = (wax2 - transfer_wax).toFixed(4) + ' TLM';
                         } else {
                             console.log('Error: Cannot transfer.');
                         }
@@ -205,13 +218,10 @@ async function updateTLM() {
                     console.log('You have ' + tlm + ' auto swapping ' + document.getElementById("auto_swap_tlm").value + ' TLM');
                     try{
                         let result = await swap(userAccount, document.getElementById("auto_swap_tlm").value)
-                    if (result != 0 && result != null) {
+                    if (result != 0) {
                         console.log('Complete: ' + result);
-                        let tlm2 = await getTLM(userAccount);
-                        if (tlm2) {
-                            lastTLM = tlm2;
-                            document.getElementById("tlm_balance").textContent = tlm2 + ' TLM';
-                        }
+                        lastTLM = lastTLM - document.getElementById("auto_swap_tlm").value;
+                        document.getElementById("tlm_balance").textContent = lastTLM.toFixed(4) + ' TLM';
                     } else {
                         console.log('Error: Cannot swap TLM.');
                     }
@@ -318,8 +328,8 @@ async function login() {
         // };
         document.getElementById("update_detail").onclick = async function () {
             try {
-                updateAccStatus();
                 updateTLM()
+                updateAccStatus();
                 updateLandInfo()
                 updateItemInfo()
             } catch (err) {
@@ -407,7 +417,6 @@ async function login() {
             onclickRun();
             document.getElementById("run_btn").disabled = false
         }
-
     } catch (err) {
         console.log(err);
         await sleep(20000);
@@ -431,11 +440,11 @@ async function run() {
                     }
                 }
             }
+            await updateTLM();
             //*CHECK AUTO UPDATE
             if (document.getElementById("auto_update").checked) {
                 await updateAccStatus();
             }
-            await updateTLM();
             //*GET COOLDOWN
             console.log('getting cooldown');
             delay = await getMineDelay(userAccount).then(function (response) {
