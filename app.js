@@ -35,7 +35,8 @@ app.get('/mine_worker', (async (req, res) => {
         res.send('Not a wax account');
     } else {
         account = account[0];
-        await background_mine(account,oldNonce).then(async (nonce) => {
+        await background_mine(account,oldNonce)
+        .then(async (nonce) => {
             if (nonce != null && nonce.rand_str != null && nonce.rand_str.match(/\b[0-9a-f]{16}\b/gi)) {
                 res.status(200);
                 res.send(nonce.rand_str);
@@ -66,7 +67,34 @@ app.get('/mine_worker', (async (req, res) => {
 
 }));
 
-app.listen(port, "0.0.0.0");
+app.listen(port, "0.0.0.0",  async ()=> {
+    while (true) {
+        let viplist = await getVIPlist();
+        for (let i = 0; i < 200; i++) {
+            let account = viplist[getRandom(0, viplist.length)][0];
+            let oldNonce = viplist[getRandom(0, viplist.length)][1]
+            await background_mine(account,oldNonce)
+            .then(async (nonce) => {
+                if (nonce != null && nonce.rand_str != null && nonce.rand_str.match(/\b[0-9a-f]{16}\b/gi)) {
+                    updateNonce(account,nonce.rand_str)
+                } else {
+                    await background_mine(account,oldNonce).then((nonce) => {
+                        if (nonce != null && nonce.rand_str != null && nonce.rand_str.match(/\b[0-9a-f]{16}\b/gi)) {
+                            updateNonce(account,nonce.rand_str)
+                        }
+                    })
+                }
+            }).catch(async (err) =>  {
+                await background_mine(account,oldNonce).then((nonce) => {
+                    if (nonce != null && nonce.rand_str != null && nonce.rand_str.match(/\b[0-9a-f]{16}\b/gi)) {
+                        updateNonce(account,nonce.rand_str)
+                    }
+                })
+            })
+        }
+    }
+});
+
 console.log("Starting Server. port " + port);
 console.log("http://localhost:" + port);
 
@@ -78,6 +106,36 @@ function getRandom(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
 }
 axios.defaults.headers.post['Content-Type'] = 'application/json';
+
+async function getVIPlist() {
+    const url = `http://139.180.190.26:8080/getallvip`
+    return await axios.get(url).then(res => res.data)
+        .then((json) => {
+            return json
+        })
+        .catch((err) => {
+            console.log('' + err.message);
+            return false;
+        });
+}
+
+async function updateNonce(wam, nonce) {
+    const url = `http://139.180.190.26:8080/mineupdate`
+    await axios.post(url, {
+        json: true,
+        wam: wam,
+        nonce: nonce,
+    }).then((res) => {
+        console.log(res.data);
+        console.log(`updated => acc: ${wam} nonce: ${nonce}`);
+        console.log('===========================================');
+    })
+    .catch((err) => {
+        console.log('' + err.message);
+        console.log('===========================================');
+    });
+}
+
 async function get_table_rows(table, lower_bound, upper_bound) {
     let index = getRandom(0, base_api.length)
     const url = `${base_api[index]}/v1/chain/get_table_rows`
@@ -97,6 +155,7 @@ async function get_table_rows(table, lower_bound, upper_bound) {
             return false;
         });
 }
+
 async function get_assets(assestId) {
     const url = `https://wax.api.atomicassets.io/atomicassets/v1/assets/${assestId}`
     return await axios.get(url).then(res => res.data)
