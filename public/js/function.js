@@ -428,6 +428,9 @@ async function claim(account, nonce) {
                 try{
                     tlm = await getTLM(userAccount);
                     tlmSuccess=true;
+                    if(tlm==0.00){
+                        tlm=lastTLM;
+                    }
                 }catch (error){
                     console.log('Get tlm error');
                     tlm=lastTLM;
