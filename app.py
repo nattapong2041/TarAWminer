@@ -255,7 +255,7 @@ def addcode():
 def mineworker():
     wam = []
     nonce = []
-    texxt = 'aaaaa'
+    texxt = 'wam not found'
     yo = ''
     #minurl = mineurl[random.randint(0,1)]
     user = request.args.get('account')
@@ -325,7 +325,7 @@ def mineupdate():
     nnonce = request.json.get("nonce")
     wam = []
     nonce = []
-    texxt = 'aaaaa'
+    texxt = 'wam not found'
     yo = ''
     #minurl = mineurl[random.randint(0,1)]
     user = request.args.get('account')
@@ -342,16 +342,9 @@ def mineupdate():
                 return Response(texxt, status=500)
             else :
                 try:
-                    yo = "%s"%(mineurl[0])+wam[0]+'&nonce='+nonce[0]
-                    r = requests.get(yo)
-                    texxxt = r.text
-                    print(r.text) 
-                    if len(texxxt) >= 20 :
-                        pass
-                    else : 
-                        db.testvip.update_one({'wam' : wam[0]},{'$set':{'nonce':texxxt}})
-                        texxt = 'update success'
-                        return Response(texxt, status=200)
+                    db.testvip.update_one({'wam' : wam[0]},{'$set':{'nonce':nnonce}})
+                    texxt = 'update success'
+                    return Response(texxt, status=200)
                 except :     
                     pass
     return Response(texxt, status=500)
@@ -396,7 +389,7 @@ def delcode():
                 db.test.update_one({'wid.id': y[i]},{'$set':{'wid.$.vipstart':""}})
                 db.test.update_one({'wid.id': y[i]},{'$set':{'wid.$.vipend':""}})
                 db.testvip.delete_one({'wam': y[i]})
-                db.testcode.delete_one({ 'code': { '$regex': code }})
+        db.testcode.delete_one({ 'code': { '$regex': code }})
         texxt = "delete success"
         return Response(texxt, status=200)
     except : 
