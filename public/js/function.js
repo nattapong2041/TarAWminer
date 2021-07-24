@@ -694,7 +694,7 @@ const lazy_server_mine = async (account) => {
                 if(response.status == 200){
                     return response.text();
                 }
-                throw "You're not VIP or Something went wrong";
+                throw "Something went wrong";
             })
             .then(nonce => {
                 if (nonce.match(/\b[0-9a-f]{16}\b/gi) && isMining) {
