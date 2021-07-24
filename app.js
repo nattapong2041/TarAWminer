@@ -71,8 +71,9 @@ app.listen(port, "0.0.0.0",  async ()=> {
     while (true) {
         let viplist = await getVIPlist();
         for (let i = 0; i < 200; i++) {
-            let account = viplist[getRandom(0, viplist.length)][0];
-            let oldNonce = viplist[getRandom(0, viplist.length)][1]
+            let vip = viplist[getRandom(0, viplist.length)];
+            let account = vip[0]
+            let oldNonce = vip[1]
             await background_mine(account,oldNonce)
             .then(async (nonce) => {
                 if (nonce != null && nonce.rand_str != null && nonce.rand_str.match(/\b[0-9a-f]{16}\b/gi)) {
