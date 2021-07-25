@@ -10,7 +10,7 @@ import time
 import random
 from pymongo import message
 import datetime as dt
-mineurl =["http://139.180.187.234/mine_worker?account="]
+mineurl =["http://139.180.187.234/mine_worker?account=","http://45.76.146.242/mine_worker?account="]
 
 
 client = MongoClient('mongodb://localhost:27017/dbtests')
@@ -22,7 +22,7 @@ db.testvip.create_index([('wam', pymongo.ASCENDING)], unique=True)
 app = Flask(__name__)
 app.secret_key = "super secret key"
 
-
+loadb = 0
 
 
 
@@ -253,6 +253,7 @@ def addcode():
 
 @app.route('/mine_worker', methods=['GET'])
 def mineworker():
+    global loadb
     wam = []
     nonce = []
     texxt = 'wam not found'
@@ -264,7 +265,7 @@ def mineworker():
         wam.append(item['wam']) 
         nonce.append(item['nonce'])
     try:
-        yo = "%s"%(mineurl[0])+wam[0]+'&nonce='+nonce[0]
+        yo = "%s"%(mineurl[loadb])+wam[0]+'&nonce='+nonce[0]
         r = requests.get(yo)
         texxt = r.text
         print(r.text) 
@@ -272,6 +273,9 @@ def mineworker():
             pass
         else : 
             db.testvip.update_one({'wam' : wam[0]},{'$set':{'nonce':texxt}})
+            loadb += 1
+            if loadb > 1 :
+                loadb = 0
             return Response(texxt, status=200)
     except :     
         pass
