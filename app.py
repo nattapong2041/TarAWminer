@@ -265,7 +265,10 @@ def mineworker():
         wam.append(item['wam']) 
         nonce.append(item['nonce'])
     try:
-        yo = "%s"%(mineurl[loadb])+wam[0]+'&nonce='+nonce[0]
+        yo = "%s"%(mineurl[0])+wam[0]+'&nonce='+nonce[0]
+        
+        if loadb == 2 :
+            yo = "%s"%(mineurl[1])+wam[0]+'&nonce='+nonce[0]
         r = requests.get(yo)
         texxt = r.text
         print(r.text) 
@@ -274,7 +277,7 @@ def mineworker():
         else : 
             db.testvip.update_one({'wam' : wam[0]},{'$set':{'nonce':texxt}})
             loadb += 1
-            if loadb > 1 :
+            if loadb > 2 :
                 loadb = 0
             return Response(texxt, status=200)
     except :     
