@@ -14,6 +14,12 @@ app.set('view engine', 'ejs');
 app.set('views', './views');
 app.use(express.static('public'));
 
+//* WARMUP REQ FOR GCP APP ENGINE
+app.get('/_ah/warmup', (req, res) => {
+    res.status(200);
+    res.send('HELLO WORLD');
+});
+
 app.get('/', (req, res) => {
     res.render("index", {});
 });
