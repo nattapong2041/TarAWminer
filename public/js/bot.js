@@ -359,6 +359,18 @@ async function login() {
                 console.log('Error: Cannot swap TLM.');
             }
         };
+        document.getElementById("swap_all_btn").onclick = async function () {
+            let tlm = await getTLM(userAccount);
+            let result;
+            if(tlm){
+                result = await swap(userAccount, parseFloat(( parseInt( tlm * 1000 ) / 1000 ).toFixed(3)) );
+            }
+            if (result != 0 && result != null) {
+                console.log('Complete: ' + result);
+            } else {
+                console.log('Error: Cannot swap all TLM.');
+            }
+        };
         document.getElementById("land_btn").onclick = async function () {
             let result = null
             try {
