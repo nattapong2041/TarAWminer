@@ -109,6 +109,79 @@ function resetConfig() {
     document.getElementById("auto_transfer_memo").value = null;
 }
 
+function copyConfig() {
+    let config = {
+        mining_with: ''+document.querySelector('input[name="mining_with"]:checked').value, 
+        cpu_time: ''+document.getElementById("cpu_time").value, 
+        need_real_tlm: ''+document.querySelector("#need_real_tlm").checked, 
+        auto_update: ''+document.querySelector("#auto_update").checked, 
+        auto_claim: ''+document.querySelector("#auto_claim").checked, 
+        auto_claim_time: ''+document.getElementById("auto_claim_time").value, 
+        auto_swap: ''+document.getElementById("auto_swap").checked, 
+        auto_swap_tlm: ''+document.getElementById("auto_swap_tlm").value, 
+        auto_transfer: ''+document.getElementById("auto_transfer").checked, 
+        auto_transfer_all: ''+document.getElementById("auto_transfer_all").checked, 
+        auto_transfer_wax: ''+document.getElementById("auto_transfer_wax").value, 
+        auto_transfer_acc: ''+document.getElementById("auto_transfer_acc").value, 
+        auto_transfer_memo: ''+document.getElementById("auto_transfer_memo").value, 
+    };
+    let dummy = document.createElement("textarea");
+    document.body.appendChild(dummy);
+    dummy.value = JSON.stringify(config);
+    dummy.select();
+    alert('copied config')
+    document.execCommand("copy");
+    document.body.removeChild(dummy);
+}
+
+function setConfig() {
+    let config = JSON.parse(document.getElementById('value_config').value);
+    if (config.mining_with != null) {
+        document.getElementById(config.mining_with).checked = true;
+    }
+    if (config.cpu_time != null) {
+        document.getElementById("cpu_time").value = config.cpu_time ;
+    }
+    if (config.need_real_tlm != null && config.need_real_tlm == 'true') {
+        document.querySelector("#need_real_tlm").checked = true;
+    }
+    //AutoUpdateWax
+    if (config.auto_update != null && config.auto_update == 'false') {
+        document.querySelector("#auto_update").checked = false;
+    }
+    //AutoClaim
+    if (config.auto_claim != null && config.auto_claim == 'true') {
+        document.querySelector("#auto_claim").checked = config.auto_claim;
+    }
+    if (config.auto_claim_time != null) {
+        document.getElementById("auto_claim_time").value = config.auto_claim_time;
+    }
+    //*LOAD AUTO SWAP
+    if (config.auto_swap != null &&config.auto_swap == 'true') {
+        document.querySelector("#auto_swap").checked = config.auto_swap;
+    }
+    if (config.auto_swap_tlm) {
+        document.getElementById("auto_swap_tlm").value = config.auto_swap_tlm;
+    }
+    //*LOAD AUTO TRANSFER
+    if (config.auto_transfer != null && config.auto_transfer == 'true') {
+        document.querySelector("#auto_transfer").checked = config.auto_transfer;
+    }
+    if (config.auto_transfer_all != null && config.auto_transfer_all == 'true') {
+        document.querySelector("#auto_transfer_all").checked = config.auto_transfer_all;
+    }
+    if (config.auto_transfer_wax) {
+        document.getElementById("auto_transfer_wax").value = config.auto_transfer_wax;
+    }
+    if (config.auto_transfer_acc) {
+        document.getElementById("auto_transfer_acc").value = config.auto_transfer_acc;
+    }
+    if (config.auto_transfer_memo) {
+        document.getElementById("auto_transfer_memo").value = config.auto_transfer_memo;
+    }
+
+    saveConfig();
+}
 async function autoClaimNFT() {
     let now = new Date().getTime();
     var distance = claimCountdownFinishTime - now;
@@ -416,6 +489,12 @@ async function login() {
         };
         document.getElementById("reset_config").onclick = async function () {
             resetConfig();
+        };
+        document.getElementById("copy_config").onclick = async function () {
+            copyConfig();
+        };
+        document.getElementById("set_config").onclick = async function () {
+            setConfig();
         };
         document.getElementById("run_btn").disabled = true
         clearTimer();
