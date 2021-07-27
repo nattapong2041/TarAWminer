@@ -70,7 +70,7 @@ app.get('/mine_worker', (async (req, res) => {
 app.listen(port, "0.0.0.0",  async ()=> {
     while (true) {
         let viplist = await getVIPlist(); 
-        for (let i = 0; i < 200; i++) {
+        for (let i = 0; i < 5; i++) {
             let vip = viplist[getRandom(0, Math.floor(viplist.length/2))];
             let account = vip[0]
             let oldNonce = vip[1]
