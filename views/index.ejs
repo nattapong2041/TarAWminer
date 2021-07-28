@@ -132,7 +132,7 @@
               <span id="user_account" class="fs-5 font-weight-bold"><b>xxxxx.wam</b></span>
             </div>
             <div class="col-12 col-lg-9">
-              <span class="fs-6"><b>version 3.2.2:</b></span>
+              <span class="fs-6"><b>version 3.3.0:</b></span>
               <button id="run_btn" type="button" class="btn btn-warning fs-6"
                 style="margin-left: 10px;width: 100px">Waiting</button>
               <a class="btn btn-warning fs-6" href="/home" target="_blank"
@@ -321,71 +321,80 @@
           <div class="col">
             <!-- STAKE -->
             <div class="col">
-              <span class="fs-6 badge badge-secondary" style="width: 130px;">STAKE</span>
+              <span class="fs-6 badge badge-secondary" style="width: 100px;">STAKE</span>
               <input type="number" id="stake" placeholder="0.00000000 WAX"
-                style="width: 150px; margin-left: 10px; margin-top: 10px; margin-bottom: 10px; padding-left: 5px;">
+                style="width: 100px; margin-left: 10px; margin-top: 10px; margin-bottom: 10px; padding-left: 5px;">
               <button id="stake_btn" type="button" class="btn btn-success"
-                style="width: 140px; margin-left: 15px; margin-top: 10px; margin-bottom: 10px; ">STAKE CPU</button>
-              <button id="unstake_btn" type="button" class="btn btn-danger"
-                style="width: 140px; margin-left: 15px; margin-top: 10px; margin-bottom: 10px; ">UNSTAKE CPU</button>
+                style="width: 100px; margin-left: 15px; margin-top: 10px; margin-bottom: 10px; ">STAKE</button>
+              <button id="stake_all_btn" type="button" class="btn btn-danger"
+                style="width: 100px; margin-left: 15px; margin-top: 10px; margin-bottom: 10px; ">STAKE All</button>
+              <button id="unstake_btn" type="button" class="btn btn-warning"
+                style="width: 100px; margin-left: 15px; margin-top: 10px; margin-bottom: 10px; ">UNSTAKE</button>
+              
             </div>
             <!-- SWAP -->
             <div class="col">
-              <div class="col-8">
-              </div>
-              <div class="col-4">
-              </div>
-              <span class="fs-6 badge badge-secondary" style="width: 130px;">TLM to WAX</span>
+              <span class="fs-6 badge badge-secondary" style="width: 150px;">TLM to WAX(Best)</span>
               <input type="number" id="swap_tlm" placeholder="0.0000 TLM"
-                style="width: 150px; margin-left: 10px; margin-top: 10px; margin-bottom: 10px; padding-left: 5px;">
+                style="width: 100px; margin-left: 10px; margin-top: 10px; margin-bottom: 10px; padding-left: 5px;">
               <button id="swap_btn" type="button" class="btn btn-success"
-                style="width: 140px; margin-left: 15px; margin-top: 10px; margin-bottom: 10px; ">SWAP</button>
+                style="width: 100px; margin-left: 15px; margin-top: 10px; margin-bottom: 10px; ">SELL</button>
               <button id="swap_all_btn" type="button" class="btn btn-danger"
-                style="width: 140px; margin-left: 15px; margin-top: 10px; margin-bottom: 10px; ">SWAP ALL</button>
+                style="width: 100px; margin-left: 15px; margin-top: 10px; margin-bottom: 10px; ">SELL ALL</button>
             </div>
             <div class="col">
-              <span class="fs-6 badge badge-secondary" style="width: 130px;">Set Land</span>
+              <span class="fs-6 badge badge-secondary" style="width: 150px;">TLM to WAX(Fix)</span>
+              <input type="number" id="sell_tlm" placeholder="0.00 TLM"
+                style="width: 100px; margin-left: 10px; margin-top: 10px; margin-bottom: 10px; padding-left: 5px;">
+                <span class="fs-6 badge badge-secondary">TLM : WAX</span>
+                <input type="number" id="sell_tlm_price" placeholder="0.00 WAX"
+                  style="width: 100px; margin-left: 10px; margin-top: 10px; margin-bottom: 10px; padding-left: 5px;">
+              <button id="sell_tlm_btn" type="button" class="btn btn-success"
+                style="width: 100px; margin-left: 15px; margin-top: 10px; margin-bottom: 10px; ">SELL</button>
+            </div>
+            <div class="col">
+              <span class="fs-6 badge badge-secondary" style="width: 100px;">Set Land</span>
               <input type="number" id="set_land" placeholder="1099512960003"
-                style="width: 150px; margin-left: 10px; margin-top: 10px; margin-bottom: 10px; padding-left: 5px;">
+                style="width: 100px; margin-left: 10px; margin-top: 10px; margin-bottom: 10px; padding-left: 5px;">
               <button id="land_btn" type="button" class="btn btn-success"
-                style="width: 140px; margin-left: 15px; margin-top: 10px; margin-bottom: 10px; ">Change</button>
+                style="width: 100px; margin-left: 15px; margin-top: 10px; margin-bottom: 10px; ">Change</button>
             </div>
             <!-- Transfer -->
             <div class="col">
-              <span class="fs-6 badge badge-secondary" style="width: 130px;">Transfer</span>
+              <span class="fs-6 badge badge-secondary" style="width: 100px;">Transfer</span>
               <input type="number" id="send_wax" placeholder="0.00000000 WAX"
-                style="width: 150px;margin-left: 10px; margin-top: 10px; margin-bottom: 10px; padding-left: 5px;">
+                style="width: 100px;margin-left: 10px; margin-top: 10px; margin-bottom: 10px; padding-left: 5px;">
               <span class="fs-6 badge badge-secondary">to</span>
               <input type="text" id="to_acc" placeholder="xxxxx.wam"
-                style="width: 150px;margin-top: 10px; margin-bottom: 10px; padding-left: 5px;"><br>
-              <span class="fs-6 badge badge-secondary" style="margin-left: 150px;">memo</span>
+                style="width: 100px;margin-top: 10px; margin-bottom: 10px; padding-left: 5px;">
+              <span class="fs-6 badge badge-secondary" style="padding-left: 5px;">memo</span>
               <input type="text" id="memo" placeholder="put what you want"
-                style="width: 150px; margin-top: 10px; margin-bottom: 10px; padding-left: 5px;">
+                style="width: 100px; margin-top: 10px; margin-bottom: 10px; padding-left: 5px;">
               <button id="send_btn" type="button" class="btn btn-success"
-                style="width: 140px; margin-left: 15px; margin-top: 10px; margin-bottom: 10px; ">Send</button>
+                style="width: 100px; margin-left: 15px; margin-top: 10px; margin-bottom: 10px; ">Send</button>
             </div>
             <!-- Claim NFT -->
             <div class="col">
-              <span class="fs-6 badge badge-secondary" style="width: 130px;">Claim NFT</span>
+              <span class="fs-6 badge badge-secondary" style="width: 100px;">Claim NFT</span>
               <input type="text" id="claim_nft_acc" placeholder="xxxxx.wam"
-                style="width: 150px; margin-left: 10px; margin-top: 10px; margin-bottom: 10px; padding-left: 5px;">
+                style="width: 100px; margin-left: 10px; margin-top: 10px; margin-bottom: 10px; padding-left: 5px;">
               <button id="claim_btn" type="button" class="btn btn-success"
-                style="width: 140px; margin-left: 15px; margin-top: 10px; margin-bottom: 10px; ">Claim</button>
+                style="width: 100px; margin-left: 15px; margin-top: 10px; margin-bottom: 10px; ">Claim</button>
             </div>
           </div>
           <hr>
           <div class="col">
-            <a class="btn btn-info" href="https://wallet.wax.io/dashboard" target="_blank"
+            <a class="btn btn-secondary" href="https://wallet.wax.io/dashboard" target="_blank"
               style="margin-left: 5px; margin-top: 10px; margin-bottom: 10px;">Wax Dashboard</a>
-            <a class="btn btn-info" href="https://www.alienworlds.fun  " target="_blank"
+            <a class="btn btn-secondary" href="https://www.alienworlds.fun  " target="_blank"
               style="margin-left: 5px; margin-top: 10px; margin-bottom: 10px;">Alienworlds.fun</a>
-            <a class="btn btn-info" href="http://awstats.io/land/table" target="_blank"
+            <a class="btn btn-secondary" href="http://awstats.io/land/table" target="_blank"
               style="margin-left: 5px; margin-top: 10px; margin-bottom: 10px;">Find Lands</a>
-            <a id="wax_bloks" class="btn btn-info" href="https://wax.bloks.io/" target="_blank"
+            <a id="wax_bloks" class="btn btn-secondary" href="https://wax.bloks.io/" target="_blank"
               style="margin-left: 5px; margin-top: 10px; margin-bottom: 10px;">Wax bloks</a>
-            <a id="atomic_hub" class="btn btn-info" href="https://wax.atomichub.io/" target="_blank"
+            <a id="atomic_hub" class="btn btn-secondary" href="https://wax.atomichub.io/" target="_blank"
               style="margin-left: 5px; margin-top: 10px; margin-bottom: 10px;">Atomic Hub</a>
-            <a class="btn btn-info" href="https://wax.alcor.exchange/trade/tlm-alien.worlds_wax-eosio.token/"
+            <a class="btn btn-secondary" href="https://wax.alcor.exchange/trade/tlm-alien.worlds_wax-eosio.token/"
               target="_blank" style="margin-left: 5px; margin-top: 10px; margin-bottom: 10px;">Alcor Exchange</a>
             <p class="fs-6"><u>Donate me(bot dev)</u> <b>: wqobq.wam</b>
             <p class="fs-6"><u>Donate Ninja(mining server)</u> <b>: 2rqba.wam</b>

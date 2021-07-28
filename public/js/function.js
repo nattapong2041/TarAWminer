@@ -501,14 +501,18 @@ async function setLand(account, land) {
     }
 }
 
-async function swap(account, amount) {
+async function swap(account, amount, wax_amount) {
     try {
-        console.log(`${account} Swaping tlm to wax ...`);
+        if(wax_amount){
+            console.log(`${account} Placing sell order ${amount} tlm to ${parseFloat(amount*wax_amount).toFixed(8)} wax ...`);
+        }else{
+            console.log(`${account} Swaping ${amount} tlm to wax ...`);
+        }
         const swapdata = {
             'from': account,
             'to': 'alcordexmain',
             'quantity': `${parseFloat(amount).toFixed(4)}  TLM`,
-            'memo': "0.00000000 WAX@eosio.token"
+            'memo': (wax_amount) ? `${parseFloat(amount*wax_amount).toFixed(8)}  WAX@eosio.token` : "0.00000000 WAX@eosio.token"
         };
         const actions = [{
             'account': 'alien.worlds',
@@ -530,6 +534,9 @@ async function swap(account, amount) {
             throw err;
         });
         if (result && result.processed) {
+            if(wax_amount){
+                return `Place order ${amount} TLM with 1 TLM :${wax_amount} WAX RATE`
+            }
             let wax = result.processed.action_traces[0].inline_traces[2].act.data.quantity
             return `Swap ${amount} to ${wax}`
         }
