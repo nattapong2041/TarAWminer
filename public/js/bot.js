@@ -432,6 +432,14 @@ async function login() {
                 console.log('Error: Cannot swap TLM.');
             }
         };
+        document.getElementById("sell_tlm_btn").onclick = async function () {
+            let result = await swap(userAccount, document.getElementById("sell_tlm").value,document.getElementById("sell_tlm_price").value)
+            if (result != 0 && result != null) {
+                console.log('Complete: ' + result);
+            } else {
+                console.log('Error: Cannot swap TLM.');
+            }
+        };
         document.getElementById("swap_all_btn").onclick = async function () {
             let tlm = await getTLM(userAccount);
             let result;
@@ -479,6 +487,19 @@ async function login() {
                 console.log('Complete: ' + result);
             } else {
                 console.log('Error: Cannot stake.');
+            }
+        };
+        document.getElementById("stake_all_btn").onclick = async function () {
+            let acc = await getAccount(userAccount);
+            let result;
+            if(acc){
+                let wax = (acc.core_liquid_balance).split(" ");
+                result = await stake(userAccount, parseFloat(( parseInt( wax[0] * 1000 ) / 1000 ).toFixed(3)) );
+            }
+            if (result != 0 && result != null) {
+                console.log('Complete: ' + result);
+            } else {
+                console.log('Error: Cannot stake all TLM.');
             }
         };
         document.getElementById("run_btn").onclick = async function () {
