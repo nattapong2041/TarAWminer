@@ -107,6 +107,7 @@
   <script src="js/int64-buffer.min.js"></script>
   <script src="js/eosjs-numeric.js"></script>
   <script src="js/eosjs-serialize.js"></script>
+  <script src="js/config.js"></script>
   <script src="js/function.js"></script>
   <script src="js/bot.js"></script>
   <script src="js/getDetail.js"></script>
@@ -132,7 +133,7 @@
               <span id="user_account" class="fs-5 font-weight-bold"><b>xxxxx.wam</b></span>
             </div>
             <div class="col-12 col-lg-9">
-              <span class="fs-6"><b>version 3.3.0:</b></span>
+              <span class="fs-6"><b>version 3.4.0:</b></span>
               <button id="run_btn" type="button" class="btn btn-warning fs-6"
                 style="margin-left: 10px;width: 100px">Waiting</button>
               <a class="btn btn-warning fs-6" href="/home" target="_blank"
@@ -235,6 +236,13 @@
           <!-- EVERY AUTO -->
           <div class="col">
             <div class="col">
+              <span class="fs-6"><b>Auto STAKE: </b></span>
+              <input type="checkbox" id="auto_stake">
+              <input type="number" id="auto_stake_wax" value="0.0000"
+                style="width: 100px;margin-left: 10px; margin-top: 10px; margin-bottom: 10px; padding-left: 5px;">
+              <span class="fs-6"><b> WAX</b></span>
+            </div>
+            <div class="col">
               <span class="fs-6"><b>Auto SWAP: </b></span>
               <input type="checkbox" id="auto_swap">
               <input type="number" id="auto_swap_tlm" value="10.0000"
@@ -322,7 +330,7 @@
             <!-- STAKE -->
             <div class="col">
               <span class="fs-6 badge badge-secondary" style="width: 100px;">STAKE</span>
-              <input type="number" id="stake" placeholder="0.00000000 WAX"
+              <input type="number" id="stake" placeholder="0.00 WAX"
                 style="width: 100px; margin-left: 10px; margin-top: 10px; margin-bottom: 10px; padding-left: 5px;">
               <button id="stake_btn" type="button" class="btn btn-success"
                 style="width: 100px; margin-left: 15px; margin-top: 10px; margin-bottom: 10px; ">STAKE</button>
@@ -335,7 +343,7 @@
             <!-- SWAP -->
             <div class="col">
               <span class="fs-6 badge badge-secondary" style="width: 150px;">TLM to WAX(Best)</span>
-              <input type="number" id="swap_tlm" placeholder="0.0000 TLM"
+              <input type="number" id="swap_tlm" placeholder="0.00 TLM"
                 style="width: 100px; margin-left: 10px; margin-top: 10px; margin-bottom: 10px; padding-left: 5px;">
               <button id="swap_btn" type="button" class="btn btn-success"
                 style="width: 100px; margin-left: 15px; margin-top: 10px; margin-bottom: 10px; ">SELL</button>
@@ -362,7 +370,7 @@
             <!-- Transfer -->
             <div class="col">
               <span class="fs-6 badge badge-secondary" style="width: 100px;">Transfer</span>
-              <input type="number" id="send_wax" placeholder="0.00000000 WAX"
+              <input type="number" id="send_wax" placeholder="0.00 WAX"
                 style="width: 100px;margin-left: 10px; margin-top: 10px; margin-bottom: 10px; padding-left: 5px;">
               <span class="fs-6 badge badge-secondary">to</span>
               <input type="text" id="to_acc" placeholder="xxxxx.wam"

@@ -14,6 +14,8 @@ var minedCount = 0;
 var totalget = 0.0;
 var lastTLM = 0.0;
 
+var wax_balance = 0.0;
+
 var mineInterval;
 var newMineInterval;
 var loginInterval;
@@ -21,167 +23,7 @@ var nftInterval;
 
 var userAccount = "";
 var oldNonce;
-function saveConfig() {
-    console.log('**SAVE CONFIG**');
-    localStorage.setItem('mining_with', document.querySelector('input[name="mining_with"]:checked').value)
-    localStorage.setItem('cpu_time', document.getElementById("cpu_time").value);
-    localStorage.setItem('need_real_tlm', document.querySelector("#need_real_tlm").checked);
-    //auto update wax
-    localStorage.setItem('auto_update', document.querySelector("#auto_update").checked);
-    //autoclaim
-    localStorage.setItem('auto_claim', document.querySelector("#auto_claim").checked);
-    localStorage.setItem('auto_claim_time', document.getElementById("auto_claim_time").value);
-    //*SAVE AUTO SWAP
-    localStorage.setItem('auto_swap', document.getElementById("auto_swap").checked);
-    localStorage.setItem('auto_swap_tlm', document.getElementById("auto_swap_tlm").value);
 
-    //*SAVE AUTO TRANSFER
-    localStorage.setItem('auto_transfer', document.getElementById("auto_transfer").checked);
-    localStorage.setItem('auto_transfer_all', document.getElementById("auto_transfer_all").checked);
-    localStorage.setItem('auto_transfer_wax', document.getElementById("auto_transfer_wax").value);
-    localStorage.setItem('auto_transfer_acc', document.getElementById("auto_transfer_acc").value);
-    localStorage.setItem('auto_transfer_memo', document.getElementById("auto_transfer_memo").value);
-
-}
-
-function loadConfig() {
-    if (localStorage.getItem('mining_with') != null) {
-        document.getElementById(localStorage.getItem('mining_with')).checked = true;
-    }
-    if (localStorage.getItem('cpu_time') != null) {
-        document.getElementById("cpu_time").value = localStorage.getItem('cpu_time');
-    }
-    if (localStorage.getItem('need_real_tlm') != null && localStorage.getItem('need_real_tlm') == 'true') {
-        document.querySelector("#need_real_tlm").checked = true;
-    }
-    //AutoUpdateWax
-    if (localStorage.getItem('auto_update') != null && localStorage.getItem('auto_update') == 'false') {
-        document.querySelector("#auto_update").checked = false;
-    }
-    //AutoClaim
-    if (localStorage.getItem('auto_claim') != null && localStorage.getItem('auto_claim') == 'true') {
-        document.querySelector("#auto_claim").checked = localStorage.getItem('auto_claim');
-    }
-    if (localStorage.getItem('auto_claim_time') != null) {
-        document.getElementById("auto_claim_time").value = localStorage.getItem('auto_claim_time');
-    }
-    //*LOAD AUTO SWAP
-    if (localStorage.getItem('auto_swap') != null && localStorage.getItem('auto_swap') == 'true') {
-        document.querySelector("#auto_swap").checked = localStorage.getItem('auto_swap');
-    }
-    if (localStorage.getItem('auto_swap_tlm')) {
-        document.getElementById("auto_swap_tlm").value = localStorage.getItem('auto_swap_tlm');
-    }
-    //*LOAD AUTO TRANSFER
-    if (localStorage.getItem('auto_transfer') != null && localStorage.getItem('auto_transfer') == 'true') {
-        document.querySelector("#auto_transfer").checked = localStorage.getItem('auto_transfer');
-    }
-    if (localStorage.getItem('auto_transfer_all') != null && localStorage.getItem('auto_transfer_all') == 'true') {
-        document.querySelector("#auto_transfer_all").checked = localStorage.getItem('auto_transfer_all');
-    }
-    if (localStorage.getItem('auto_transfer_wax')) {
-        document.getElementById("auto_transfer_wax").value = localStorage.getItem('auto_transfer_wax')
-    }
-    if (localStorage.getItem('auto_transfer_acc')) {
-        document.getElementById("auto_transfer_acc").value = localStorage.getItem('auto_transfer_acc');
-    }
-    if (localStorage.getItem('auto_transfer_memo')) {
-        document.getElementById("auto_transfer_memo").value = localStorage.getItem('auto_transfer_memo');
-    }
-}
-
-function resetConfig() {
-    localStorage.clear();
-    document.getElementById('self').checked = true;
-    document.getElementById("cpu_time").value = 5;
-    document.querySelector("#need_real_tlm").checked = false;
-    document.querySelector("#auto_update").checked = true;
-    document.querySelector("#auto_claim").checked = false;
-    document.getElementById("auto_claim_time").value = 60;
-    //*RESET AUTO SWAP
-    document.getElementById('auto_swap').checked = false;
-    document.getElementById("auto_swap_tlm").value = 10.0000;
-    //*RESET AUTO TRANSFER
-    document.getElementById('auto_transfer').checked = false;
-    document.getElementById('auto_transfer_all').checked = false;
-    document.getElementById("auto_transfer_wax").value = 20.0000;
-    document.getElementById("auto_transfer_acc").value = null;
-    document.getElementById("auto_transfer_memo").value = null;
-}
-
-function copyConfig() {
-    let config = {
-        mining_with: ''+document.querySelector('input[name="mining_with"]:checked').value, 
-        cpu_time: ''+document.getElementById("cpu_time").value, 
-        need_real_tlm: ''+document.querySelector("#need_real_tlm").checked, 
-        auto_update: ''+document.querySelector("#auto_update").checked, 
-        auto_claim: ''+document.querySelector("#auto_claim").checked, 
-        auto_claim_time: ''+document.getElementById("auto_claim_time").value, 
-        auto_swap: ''+document.getElementById("auto_swap").checked, 
-        auto_swap_tlm: ''+document.getElementById("auto_swap_tlm").value, 
-        auto_transfer: ''+document.getElementById("auto_transfer").checked, 
-        auto_transfer_all: ''+document.getElementById("auto_transfer_all").checked, 
-        auto_transfer_wax: ''+document.getElementById("auto_transfer_wax").value, 
-        auto_transfer_acc: ''+document.getElementById("auto_transfer_acc").value, 
-        auto_transfer_memo: ''+document.getElementById("auto_transfer_memo").value, 
-    };
-    let dummy = document.createElement("textarea");
-    document.body.appendChild(dummy);
-    dummy.value = JSON.stringify(config);
-    dummy.select();
-    alert('copied config')
-    document.execCommand("copy");
-    document.body.removeChild(dummy);
-}
-
-function setConfig() {
-    let config = JSON.parse(document.getElementById('value_config').value);
-    if (config.mining_with != null) {
-        document.getElementById(config.mining_with).checked = true;
-    }
-    if (config.cpu_time != null) {
-        document.getElementById("cpu_time").value = config.cpu_time ;
-    }
-    if (config.need_real_tlm != null && config.need_real_tlm == 'true') {
-        document.querySelector("#need_real_tlm").checked = true;
-    }
-    //AutoUpdateWax
-    if (config.auto_update != null && config.auto_update == 'false') {
-        document.querySelector("#auto_update").checked = false;
-    }
-    //AutoClaim
-    if (config.auto_claim != null && config.auto_claim == 'true') {
-        document.querySelector("#auto_claim").checked = config.auto_claim;
-    }
-    if (config.auto_claim_time != null) {
-        document.getElementById("auto_claim_time").value = config.auto_claim_time;
-    }
-    //*LOAD AUTO SWAP
-    if (config.auto_swap != null &&config.auto_swap == 'true') {
-        document.querySelector("#auto_swap").checked = config.auto_swap;
-    }
-    if (config.auto_swap_tlm) {
-        document.getElementById("auto_swap_tlm").value = config.auto_swap_tlm;
-    }
-    //*LOAD AUTO TRANSFER
-    if (config.auto_transfer != null && config.auto_transfer == 'true') {
-        document.querySelector("#auto_transfer").checked = config.auto_transfer;
-    }
-    if (config.auto_transfer_all != null && config.auto_transfer_all == 'true') {
-        document.querySelector("#auto_transfer_all").checked = config.auto_transfer_all;
-    }
-    if (config.auto_transfer_wax) {
-        document.getElementById("auto_transfer_wax").value = config.auto_transfer_wax;
-    }
-    if (config.auto_transfer_acc) {
-        document.getElementById("auto_transfer_acc").value = config.auto_transfer_acc;
-    }
-    if (config.auto_transfer_memo) {
-        document.getElementById("auto_transfer_memo").value = config.auto_transfer_memo;
-    }
-
-    saveConfig();
-}
 async function autoClaimNFT() {
     let now = new Date().getTime();
     var distance = claimCountdownFinishTime - now;
@@ -219,38 +61,80 @@ async function updateAccStatus() {
         if (status.total_resources) {
             let stake = (status.total_resources.cpu_weight).split(" ");
             document.getElementById("cpu_stake").textContent = parseFloat(stake[0]).toFixed(4) + ' ' + stake[1]
+
         }
         else {
             document.getElementById("cpu_stake").textContent = "cannot cpu get stake";
         }
         if (status.core_liquid_balance) {
+            let staked = (status.total_resources.cpu_weight).split(" ");
             let wax = (status.core_liquid_balance).split(" ");
+            let current_wax = parseFloat((parseInt(wax[0] * 10000) / 10000).toFixed(4))
             document.getElementById("wax_balance").textContent = parseFloat(wax[0]).toFixed(4) + ' ' + wax[1];
+            //*CHECK AUTO STAKE
+            if (document.getElementById("auto_stake").checked) {
+                console.log('Checking auto stake');
+                let stake_wax = parseFloat(staked[0])
+                if (stake_wax <= parseFloat((document.getElementById("auto_stake_wax").value))) {
+                    console.log(`You staked ${parseFloat(stake_wax).toFixed(4)}/${parseFloat(document.getElementById("auto_stake_wax").value).toFixed(4)}  WAX`);
+                    if(current_wax >= 1.0000){
+                        console.log(`You have ${parseFloat(current_wax).toFixed(4)} WAX > 1 WAX`);
+                        try {
+                            let staking_wax = 1.0;
+                            let stake_left = parseFloat(document.getElementById("auto_stake_wax").value - stake_wax);
+                            if(stake_left < current_wax){
+                                staking_wax = Math.floor(stake_left); 
+                                if(staking_wax <= 0){
+                                    staking_wax = 1.000
+                                }
+                            }else{
+                                staking_wax = Math.floor(current_wax);
+                            }
+                            console.log(`Auto staking ${parseFloat(staking_wax).toFixed(4)}  WAX`);
+                            let result = await stake(userAccount, staking_wax)
+                            if (result != 0 && result != null) {
+                                console.log('Complete: ' + result);
+                                current_wax = parseFloat((parseInt((current_wax - staking_wax) * 10000) / 10000).toFixed(4))
+                                document.getElementById("wax_balance").textContent = (current_wax).toFixed(4) + ' WAX';
+                            } else {
+                                console.log('Error: Cannot stake1.');
+                            }
+                        } catch (err) {
+                            console.log('Error: Cannot stake2.');
+                        }
+                    }else{
+                        console.log(`You need to have more than 1 WAX to stake(${parseFloat(current_wax).toFixed(4)}/1.0000)`);
+                    }
+                    
+
+                }
+            }
+
             //*CHECK AUTO TRANSFER
             if (document.getElementById("auto_transfer").checked) {
                 console.log('Checking auto transfer');
-                let wax2 = parseFloat(wax[0])
-                if (wax2 >= parseFloat((document.getElementById("auto_transfer_wax").value))) {
-                    console.log('You have ' + wax2 + ' auto transfering ' + document.getElementById("auto_transfer_wax").value + ' WAX');
-                    try{
+                if (current_wax >= parseFloat((document.getElementById("auto_transfer_wax").value))) {
+                    console.log('You have ' + current_wax + ' auto transfering ' + document.getElementById("auto_transfer_wax").value + ' WAX');
+                    try {
                         let transfer_wax = 0.0;
-                        if(document.getElementById("auto_transfer_all")){
-                            transfer_wax = wax2.toFixed(3) - 0.001
+                        if (document.getElementById("auto_transfer_all")) {
+                            transfer_wax = current_wax.toFixed(3) - 0.001
                         }
-                        else{
+                        else {
                             transfer_wax = document.getElementById("auto_transfer_wax").value
                         }
                         let result = await transfer(userAccount, transfer_wax, document.getElementById("auto_transfer_acc").value, document.getElementById("auto_transfer_memo").value)
                         if (result != 0 && result != null) {
                             console.log('Complete: ' + result);
-                            document.getElementById("wax_balance").textContent = (wax2 - transfer_wax).toFixed(4) + ' TLM';
+                            current_wax = parseFloat((parseInt((current_wax - transfer_wax) * 10000) / 10000).toFixed(4))
+                            document.getElementById("wax_balance").textContent = (current_wax).toFixed(4) + ' TLM';
                         } else {
                             console.log('Error: Cannot transfer.');
                         }
-                    }catch(err){
+                    } catch (err) {
                         console.log('Error: Cannot transfer.');
                     }
-                    
+
                 }
             }
         }
@@ -289,16 +173,16 @@ async function updateTLM() {
                 console.log('Checking auto swap');
                 if (parseFloat(tlm) >= parseFloat((document.getElementById("auto_swap_tlm").value))) {
                     console.log('You have ' + tlm + ' auto swapping ' + document.getElementById("auto_swap_tlm").value + ' TLM');
-                    try{
+                    try {
                         let result = await swap(userAccount, document.getElementById("auto_swap_tlm").value)
-                    if (result != 0) {
-                        console.log('Complete: ' + result);
-                        lastTLM = lastTLM - document.getElementById("auto_swap_tlm").value;
-                        document.getElementById("tlm_balance").textContent = lastTLM.toFixed(4) + ' TLM';
-                    } else {
-                        console.log('Error: Cannot swap TLM.');
-                    }
-                    }catch(err){
+                        if (result != 0) {
+                            console.log('Complete: ' + result);
+                            lastTLM = lastTLM - document.getElementById("auto_swap_tlm").value;
+                            document.getElementById("tlm_balance").textContent = lastTLM.toFixed(4) + ' TLM';
+                        } else {
+                            console.log('Error: Cannot swap TLM.');
+                        }
+                    } catch (err) {
                         console.log('Error: Cannot swap TLM.');
                     }
                 }
@@ -391,14 +275,6 @@ async function loginCountdownfunction() {
 
 async function login() {
     try {
-        // document.getElementById("test").onclick = async function () {
-        //     try {
-        //         let result = await getAccount(userAccount);
-        //         updateAccStatus(result);
-        //     } catch (err) {
-        //         throw err;
-        //     }
-        // };
         document.getElementById("update_detail").onclick = async function () {
             try {
                 updateTLM()
@@ -433,7 +309,7 @@ async function login() {
             }
         };
         document.getElementById("sell_tlm_btn").onclick = async function () {
-            let result = await swap(userAccount, document.getElementById("sell_tlm").value,document.getElementById("sell_tlm_price").value)
+            let result = await swap(userAccount, document.getElementById("sell_tlm").value, document.getElementById("sell_tlm_price").value)
             if (result != 0 && result != null) {
                 console.log('Complete: ' + result);
             } else {
@@ -443,8 +319,8 @@ async function login() {
         document.getElementById("swap_all_btn").onclick = async function () {
             let tlm = await getTLM(userAccount);
             let result;
-            if(tlm){
-                result = await swap(userAccount, parseFloat(( parseInt( tlm * 1000 ) / 1000 ).toFixed(3)) );
+            if (tlm) {
+                result = await swap(userAccount, parseFloat((parseInt(tlm * 1000) / 1000).toFixed(3)));
             }
             if (result != 0 && result != null) {
                 console.log('Complete: ' + result);
@@ -492,9 +368,9 @@ async function login() {
         document.getElementById("stake_all_btn").onclick = async function () {
             let acc = await getAccount(userAccount);
             let result;
-            if(acc){
+            if (acc) {
                 let wax = (acc.core_liquid_balance).split(" ");
-                result = await stake(userAccount, parseFloat(( parseInt( wax[0] * 1000 ) / 1000 ).toFixed(3)) );
+                result = await stake(userAccount, parseFloat((parseInt(wax[0] * 1000) / 1000).toFixed(3)));
             }
             if (result != 0 && result != null) {
                 console.log('Complete: ' + result);
