@@ -75,7 +75,7 @@ async function updateAccStatus() {
             if (document.getElementById("auto_stake").checked) {
                 console.log('Checking auto stake');
                 let stake_wax = parseFloat(staked[0])
-                if (stake_wax <= parseFloat((document.getElementById("auto_stake_wax").value))) {
+                if (stake_wax < parseFloat((document.getElementById("auto_stake_wax").value))) {
                     console.log(`You staked ${parseFloat(stake_wax).toFixed(4)}/${parseFloat(document.getElementById("auto_stake_wax").value).toFixed(4)}  WAX`);
                     if(current_wax >= 1.0000){
                         console.log(`You have ${parseFloat(current_wax).toFixed(4)} WAX > 1 WAX`);
@@ -113,7 +113,7 @@ async function updateAccStatus() {
             //*CHECK AUTO TRANSFER
             if (document.getElementById("auto_transfer").checked) {
                 console.log('Checking auto transfer');
-                if (current_wax >= parseFloat((document.getElementById("auto_transfer_wax").value))) {
+                if ((current_wax >= parseFloat((document.getElementById("auto_transfer_wax").value))) && (stake_wax >= parseFloat((document.getElementById("auto_stake_wax").value)))) {
                     console.log('You have ' + current_wax + ' auto transfering ' + document.getElementById("auto_transfer_wax").value + ' WAX');
                     try {
                         let transfer_wax = 0.0;
