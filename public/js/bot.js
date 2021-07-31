@@ -70,11 +70,11 @@ async function updateAccStatus() {
             let staked = (status.total_resources.cpu_weight).split(" ");
             let wax = (status.core_liquid_balance).split(" ");
             let current_wax = parseFloat((parseInt(wax[0] * 10000) / 10000).toFixed(4))
+            let stake_wax = parseFloat(staked[0])
             document.getElementById("wax_balance").textContent = parseFloat(wax[0]).toFixed(4) + ' ' + wax[1];
             //*CHECK AUTO STAKE
             if (document.getElementById("auto_stake").checked) {
                 console.log('Checking auto stake');
-                let stake_wax = parseFloat(staked[0])
                 if (stake_wax < parseFloat((document.getElementById("auto_stake_wax").value))) {
                     console.log(`You staked ${parseFloat(stake_wax).toFixed(4)}/${parseFloat(document.getElementById("auto_stake_wax").value).toFixed(4)}  WAX`);
                     if(current_wax >= 1.0000){
