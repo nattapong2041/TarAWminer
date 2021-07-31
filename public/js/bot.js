@@ -1,4 +1,4 @@
-var errorDelay = 5 * (60 * 1000);
+var errorDelay = 2 * (60 * 1000);
 var cpuDelay = 5.0 * (60 * 1000);
 var mineCountdownTime = 5 * (60 * 1000);
 var loginCountdownTime = 3 * (60 * 1000);
@@ -529,15 +529,15 @@ async function miner(mine_with) {
             const errorRes = handleError(error)
             console.log('' + error);
             if (errorRes == 'restart') {
-                updateStatus('Normal error wait: ' + 2 + ' min')
-                nextmine = 120 * 1000;
+                updateStatus('Normal error wait: ' + 1 + ' min')
+                nextmine = 60 * 1000;
                 updateNextMine(nextmine)
             } else if (errorRes == 'mining') {
-                updateStatus('Error while find answer wait: ' + 2 + ' min')
+                updateStatus('Error while find answer wait: ' + 1 + ' min')
                 if (document.querySelector('input[name="mining_with"]:checked').value == 'ninja') {
                     document.getElementById("self").checked = true;
                 }
-                nextmine = 120 * 1000;
+                nextmine = 60 * 1000;
                 updateNextMine(nextmine)
             } else if (errorRes == 'cpu') {
                 if (document.getElementById("cpu_time").value > 0) {
@@ -582,7 +582,7 @@ async function miner(mine_with) {
             clearTimer();
             updateStatus('mining success sleeping')
             isMining = false;
-            await sleep(10000);
+            await sleep(5000);
             run();
         }
         else {
