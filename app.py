@@ -290,7 +290,7 @@ def gencode():
     count = request.json.get("count")
     try:
         date_1 = dt.datetime.today()
-        date_2 = date_1 + dt.timedelta(days=30)
+        date_2 = date_1 + dt.timedelta(days=31)
         db.testcode.insert_one(
             {
                 'code':code,
@@ -400,6 +400,60 @@ def delcode():
         return Response(texxt, status=200)
     except : 
         texxt = 'code not found'
+        return Response(texxt, status=500)
+
+@app.route('/plusday', methods=['GET','POST'])
+def plusday():
+    code = request.json.get('code')
+    dataA = db.testcode.find_one({'code': code })
+    dataB = db.testcode.find({'code': code })
+    olddays = dt.datetime.today()
+    if dataA is None:
+        texxt = "code not found"
+        return Response(texxt, status=500)
+    else :
+        for item in dataB :
+            olddays = item['stop']
+        newdayss = olddays + dt.timedelta(days=30)
+        db.testcode.update_one({'code': code },{'$set':{'stop': newdayss }})
+        dataC = db.testcode.find({'code': code })
+        for item in dataC :
+            newdays = item['stop']
+        newdays = str(newdays)
+        texxt = "success"
+        return Response(texxt+json.dumps(newdays), status=200)
+        texxt = "error i sus call gu"
+        return Response(texxt, status=500)
+
+@app.route('/editcount', methods=['GET','POST'])
+def editcount ():
+    code = request.json.get('code')
+    ncount = request.json.get('count')
+    yy = []
+    dataA = db.testcode.find_one({'code': code })
+    dataB = db.testcode.find({'code': code })
+    if dataA is None:
+        texxt = "code not found"
+        return Response(texxt, status=500)
+    else :
+        for item in dataB :
+            y = item['count']
+            print(y)
+        try:
+            if y > int(ncount) :
+                texxt = "old count value morethan new"
+                return Response(texxt, status=500)
+        except :
+            texxt = "input int i sus"
+            return Response(texxt, status=500)
+        db.testcode.update_one({'code': code },{'$set':{'count': int(ncount) }})
+        dataC = db.testcode.find({'code': code })
+        for item in dataC :
+            u = item['count']
+            print(u)
+        texxt = "success"
+        return Response(texxt, status=200)
+        texxt = "error i sus call gu"
         return Response(texxt, status=500)
 
 @app.route('/pups', methods=['GET'])

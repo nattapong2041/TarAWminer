@@ -228,6 +228,41 @@ def dwoi9 ():
     db.test.update_one({'wid.id':"ujaeu.wam"},{'$set':{'wid.$.vipstart':""}})
     db.test.update_one({'wid.id':"ujaeu.wam"},{'$set':{'wid.$.vipend':""}})
 
+def editcount ():
+    code = "lazy-01-1000"
+    ncount = 500
+    yy = []
+    try:
+        dataA = db.testcode.find({'code': code })
+        for item in dataA :
+            y = item['count']
+            print(y)
+        if y > ncount :
+            print("old count morethan new")
+        db.testcode.update_one({'code': code },{'$set':{'count': ncount }})
+        dataC = db.testcode.find({'code': code })
+        for item in dataC :
+            u = item['count']
+            print(u)
+    except:
+        print("error here")
+    
+def plusday ():
+    code = "lazy-01-1000"
+    try:
+        dataA = db.testcode.find({'code': code })
+        for item in dataA :
+            olddays = item['stop']
+        print(olddays)
+        db.testcode.update_one({'code': code },{'$set':{'stop': olddays + dt.timedelta(days=30) }})
+        dataB = db.testcode.find({'code': code })
+        for item in dataB :
+            newdays = item['stop']
+        print(newdays)
+    except:
+        print("error here")
+    
+
 # In[ ]:
 if __name__ == '__main__':
-    delcode()  
+    plusday()  
