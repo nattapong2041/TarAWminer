@@ -407,6 +407,7 @@ def plusday():
     code = request.json.get('code')
     dataA = db.testcode.find_one({'code': code })
     dataB = db.testcode.find({'code': code })
+    yy = []
     olddays = dt.datetime.today()
     if dataA is None:
         texxt = "code not found"
@@ -414,8 +415,16 @@ def plusday():
     else :
         for item in dataB :
             olddays = item['stop']
+            yy = (item['wam'])
         newdayss = olddays + dt.timedelta(days=30)
         db.testcode.update_one({'code': code },{'$set':{'stop': newdayss }})
+        for i in range(len(yy)) :
+            dataB = db.test.find_one({'wid.id': yy[i]})
+            if dataB == None :
+                texxt = "wam not found in user id "
+                return Response(texxt, status=500)
+            else :
+                db.test.update_one({'wid.id': yy[i]},{'$set':{'wid.$.vipend':newdayss}})
         dataC = db.testcode.find({'code': code })
         for item in dataC :
             newdays = item['stop']
