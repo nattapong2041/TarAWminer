@@ -161,6 +161,19 @@ def deletewax():
         message = 'delete success'
         return Response(message, status=200)
 
+#ลบไอดีalien ออกจากโค้ด
+@app.route('/deletewaxincode', methods=['GET','POST'])
+    
+def deleteallwaxincode():
+    cid = request.json.get("wax")
+    code = request.json.get("code")
+    try:
+        db.testcode.update({ 'hash': { '$regex': code } },{'$pullAll':{'wam': cid}})
+        return Response('success', status=200)
+    except:
+        print("An exception occurred")
+        return Response('something went wrong', status=400)
+
 #update nonce
 #@app.route('/wnonce', methods=['GET','POST'])
 #def wnonce():
