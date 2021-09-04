@@ -148,7 +148,7 @@ async function updateAccStatus() {
 
 async function updateLandInfo() {
     try {
-        await updateLand(federation_account, mining_account, userAccount, wax.api.rpc, aa_api);
+        await updateLand(federation_account, mining_account, userAccount, wax.api.rpc);
     } catch (error) {
         console.log('Cannot update land info');
     }
