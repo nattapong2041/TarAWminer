@@ -6,6 +6,13 @@ const base_api = [
     'https://api-wax.eosauthority.com',
 ]
 
+const atomic_api = [
+    'https://wax-atomic.wizardsguild.one', 
+    'https://api.wax-aa.bountyblok.io',
+    'https://wax.blokcrafters.io',
+    'https://aa.wax.blacklusion.io'
+]
+
 function getRandom(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
 }
@@ -17,10 +24,27 @@ function changeWaxServer(index){
 var url = base_api[parseInt(localStorage.getItem('wax_server')) ? parseInt(localStorage.getItem('wax_server')) : 0];
 const wax = new waxjs.WaxJS(url);
 
-const aa_api = new atomicassets.ExplorerApi("https://wax-atomic-api.eosphere.io", "atomicassets", { fetch });
+//const aa_api = new atomicassets.ExplorerApi("https://wax-atomic-api.eosphere.io", "atomicassets", { fetch });
 
 const mining_account = "m.federation";
 const federation_account = "federation";
+
+async function get_assets(assestId) {
+    const url = `${atomic_api[getRandom(0,atomic_api.length)]}/atomicassets/v1/assets/${assestId}`
+    return await fetch(url,
+    {header: {
+        'content-type': 'application/json'
+    }})
+    .then(function (response) {
+        return response.json();
+    }).then((res) => {
+        if (res.success) {
+            return res;
+        }
+    }).catch((err) => {  
+        return 'Error: cannot get assest data: ' + err.message;
+    });
+}
 
 function timeout(ms, promise) {
     return new Promise((resolve, reject) => {
@@ -128,7 +152,7 @@ const getLandMiningParams = (land) => {
     return mining_params;
 };
 
-const getLandById = async (federation_account, land_id, eos_rpc, aa_api) => {
+const getLandById = async (federation_account, land_id, eos_rpc) => {
     try {
         const land_res = await eos_rpc.get_table_rows({ code: federation_account, scope: federation_account, table: 'landregs', lower_bound: land_id, upper_bound: land_id });
         let landowner = 'federation';
@@ -140,7 +164,7 @@ const getLandById = async (federation_account, land_id, eos_rpc, aa_api) => {
             throw new Error(`Land owner not found for land id ${land_id}`);
         }
 
-        const land_asset = await aa_api.getAsset(land_id);
+        const land_asset = await get_assets(land_id);
         // const land_data = await land_asset.toObject();
 
         land_asset.data.planet = intToName(land_asset.data.planet);
@@ -156,7 +180,7 @@ const getLandById = async (federation_account, land_id, eos_rpc, aa_api) => {
     }
 }
 
-const getLand = async (federation_account, mining_account, account, eos_rpc, aa_api) => {
+const getLand = async (federation_account, mining_account, account, eos_rpc) => {
     try {
         const miner_res = await eos_rpc.get_table_rows({ code: mining_account, scope: mining_account, table: 'miners', lower_bound: account, upper_bound: account });
         let land_id;
@@ -167,7 +191,7 @@ const getLand = async (federation_account, mining_account, account, eos_rpc, aa_
             land_id = miner_res.rows[0].current_land;
         }
 
-        return await getLandById(federation_account, land_id, eos_rpc, aa_api);
+        return await getLandById(federation_account, land_id, eos_rpc);
     }
     catch (e) {
         console.error(`Failed to get land - ${e.message}`);
@@ -175,12 +199,12 @@ const getLand = async (federation_account, mining_account, account, eos_rpc, aa_
     }
 }
 
-const getBag = async (mining_account, account, eos_rpc, aa_api) => {
+const getBag = async (mining_account, account, eos_rpc) => {
     const bag_res = await eos_rpc.get_table_rows({ code: mining_account, scope: mining_account, table: 'bags', lower_bound: account, upper_bound: account });
     const bag = [];
     if (bag_res.rows.length) {
         const items_p = bag_res.rows[0].items.map((item_id) => {
-            return aa_api.getAsset(item_id);
+            return get_assets(item_id);
         });
         return await Promise.all(items_p);
     }
@@ -215,8 +239,8 @@ const getNextMineDelay = async (mining_account, account, params, eos_rpc) => {
 
 const getMineDelay = async function (account) {
     try {
-        const bag = await getBag(mining_account, account, wax.api.rpc, aa_api);
-        const land = await getLand(federation_account, mining_account, account, wax.api.rpc, aa_api);
+        const bag = await getBag(mining_account, account, wax.api.rpc);
+        const land = await getLand(federation_account, mining_account, account, wax.api.rpc);
         const params = getBagMiningParams(bag);
         const land_params = getLandMiningParams(land);
         params.delay *= land_params.delay / 10;
@@ -231,7 +255,7 @@ const getMineDelay = async function (account) {
 
 const getBagDifficulty = async function (account) {
     try {
-        const bag = await getBag(mining_account, account, wax.api.rpc, aa_api);
+        const bag = await getBag(mining_account, account, wax.api.rpc);
         const params = getBagMiningParams(bag);
         return params.difficulty;
     } catch (error) {
@@ -241,7 +265,7 @@ const getBagDifficulty = async function (account) {
 
 const getLandDifficulty = async function (account) {
     try {
-        const land = await getLand(federation_account, mining_account, account, wax.api.rpc, aa_api);
+        const land = await getLand(federation_account, mining_account, account, wax.api.rpc);
         const params = getLandMiningParams(land);
         return params.difficulty;
     } catch (error) {
@@ -732,7 +756,7 @@ const getPlayerData = async (account) => {
     if (player_res.rows.length) {
         player_data.tag = player_res.rows[0].tag;
         if (player_res.rows[0].avatar > 0) {
-            const asset = await aa_api.getAsset(player_res.rows[0].avatar);
+            const asset = await get_assets(player_res.rows[0].avatar);
             if (asset) {
                 player_data.avatar = asset;
             }
@@ -745,7 +769,7 @@ const getPlayerData = async (account) => {
 async function updateBag(userAccount) {
     //url = 'https://wax.api.atomicassets.io/atomicassets/v1/assets?collection_name=alien.worlds&owner=wqobq.wam&limit=100&schema_name=tool.worlds'
     //let bag = await aa_api.getAssets({collection_name:'alien.worlds', owner:userAccount, limit: 100, schema_name: 'tool.worlds'}, 1,  100)
-    let bag = await fetch(`https://wax.api.atomicassets.io/atomicassets/v1/assets?collection_name=alien.worlds&owner=${userAccount}&limit=100&schema_name=tool.worlds`,
+    let bag = await fetch(`${atomic_api[getRandom(0,atomic_api.length)]}/atomicassets/v1/assets?collection_name=alien.worlds&owner=${userAccount}&limit=100&schema_name=tool.worlds`,
     {header: {
         'content-type': 'application/json'
     }})
@@ -841,7 +865,7 @@ function removeDuplicateOptions(s, comparitor) {
 	return true;
 }
 
-const updateLand = async (federation_account, mining_account, account, eos_rpc, aa_api) => {
+const updateLand = async (federation_account, mining_account, account, eos_rpc) => {
     try {
         const miner_res = await eos_rpc.get_table_rows({ code: mining_account, scope: mining_account, table: 'miners', lower_bound: account, upper_bound: account });
         let land_id;
@@ -864,7 +888,7 @@ const updateLand = async (federation_account, mining_account, account, eos_rpc, 
                 throw new Error(`Land owner not found for land id ${land_id}`);
             }
     
-            const land_asset = await aa_api.getAsset(land_id);
+            const land_asset = await get_assets(land_id);
             // const land_data = await land_asset.toObject();
     
             land_asset.data.planet = intToName(land_asset.data.planet);
