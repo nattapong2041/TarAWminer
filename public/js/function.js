@@ -3,8 +3,7 @@ const base_api = [
     'https://wax.greymass.com',
     'https://wax.cryptolions.io',
     'https://wax.dapplica.io',
-    //'https://chain.wax.io',
-    //'https://api.waxsweden.org',
+    'https://api-wax.eosauthority.com',
 ]
 
 function getRandom(min, max) {
@@ -18,7 +17,7 @@ function changeWaxServer(index){
 var url = base_api[parseInt(localStorage.getItem('wax_server')) ? parseInt(localStorage.getItem('wax_server')) : 0];
 const wax = new waxjs.WaxJS(url);
 
-const aa_api = new atomicassets.ExplorerApi("https://wax.api.atomicassets.io", "atomicassets", { fetch });
+const aa_api = new atomicassets.ExplorerApi("https://wax-atomic-api.eosphere.io", "atomicassets", { fetch });
 
 const mining_account = "m.federation";
 const federation_account = "federation";
