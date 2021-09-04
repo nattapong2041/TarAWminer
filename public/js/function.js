@@ -39,7 +39,7 @@ async function get_assets(assestId) {
         return response.json();
     }).then((res) => {
         if (res.success) {
-            return res;
+            return res.data;
         }
     }).catch((err) => {  
         return 'Error: cannot get assest data: ' + err.message;
