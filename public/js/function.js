@@ -8,8 +8,7 @@ const base_api = [
 
 const atomic_api = [
     'https://wax-atomic.wizardsguild.one', 
-    'https://api.wax-aa.bountyblok.io',
-    'https://wax.blokcrafters.io',
+    'https://api.wax-aa.bountyblok.io',,
     'https://aa.wax.blacklusion.io'
 ]
 
