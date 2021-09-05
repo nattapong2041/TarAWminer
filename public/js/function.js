@@ -8,7 +8,7 @@ const base_api = [
 
 const atomic_api = [
     'https://wax-atomic.wizardsguild.one', 
-    'https://api.wax-aa.bountyblok.io',,
+    'https://api.wax-aa.bountyblok.io',
     'https://aa.wax.blacklusion.io'
 ]
 
@@ -29,8 +29,8 @@ const mining_account = "m.federation";
 const federation_account = "federation";
 
 async function get_assets(assestId) {
-    const url = `${atomic_api[getRandom(0,atomic_api.length)]}/atomicassets/v1/assets/${assestId}`
-    return await fetch(url,
+    const url2 = `${atomic_api[getRandom(0,atomic_api.length)]}/atomicassets/v1/assets/${assestId}`
+    return await fetch(url2,
     {header: {
         'content-type': 'application/json'
     }})
