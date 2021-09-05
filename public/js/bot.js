@@ -531,6 +531,10 @@ async function miner(mine_with) {
                 console.log(`Current pool ${tlm} >${(pool_avg/i)*1.25} & > 0.3 go mine`)
                 break;
             }
+            if(i>=40){
+                console.log(`Checking too long force mine`)
+                break;
+            }
             i++;
             await sleep(1500);
         }while(true)
