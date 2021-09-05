@@ -521,23 +521,25 @@ async function miner(mine_with) {
         let i=1;
         do{
             let tlm = await checkMiningPool(current_world);
-            console.log(`${current_world}'s pool[${i}]: ${tlm}`);  
             pool_avg += tlm;
-            if(i<= 10 && tlm >= 0.8500 ){
-                console.log(`Current pool ${tlm} > 0.8500 go mine`)
+            let current_pool_avg = pool_avg/i;
+            console.log(`${current_world}'s pool[${i}]: ${tlm}`);  
+            console.log(`Current pool avg: ${current_pool_avg}`);  
+            if(i<= 10 && tlm >= 0.7500 ){
+                console.log(`Current pool ${tlm} > 0.7500 go mine`)
                 break;
             }
-            else if(i>=10 && i<30 && (tlm >= (pool_avg/i)*1.3) && tlm >= 0.3){
-                console.log(`Current pool ${tlm} >${(pool_avg/i)*1.3} & > 0.30 go mine`)
+            else if(i>=10 && i<30 && (tlm >= current_pool_avg*1.25) && tlm >= 0.3){
+                console.log(`Current pool ${tlm} >${current_pool_avg*1.25} & > 0.30 go mine`)
                 break;
             }
-            else if(i>=30  && i<40 && (tlm >= (pool_avg/i)*1.3)){
-                console.log(`Current pool ${tlm} >${(pool_avg/i)*1.3} & > 0.30 go mine`)
+            else if(i>=30  && i<40 && (tlm >= current_pool_avg*1.25)){
+                console.log(`Current pool ${tlm} >${current_pool_avg*1.25} & > 0.30 go mine`)
                 break;
             }
             
             if(i>=40){
-                console.log("Waiting too long force mine");
+                console.log("Checking too long. force mine");
                 break;
             }
                 

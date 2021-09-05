@@ -9,7 +9,7 @@ const base_api = [
 const atomic_api = [
     'https://wax-atomic.wizardsguild.one', 
     'https://api.wax-aa.bountyblok.io',
-    'https://aa.wax.blacklusion.io'
+    //'https://aa.wax.blacklusion.io'
 ]
 
 function getRandom(min, max) {
