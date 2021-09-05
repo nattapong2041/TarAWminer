@@ -536,7 +536,7 @@ async function miner(mine_with) {
                 break;
             }
             i++;
-            await sleep(1500);
+            await sleep((Math.random() * (4 - 0.5) + 0.5) *1000);
         }while(true)
         updateStatus('claiming')
         let result = null
