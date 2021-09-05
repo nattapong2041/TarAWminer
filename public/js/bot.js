@@ -528,7 +528,7 @@ async function miner(mine_with) {
                 break;
             }
             if(i>=10 && (tlm >= (pool_avg/i)*1.25) && tlm >= 0.3){
-                console.log(`Current pool ${tlm} >${(pool_avg/i)*1.25} go mine`)
+                console.log(`Current pool ${tlm} >${(pool_avg/i)*1.25} & > 0.3 go mine`)
                 break;
             }
             i++;
