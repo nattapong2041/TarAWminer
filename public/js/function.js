@@ -167,7 +167,7 @@ const getLandById = async (federation_account, land_id, eos_rpc) => {
         // const land_data = await land_asset.toObject();
 
         land_asset.data.planet = intToName(land_asset.data.planet);
-
+        current_world = land_asset.data.planet;
         // make sure these attributes are present
         land_asset.data.img = land_asset.data.img || '';
         land_asset.owner = land_asset.owner || landowner;
@@ -189,7 +189,7 @@ const getLand = async (federation_account, mining_account, account, eos_rpc) => 
         else {
             land_id = miner_res.rows[0].current_land;
         }
-
+        
         return await getLandById(federation_account, land_id, eos_rpc);
     }
     catch (e) {

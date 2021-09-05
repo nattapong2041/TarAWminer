@@ -24,6 +24,9 @@ var nftInterval;
 var userAccount = "";
 var oldNonce;
 
+var current_world;
+
+var pool_avg = 0;
 async function autoClaimNFT() {
     let now = new Date().getTime();
     var distance = claimCountdownFinishTime - now;
@@ -514,6 +517,23 @@ async function miner(mine_with) {
     }
 
     if (nonce != null) {
+        updateStatus('checking mining pool')
+        let i=1;
+        do{
+            let tlm = await checkMiningPool(current_world);
+            console.log(`${current_world}'s pool[${i}]: ${tlm}`);  
+            pool_avg += tlm;
+            if(tlm >= 0.8500){
+                console.log(`Current pool ${tlm} > 0.7000 go mine`)
+                break;
+            }
+            if(i>=10 && (tlm >= (pool_avg/i)*1.25) && tlm >= 0.3){
+                console.log(`Current pool ${tlm} >${(pool_avg/i)*1.25} go mine`)
+                break;
+            }
+            i++;
+            await sleep(1500);
+        }while(true)
         updateStatus('claiming')
         let result = null
         try {

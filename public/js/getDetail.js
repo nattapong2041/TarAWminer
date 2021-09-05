@@ -90,3 +90,38 @@ async function checkNFT(account) {
         return false;
     });
 }
+
+async function checkMiningPool(world) {
+    let index = getRandom(0, base_api.length)
+    const url = `${base_api[index]}/v1/chain/get_table_rows`
+
+    return await fetch(url, {
+        method: 'POST',
+        body: JSON.stringify({
+            "json":true,
+            "code":"m.federation",
+            "scope":`${world}`,
+            "table":"state3",
+            "index_position":1,
+            "limit":1,
+            "reverse":false
+        }),
+        header: {
+            'content-type': 'application/json'
+        }
+    }).then(function (response) {
+        return response.json();
+    }).then((res) => {
+        if (Array.isArray(res.rows) && res.rows.length ) {
+            let tlm  = parseFloat(res.rows[0].mine_bucket.split(" ")[0]);
+            return tlm;
+        }
+        else{
+            console.log('Error: cannot check mininng pool');
+            return 0.1000
+        }
+    }).catch((err) => {
+        console.log('Error: cannot check mininng pool ' + err.message);
+        return 0.1000;
+    });
+}
