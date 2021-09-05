@@ -523,21 +523,24 @@ async function miner(mine_with) {
             let tlm = await checkMiningPool(current_world);
             console.log(`${current_world}'s pool[${i}]: ${tlm}`);  
             pool_avg += tlm;
-            if(tlm >= 0.8500){
-                console.log(`Current pool ${tlm} > 0.7000 go mine`)
+            if(i<= 10 && tlm >= 0.8500 ){
+                console.log(`Current pool ${tlm} > 0.8500 go mine`)
                 break;
             }
-            else if(i<=10 && (tlm >= (pool_avg/i)*1.25) && tlm >= 0.3){
-                console.log(`Current pool ${tlm} >${(pool_avg/i)*1.25} & > 0.3 go mine`)
+            else if(i>=10 && i<30 && (tlm >= (pool_avg/i)*1.3) && tlm >= 0.3){
+                console.log(`Current pool ${tlm} >${(pool_avg/i)*1.3} & > 0.30 go mine`)
                 break;
             }
-            else if(i>=30 && (tlm >= (pool_avg/i)*1.25)){
-                console.log(`Current pool ${tlm} >${(pool_avg/i)*1.25} & > 0.3 go mine`)
+            else if(i>=30  && i<40 && (tlm >= (pool_avg/i)*1.3)){
+                console.log(`Current pool ${tlm} >${(pool_avg/i)*1.3} & > 0.30 go mine`)
                 break;
             }
             
-            if(i>=40)
+            if(i>=40){
+                console.log("Waiting too long force mine");
                 break;
+            }
+                
 
             i++;
             await sleep((Math.random() * (4 - 0.5) + 0.5) *1000);
