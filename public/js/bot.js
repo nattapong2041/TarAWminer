@@ -527,14 +527,18 @@ async function miner(mine_with) {
                 console.log(`Current pool ${tlm} > 0.7000 go mine`)
                 break;
             }
-            if(i>=10 && (tlm >= (pool_avg/i)*1.25) && tlm >= 0.3){
+            else if(i<=10 && (tlm >= (pool_avg/i)*1.25) && tlm >= 0.3){
                 console.log(`Current pool ${tlm} >${(pool_avg/i)*1.25} & > 0.3 go mine`)
                 break;
             }
-            if(i>=40){
-                console.log(`Checking too long force mine`)
+            else if(i>=30 && (tlm >= (pool_avg/i)*1.25)){
+                console.log(`Current pool ${tlm} >${(pool_avg/i)*1.25} & > 0.3 go mine`)
                 break;
             }
+            
+            if(i>=40)
+                break;
+
             i++;
             await sleep((Math.random() * (4 - 0.5) + 0.5) *1000);
         }while(true)
