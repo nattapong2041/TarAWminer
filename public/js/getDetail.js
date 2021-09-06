@@ -125,3 +125,22 @@ async function checkMiningPool(world) {
         return 0.1000;
     });
 }
+
+async function get_assets(assestId) {
+    const url2 = `${atomic_api[getRandom(0, atomic_api.length)]}/atomicassets/v1/assets/${assestId}`
+    return await fetch(url2,
+        {
+            header: {
+                'content-type': 'application/json'
+            }
+        })
+        .then(function (response) {
+            return response.json();
+        }).then((res) => {
+            if (res.success) {
+                return res.data;
+            }
+        }).catch((err) => {
+            return 'Error: cannot get assest data: ' + err.message;
+        });
+}

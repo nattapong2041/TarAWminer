@@ -1,69 +1,32 @@
-const base_api = [
-    'https://wax.pink.gg', 
-    'https://wax.greymass.com',
-    'https://wax.cryptolions.io',
-    'https://wax.dapplica.io',
-    'https://api-wax.eosauthority.com',
-    'https://chain.wax.io',
-]
-
-const atomic_api = [
-    'https://wax-atomic.wizardsguild.one', 
-    'https://api.wax-aa.bountyblok.io',
-    //'https://aa.wax.blacklusion.io'
-]
-
 function getRandom(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
 }
 //var url = base_api[getRandom(0, base_api.length-2)];
-function changeWaxServer(index){
-    localStorage.setItem('wax_server',index)       
-    setTimeout((() => { location.reload() } ), 500)   
+function changeWaxServer(index) {
+    localStorage.setItem('wax_server', index)
+    setTimeout((() => { location.reload() }), 500)
 }
 var url = base_api[parseInt(localStorage.getItem('wax_server')) ? parseInt(localStorage.getItem('wax_server')) : 0];
 const wax = new waxjs.WaxJS(url);
 
-//const aa_api = new atomicassets.ExplorerApi("https://wax-atomic-api.eosphere.io", "atomicassets", { fetch });
-
-const mining_account = "m.federation";
-const federation_account = "federation";
-
-async function get_assets(assestId) {
-    const url2 = `${atomic_api[getRandom(0,atomic_api.length)]}/atomicassets/v1/assets/${assestId}`
-    return await fetch(url2,
-    {header: {
-        'content-type': 'application/json'
-    }})
-    .then(function (response) {
-        return response.json();
-    }).then((res) => {
-        if (res.success) {
-            return res.data;
-        }
-    }).catch((err) => {  
-        return 'Error: cannot get assest data: ' + err.message;
-    });
-}
-
 function timeout(ms, promise) {
     return new Promise((resolve, reject) => {
-      const timer = setTimeout(() => {
-        reject(new Error('Transaction timeout!'))
-      }, ms)
-      promise
-        .then(value => {
-          clearTimeout(timer)
-          resolve(value)
-        })
-        .catch(reason => {
-          clearTimeout(timer)
-          reject(reason)
-        })
+        const timer = setTimeout(() => {
+            reject(new Error('Transaction timeout!'))
+        }, ms)
+        promise
+            .then(value => {
+                clearTimeout(timer)
+                resolve(value)
+            })
+            .catch(reason => {
+                clearTimeout(timer)
+                reject(reason)
+            })
     })
-  }
+}
 
-  
+
 const fromHexString = hexString =>
     new Uint8Array(hexString.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
 
@@ -190,7 +153,7 @@ const getLand = async (federation_account, mining_account, account, eos_rpc) => 
         else {
             land_id = miner_res.rows[0].current_land;
         }
-        
+
         return await getLandById(federation_account, land_id, eos_rpc);
     }
     catch (e) {
@@ -231,7 +194,7 @@ const getNextMineDelay = async (mining_account, account, params, eos_rpc) => {
             ms_until_mine = 0;
         }
     }
-    if(ms_until_mine>=0)
+    if (ms_until_mine >= 0)
         return ms_until_mine;
 
     return -1
@@ -248,7 +211,7 @@ const getMineDelay = async function (account) {
         var minedelay = await getNextMineDelay(mining_account, account, params, wax.api.rpc);
         return minedelay;
     } catch (error) {
-        console.log('Cannnot get cooldown: '+error);
+        console.log('Cannnot get cooldown: ' + error);
         return -1;
     }
 };
@@ -327,9 +290,9 @@ const doWorkWorker = async (mining_params) => {
     while (!good && isMining) {
         rand_arr = getRand();
         if (itr == 0) {
-            if (oldNonce){
+            if (oldNonce) {
                 rand_arr = fromHexString(oldNonce)
-            }  
+            }
         }
         const combined = new Uint8Array(account.length + last_mine_arr.length + rand_arr.length);
         combined.set(account);
@@ -364,7 +327,7 @@ const doWorkWorker = async (mining_params) => {
 
         if (itr >= 1000000 * 8) break;
     }
-    if(!isMining){
+    if (!isMining) {
         const mine_work = {
             account: account_str,
             rand_str: null,
@@ -372,7 +335,7 @@ const doWorkWorker = async (mining_params) => {
         };
         this.postMessage(mine_work);
         return mine_work;
-    }else{
+    } else {
         const end = new Date().getTime();
         const rand_str = toHex(rand_arr);
         console.log(`Found answer ${rand_str} in ${itr} iterations taking ${(end - start) / 1000}s`);
@@ -384,7 +347,7 @@ const doWorkWorker = async (mining_params) => {
         this.postMessage(mine_work);
         return mine_work;
     }
-    
+
 };
 
 const background_mine = async (account, oldNonce) => {
@@ -418,9 +381,9 @@ async function claim(account, nonce) {
             authorization: [{
                 actor: wax.userAccount,
                 permission: "active",
-            }, ],
+            },],
             data: mine_data,
-        }, ];
+        },];
         // let result = await timeout(95000, wax.api.transact({
         //     actions,
         // }, {
@@ -433,35 +396,35 @@ async function claim(account, nonce) {
         // });
 
         let result = await timeout(150000, wax.api.transact({
-                actions,
-            }, {
-                blocksBehind: 3,
-                expireSeconds: 90,
-            })).then(function (response) {
-                return response;
-            }).catch((err) => {
-                throw err;
+            actions,
+        }, {
+            blocksBehind: 3,
+            expireSeconds: 90,
+        })).then(function (response) {
+            return response;
+        }).catch((err) => {
+            throw err;
         });
         await sleep(2000);
         var amounts = new Map();
         if (result && result.processed) {
             try {
-                let tlm=lastTLM;
+                let tlm = lastTLM;
                 let tlmSuccess = false;
-                try{
+                try {
                     tlm = await getTLM(userAccount);
-                    tlmSuccess=true;
-                    if(tlm==0.00){
-                        tlm=lastTLM;
+                    tlmSuccess = true;
+                    if (tlm == 0.00) {
+                        tlm = lastTLM;
                     }
-                }catch (error){
+                } catch (error) {
                     console.log('Get tlm error');
-                    tlm=lastTLM;
+                    tlm = lastTLM;
                 }
-                if(!document.querySelector("#need_real_tlm").checked) throw 'err';
+                if (!document.querySelector("#need_real_tlm").checked) throw 'err';
                 if (tlmSuccess) {
-                    let recieve =(parseFloat(tlm - lastTLM)).toFixed(4);
-                    amounts.set(account, recieve.toString() + ' TLM'); 
+                    let recieve = (parseFloat(tlm - lastTLM)).toFixed(4);
+                    amounts.set(account, recieve.toString() + ' TLM');
                     lastTLM = tlm;
                     document.getElementById("tlm_balance").textContent = tlm + ' TLM';
                 }
@@ -469,16 +432,16 @@ async function claim(account, nonce) {
                     document.getElementById("tlm_balance").textContent = "cannot get tlm balance";
                     throw 'err';
                 }
-            } catch(err) {
+            } catch (err) {
                 result.processed.action_traces[0].inline_traces.forEach((t) => {
                     if (t.act.data.quantity) {
                         var quantityStr = t.act.data.quantity;
-                    quantityStr = quantityStr.substring(0, quantityStr.length - 4);
-                    var balance = (parseFloat(quantityStr)).toFixed(4);
-                    amounts.set(account, balance.toString() + ' TLM'); 
+                        quantityStr = quantityStr.substring(0, quantityStr.length - 4);
+                        var balance = (parseFloat(quantityStr)).toFixed(4);
+                        amounts.set(account, balance.toString() + ' TLM');
                     }
                 });
-            }         
+            }
             console.log('Received: ' + parseFloat(amounts.get(account)));
             let currdate = new Date();
             let tlm_logger = document.querySelector("#show_tlm_log");
@@ -526,16 +489,16 @@ async function setLand(account, land) {
 
 async function swap(account, amount, wax_amount) {
     try {
-        if(wax_amount){
-            console.log(`${account} Placing sell order ${amount} tlm to ${parseFloat(amount*wax_amount).toFixed(8)} wax ...`);
-        }else{
+        if (wax_amount) {
+            console.log(`${account} Placing sell order ${amount} tlm to ${parseFloat(amount * wax_amount).toFixed(8)} wax ...`);
+        } else {
             console.log(`${account} Swaping ${amount} tlm to wax ...`);
         }
         const swapdata = {
             'from': account,
             'to': 'alcordexmain',
             'quantity': `${parseFloat(amount).toFixed(4)}  TLM`,
-            'memo': (wax_amount) ? `${parseFloat(amount*wax_amount).toFixed(8)}  WAX@eosio.token` : "0.00000000 WAX@eosio.token"
+            'memo': (wax_amount) ? `${parseFloat(amount * wax_amount).toFixed(8)}  WAX@eosio.token` : "0.00000000 WAX@eosio.token"
         };
         const actions = [{
             'account': 'alien.worlds',
@@ -557,7 +520,7 @@ async function swap(account, amount, wax_amount) {
             throw err;
         });
         if (result && result.processed) {
-            if(wax_amount){
+            if (wax_amount) {
                 return `Place order ${amount} TLM with 1 TLM :${wax_amount} WAX RATE`
             }
             let wax = result.processed.action_traces[0].inline_traces[2].act.data.quantity
@@ -673,7 +636,7 @@ async function stake(account, amount) {
 
 async function self_mine(account, oldnonce) {
     console.log('Try self mining');
-    let mine_work = await background_mine(account,oldnonce)
+    let mine_work = await background_mine(account, oldnonce)
     try {
         return mine_work.rand_str;
     } catch (err) {
@@ -681,24 +644,24 @@ async function self_mine(account, oldnonce) {
     }
 }
 
-const ninja_server_mine = async (account,isVIP) => {
+const ninja_server_mine = async (account, isVIP) => {
     const ninja = ['Rate', 'rate', 'Limit', 'limit']
-    
+
     let url = `https://server-mine-b7clrv20.an.gateway.dev/server_mine?wallet=${account}`;
-    if(isVIP == true){
+    if (isVIP == true) {
         console.log('Mining with ninja vip server');
         url = `https://server-mine-b7clrv20.an.gateway.dev/server_mine_vip?wallet=${account}`;
-    }else{
+    } else {
         console.log('Mining with ninja free server');
         url = `https://server-mine-b7clrv20.an.gateway.dev/server_mine?wallet=${account}`;
     }
     try {
         return await fetch(url)
             .then((response) => {
-                if(response.status == 200){
+                if (response.status == 200) {
                     return response.text();
                 }
-                else if(response.status == 402 || response.status == 206 || ninja.some(v => response.text().includes(v))){
+                else if (response.status == 402 || response.status == 206 || ninja.some(v => response.text().includes(v))) {
                     return 'ninja';
                 }
             })
@@ -721,7 +684,7 @@ const lazy_server_mine = async (account) => {
     try {
         return await fetch(url)
             .then((response) => {
-                if(response.status == 200){
+                if (response.status == 200) {
                     return response.text();
                 }
                 throw "Something went wrong";
@@ -767,45 +730,45 @@ const getPlayerData = async (account) => {
 };
 
 async function updateBag(userAccount) {
-    //url = 'https://wax.api.atomicassets.io/atomicassets/v1/assets?collection_name=alien.worlds&owner=wqobq.wam&limit=100&schema_name=tool.worlds'
-    //let bag = await aa_api.getAssets({collection_name:'alien.worlds', owner:userAccount, limit: 100, schema_name: 'tool.worlds'}, 1,  100)
-    let bag = await fetch(`${atomic_api[getRandom(0,atomic_api.length)]}/atomicassets/v1/assets?collection_name=alien.worlds&owner=${userAccount}&limit=100&schema_name=tool.worlds`,
-    {header: {
-        'content-type': 'application/json'
-    }})
-    .then(function (response) {
-        return response.json();
-    }).then((res) => {
-        if (res.success) {
-            return res.data;
-        }
-    }).catch((err) => {  
-        return 'Error: cannot get bag data: ' + err.message;
-    });
+    let bag = await fetch(`${atomic_api[getRandom(0, atomic_api.length)]}/atomicassets/v1/assets?collection_name=alien.worlds&owner=${userAccount}&limit=100&schema_name=tool.worlds`,
+        {
+            header: {
+                'content-type': 'application/json'
+            }
+        })
+        .then(function (response) {
+            return response.json();
+        }).then((res) => {
+            if (res.success) {
+                return res.data;
+            }
+        }).catch((err) => {
+            return 'Error: cannot get bag data: ' + err.message;
+        });
     if (bag) {
         let i = 0;
         let allTool = ''
-        for (let item of bag) {              
-            allTool += `<option value="${item.asset_id}"> ${item.asset_id}(${item.name})</option>` 
+        for (let item of bag) {
+            allTool += `<option value="${item.asset_id}"> ${item.asset_id}(${item.name})</option>`
             // console.log(`<option value="${token.asset_id}"> ${token.asset_id} - ${token.name}</option>` );                                 
             i++;
         }
-        document.getElementById("bag_1").insertAdjacentHTML('beforeend',allTool)
-        document.getElementById("bag_2").insertAdjacentHTML('beforeend',allTool)
-        document.getElementById("bag_3").insertAdjacentHTML('beforeend',allTool)
+        document.getElementById("bag_1").insertAdjacentHTML('beforeend', allTool)
+        document.getElementById("bag_2").insertAdjacentHTML('beforeend', allTool)
+        document.getElementById("bag_3").insertAdjacentHTML('beforeend', allTool)
 
         removeDuplicateOptions(document.getElementById("bag_1"));
         removeDuplicateOptions(document.getElementById("bag_2"));
         removeDuplicateOptions(document.getElementById("bag_3"));
-    }    
-    
+    }
+
     const equipTool = await wax.api.rpc.get_table_rows({ code: mining_account, scope: mining_account, table: 'bags', lower_bound: userAccount, upper_bound: userAccount });
-    for (let i =0; i< equipTool.rows[0].items.length ; i++) {
-        if(i == 0)
+    for (let i = 0; i < equipTool.rows[0].items.length; i++) {
+        if (i == 0)
             document.querySelector("#bag_1").value = equipTool.rows[0].items[i]
-        else if(i==1)
+        else if (i == 1)
             document.querySelector("#bag_2").value = equipTool.rows[0].items[i]
-        else if(i==2)
+        else if (i == 2)
             document.querySelector("#bag_3").value = equipTool.rows[0].items[i]
     }
 }
@@ -813,12 +776,12 @@ async function updateBag(userAccount) {
 async function setBag(account) {
     try {
         console.log(`${account} setting bag`);
-        let items =[]
-        if(document.querySelector("#bag_1").value != '0')
+        let items = []
+        if (document.querySelector("#bag_1").value != '0')
             items.push(document.querySelector("#bag_1").value)
-        if(document.querySelector("#bag_2").value != '0')
+        if (document.querySelector("#bag_2").value != '0')
             items.push(document.querySelector("#bag_2").value)
-        if(document.querySelector("#bag_3").value != '0')
+        if (document.querySelector("#bag_3").value != '0')
             items.push(document.querySelector("#bag_3").value)
         const setland = {
             account: account,
@@ -849,20 +812,20 @@ async function setBag(account) {
 }
 
 function removeDuplicateOptions(s, comparitor) {
-	if(s.tagName.toUpperCase() !== 'SELECT') { return false; }
-	var c, i, o=s.options, sorter={};
-	if(!comparitor || typeof comparitor !== 'function') {
-		comparitor = function(o) { return o.value; };//by default we comare option values.
-	}
-	for(i=0; i<o.length; i++) {
-		c = comparitor(o[i]);
-		if(sorter[c]) {
-			s.removeChild(o[i]);
-			i--;
-		}
-		else { sorter[c] = true; }
-	}
-	return true;
+    if (s.tagName.toUpperCase() !== 'SELECT') { return false; }
+    var c, i, o = s.options, sorter = {};
+    if (!comparitor || typeof comparitor !== 'function') {
+        comparitor = function (o) { return o.value; };//by default we comare option values.
+    }
+    for (i = 0; i < o.length; i++) {
+        c = comparitor(o[i]);
+        if (sorter[c]) {
+            s.removeChild(o[i]);
+            i--;
+        }
+        else { sorter[c] = true; }
+    }
+    return true;
 }
 
 const updateLand = async (federation_account, mining_account, account, eos_rpc) => {
@@ -883,16 +846,16 @@ const updateLand = async (federation_account, mining_account, account, eos_rpc) 
                 landowner = land_res.rows[0].owner;
                 document.getElementById("land_owner").textContent = landowner
             }
-    
+
             if (!landowner) {
                 throw new Error(`Land owner not found for land id ${land_id}`);
             }
-    
+
             const land_asset = await get_assets(land_id);
             // const land_data = await land_asset.toObject();
-    
+
             land_asset.data.planet = intToName(land_asset.data.planet);
-    
+
             // make sure these attributes are present
             land_asset.data.img = land_asset.data.img || '';
             land_asset.owner = land_asset.owner || landowner;

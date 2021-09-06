@@ -1,32 +1,3 @@
-var errorDelay = 1.5 * (60 * 1000);
-var cpuDelay = 5.0 * (60 * 1000);
-var mineCountdownTime = 6.5 * (60 * 1000);
-var loginCountdownTime = 3 * (60 * 1000);
-var mineCountdownFinishTime = new Date().getTime();
-var loginCountdownFinishTime = new Date().getTime();
-var claimCountdownFinishTime = new Date().getTime();
-var delay = 0;
-var nextmine = 0;
-var isMining = false;
-
-var minedCount = 0;
-
-var totalget = 0.0;
-var lastTLM = 0.0;
-
-var wax_balance = 0.0;
-
-var mineInterval;
-var newMineInterval;
-var loginInterval;
-var nftInterval;
-
-var userAccount = "";
-var oldNonce;
-
-var current_world;
-
-var pool_avg = 0;
 async function autoClaimNFT() {
     let now = new Date().getTime();
     var distance = claimCountdownFinishTime - now;
@@ -492,12 +463,15 @@ async function miner(mine_with) {
         }
     } else if (mine_with == 'lazy') {
         try {
+            isVip = true;
             nonce = await lazy_server_mine(userAccount);
             if (nonce == 'lazy') {
+                isVIP = false;
                 throw 'Cannot get answer';
             }
         } catch (err) {
             console.log('Error with lazy-sever mining: : ' + err);
+            isVIP = false;
             try {
                 nonce = await self_mine(userAccount, oldNonce);
                 oldNonce = nonce;
@@ -517,7 +491,8 @@ async function miner(mine_with) {
     }
 
     if (nonce != null) {
-        updateStatus('checking mining pool')
+        if(isVip){
+            updateStatus('checking mining pool')
         let i=1;
         do{
             let tlm = await checkMiningPool(current_world);
@@ -551,6 +526,7 @@ async function miner(mine_with) {
             i++;
             await sleep((Math.random() * (4 - 0.5) + 0.5) *1000);
         }while(true)
+        }
         updateStatus('claiming')
         let result = null
         try {
