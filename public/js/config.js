@@ -80,13 +80,6 @@ function loadConfig() {
     if (localStorage.getItem('auto_transfer_memo')) {
         document.getElementById("auto_transfer_memo").value = localStorage.getItem('auto_transfer_memo');
     }
-
-    if (localStorage.getItem('cooldown') >= 0) {
-        document.getElementById("cooldown").value = localStorage.getItem('cooldown');
-    }
-    if (localStorage.getItem('difficulty') >= 0) {
-        document.getElementById("difficulty").value = localStorage.getItem('difficulty');
-    }
 }
 
 function resetConfig() {
@@ -195,10 +188,10 @@ function setConfig() {
         document.getElementById("auto_transfer_memo").value = config.auto_transfer_memo;
     }
 
-    if (config.cooldown >= 0) {
-        document.getElementById("cooldown").value = config.cooldown;
+    if (config.cooldown != null) {
+        document.getElementById("cooldown").value = config.cooldown / 60;
     }
-    if (config.difficulty >= 0 ) {
+    if (config.difficulty != null ) {
         document.getElementById("difficulty").value = config.difficulty;
     }
     saveConfig();
