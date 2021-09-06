@@ -102,15 +102,16 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jsrsasign/8.0.20/jsrsasign-all-min.js"></script>
 
-  <script src="js/waxjs.js"></script>
-  <script src="js/atomicassets.js"></script>
-  <script src="js/int64-buffer.min.js"></script>
-  <script src="js/eosjs-numeric.js"></script>
-  <script src="js/eosjs-serialize.js"></script>
+  <script src="js/global_variable.js"></script>
   <script src="js/config.js"></script>
+  <script src="js/waxjs.js"></script>
+  <script src="js/lib/int64-buffer.min.js"></script>
+  <script src="js/lib/eosjs-numeric.js"></script>
+  <script src="js/lib/eosjs-serialize.js"></script>
   <script src="js/function.js"></script>
+  <script src="js/fetchData.js"></script>
   <script src="js/bot.js"></script>
-  <script src="js/getDetail.js"></script>
+  
   <!-- Global site tag (gtag.js) - Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-XSW8F4PRTJ"></script>
   <script>
@@ -133,7 +134,7 @@
               <span id="user_account" class="fs-5 font-weight-bold"><b>xxxxx.wam</b></span>
             </div>
             <div class="col-12 col-lg-9">
-              <span class="fs-6"><b>version 3.4.9:</b></span>
+              <span class="fs-6"><b>version 3.5.0:</b></span>
               <button id="run_btn" type="button" class="btn btn-warning fs-6"
                 style="margin-left: 10px;width: 100px">Waiting</button>
               <a class="btn btn-warning fs-6" href="/home" target="_blank"
@@ -214,6 +215,17 @@
               <label for="lazy">lazy</label>
               <input type="radio" id="ninja_vip" name="mining_with" value="ninja_vip">
               <label for="ninja_vip">ninja vip</label>
+            </div>
+            <div class="col">
+              <span class="fs-6"><b>Mining Params: </b></span>
+              <span class="fs-6"><b> Cooldown </b></span>
+              <input type="number" id="cooldown"
+                style="width: 100px;margin-left: 5px;">
+              <span class="fs-6"><b> min &</b></span>
+              <span class="fs-6"><b>Difficulty </b></span>
+              <input type="number" id="difficulty"
+                style="width: 50px;margin-left: 5px;">
+                <button id="update_params" type="button" class="btn btn-danger btn-sm" style="width: 70px">update</button>
             </div>
             <div class="col">
               <span class="fs-6"><b>Real recieve TLM?: </b></span>
@@ -437,7 +449,7 @@
         document.querySelector("#wax_server").selectedIndex = parseInt(localStorage.getItem('wax_server'))
     })();
     loadConfig();
-    login();
+    run();
   </script>
 </body>
 <footer class="footer">
