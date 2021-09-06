@@ -4,6 +4,7 @@ const base_api = [
     'https://wax.cryptolions.io',
     'https://wax.dapplica.io',
     'https://api-wax.eosauthority.com',
+    'https://chain.wax.io',
 ]
 
 const atomic_api = [
