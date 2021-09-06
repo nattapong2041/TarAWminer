@@ -4,11 +4,14 @@ const base_api = [
     'https://wax.cryptolions.io',
     'https://wax.dapplica.io',
     'https://api-wax.eosauthority.com',
+    'https://chain.wax.io',
 ]
 
 const atomic_api = [
     'https://wax-atomic.wizardsguild.one', 
-    'https://api.wax-aa.bountyblok.io',
+    'https://wax-atomic-api.eosphere.io',
+    'https://atomic.hivebp.io'
+    //'https://api.wax-aa.bountyblok.io',
     //'https://aa.wax.blacklusion.io'
 ]
 
@@ -388,9 +391,14 @@ const doWorkWorker = async (mining_params) => {
 
 const background_mine = async (account, oldNonce) => {
     return new Promise(async (resolve, reject) => {
-        const bagDifficulty = await getBagDifficulty(account);
-        const landDifficulty = await getLandDifficulty(account);
-        const difficulty = bagDifficulty + landDifficulty;
+        let difficulty=0;
+        try{
+            const bagDifficulty = await getBagDifficulty(account);
+            const landDifficulty = await getLandDifficulty(account);
+            difficulty = bagDifficulty + landDifficulty;
+        }catch{e}{
+            difficulty = 0;
+        }
         const last_mine_tx = await lastMineTx(mining_account, account, wax.api.rpc);
         doWorkWorker({
             mining_account,
