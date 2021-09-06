@@ -308,38 +308,38 @@ async function miner(mine_with) {
         if (isVIP) {
             updateStatus('checking mining pool')
             let i = 1;
-            // do {
-            //     let tlm = await checkMiningPool(current_world);
-            //     pool_avg += tlm;
-            //     let current_pool_avg = (parseFloat(pool_avg / i)).toFixed(4);
+            do {
+                let tlm = await checkMiningPool(current_world);
+                pool_avg += tlm;
+                let current_pool_avg = (parseFloat(pool_avg / i)).toFixed(4);
 
-            //     console.log(`${current_world}'s pool[${i}]: ${tlm}`);
+                console.log(`${current_world}'s pool[${i}]: ${tlm}`);
 
-            //     if (i > 10)
-            //         console.log(`Current pool avg: ${current_pool_avg}`);
+                if (i > 10)
+                    console.log(`Current pool avg: ${current_pool_avg}`);
 
-            //     if (i <= 10 && tlm >= 0.7500) {
-            //         console.log(`Current pool ${tlm} > 0.7500 go mine`)
-            //         break;
-            //     }
-            //     else if (i > 10 && i <= 30 && (tlm >= current_pool_avg * 1.25) && tlm >= 0.2) {
-            //         console.log(`Current pool ${tlm} >${current_pool_avg * 1.25} & > 0.20 go mine`)
-            //         break;
-            //     }
-            //     else if (i > 30 && i <= 40 && (tlm >= current_pool_avg * 1.25)) {
-            //         console.log(`Current pool ${tlm} >${current_pool_avg * 1.25}`)
-            //         break;
-            //     }
+                if (i <= 10 && tlm >= 0.7500) {
+                    console.log(`Current pool ${tlm} > 0.7500 go mine`)
+                    break;
+                }
+                else if (i > 10 && i <= 30 && (tlm >= current_pool_avg * 1.25) && tlm >= 0.2) {
+                    console.log(`Current pool ${tlm} >${current_pool_avg * 1.25} & > 0.20 go mine`)
+                    break;
+                }
+                else if (i > 30 && i <= 40 && (tlm >= current_pool_avg * 1.25)) {
+                    console.log(`Current pool ${tlm} >${current_pool_avg * 1.25}`)
+                    break;
+                }
 
-            //     if (i > 40) {
-            //         console.log("Checking too long. force mine");
-            //         break;
-            //     }
+                if (i > 40) {
+                    console.log("Checking too long. force mine");
+                    break;
+                }
 
 
-            //     i++;
-            //     await sleep((Math.random() * (4 - 0.5) + 0.5) * 1000);
-            // } while (true)
+                i++;
+                await sleep((Math.random() * (4 - 0.5) + 0.5) * 1000);
+            } while (true)
         }
         updateStatus('claiming')
         let result = null
