@@ -193,15 +193,18 @@ async function fetchMiningData() {
         delay = params.delay * (land_params.delay / 10);
         difficulty = params.difficulty + land_params.difficulty;
         console.log(`Fetching complete cooldown:${delay} sec difficulty:${difficulty}`)
+        document.getElementById("cooldown").value = delay / 60;
+        document.getElementById("difficulty").value = difficulty;
         saveConfig();
     } catch (error) {
         console.log('Cannnot fetch minging data: ' + error);
         difficulty = 0;
         delay = 600;
         console.log(`Force data to delay:${delay} sec difficulty:${difficulty}`)
+        document.getElementById("cooldown").value = delay / 60;
+        document.getElementById("difficulty").value = difficulty;
     }
-    document.getElementById("cooldown").value = delay / 60;
-    document.getElementById("difficulty").value = difficulty;
+    
 }
 //*mining
 async function runBot() {
