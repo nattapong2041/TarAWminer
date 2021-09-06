@@ -352,6 +352,7 @@ async function miner(mine_with) {
             document.getElementById("last_mine").textContent = result + ' at ' + padLeadingZeros(currdate.getHours(), 2) + ':' + padLeadingZeros(currdate.getMinutes(), 2) + ':' + padLeadingZeros(currdate.getSeconds(), 2);
             document.getElementById("toal_get").textContent = totalget.toFixed(4) + ' TLM with ' + minedCount + ' Times';
         } catch (error) {
+            isNeedToFetchDelay = true;
             updateStatus(error)
             const errorRes = handleError(error)
             console.log('' + error);
@@ -362,7 +363,6 @@ async function miner(mine_with) {
             } else if (errorRes == 'soon') {
                 updateStatus('Mine to soon wait: ' + 10 + ' sec')
                 nextmine = 15 * 1000;
-                isNeedToFetchDelay = true;
                 updateNextMine(nextmine)
             }else if (errorRes == 'mining') {
                 updateStatus('Error while find answer wait: ' + 30 + ' sec')
@@ -700,6 +700,7 @@ function updateAccount(userAccount) {
 function stop() {
     clearTimer();
     isMining = false
+    isNeedToFetchDelay = true;
 }
 
 function onclickRun() {

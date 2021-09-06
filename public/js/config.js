@@ -189,10 +189,12 @@ function setConfig() {
     }
 
     if (config.cooldown != null) {
-        document.getElementById("cooldown").value = config.cooldown / 60;
+        document.getElementById("cooldown").value = config.cooldown;
+        delay = config.cooldown * 60;
     }
     if (config.difficulty != null ) {
         document.getElementById("difficulty").value = config.difficulty;
+        difficulty = config.difficulty;
     }
     saveConfig();
 }
