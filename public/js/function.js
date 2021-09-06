@@ -9,7 +9,6 @@ const base_api = [
 
 const atomic_api = [
     'https://wax-atomic.wizardsguild.one', 
-    'https://wax-atomic-api.eosphere.io',
     'https://atomic.hivebp.io',
     'https://api.atomic.greeneosio.com'
     //'https://api.wax-aa.bountyblok.io',
