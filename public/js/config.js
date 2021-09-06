@@ -24,6 +24,9 @@ function saveConfig() {
     localStorage.setItem('auto_transfer_acc', document.getElementById("auto_transfer_acc").value);
     localStorage.setItem('auto_transfer_memo', document.getElementById("auto_transfer_memo").value);
 
+    //* MINING PARAMS
+    localStorage.setItem('cooldown', document.getElementById("cooldown").value);
+    localStorage.setItem('difficulty', document.getElementById("difficulty").value);
 }
 
 function loadConfig() {
@@ -77,6 +80,13 @@ function loadConfig() {
     if (localStorage.getItem('auto_transfer_memo')) {
         document.getElementById("auto_transfer_memo").value = localStorage.getItem('auto_transfer_memo');
     }
+
+    if (localStorage.getItem('cooldown') >= 0) {
+        document.getElementById("cooldown").value = localStorage.getItem('cooldown');
+    }
+    if (localStorage.getItem('difficulty') >= 0) {
+        document.getElementById("difficulty").value = localStorage.getItem('difficulty');
+    }
 }
 
 function resetConfig() {
@@ -99,6 +109,8 @@ function resetConfig() {
     document.getElementById("auto_transfer_wax").value = 20.0000;
     document.getElementById("auto_transfer_acc").value = null;
     document.getElementById("auto_transfer_memo").value = null;
+    document.getElementById("cooldown").value = 10;
+    document.getElementById("difficulty").value = 0;
 }
 
 function copyConfig() {
@@ -118,6 +130,8 @@ function copyConfig() {
         auto_transfer_wax: ''+document.getElementById("auto_transfer_wax").value, 
         auto_transfer_acc: ''+document.getElementById("auto_transfer_acc").value, 
         auto_transfer_memo: ''+document.getElementById("auto_transfer_memo").value, 
+        cooldown: ''+document.getElementById("cooldown").value, 
+        difficulty: ''+document.getElementById("difficulty").value, 
     };
     let dummy = document.createElement("textarea");
     document.body.appendChild(dummy);
@@ -181,5 +195,11 @@ function setConfig() {
         document.getElementById("auto_transfer_memo").value = config.auto_transfer_memo;
     }
 
+    if (config.cooldown >= 0) {
+        document.getElementById("cooldown").value = config.cooldown;
+    }
+    if (config.difficulty >= 0 ) {
+        document.getElementById("difficulty").value = config.difficulty;
+    }
     saveConfig();
 }

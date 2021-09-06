@@ -143,22 +143,20 @@ app.get('/home', async function (request, response) {
     response.end();
 });
 
-// app.get('/atomicassets/v1/assets/:assetId', async function (request, response) {
-//     console.log(`https://wax.api.atomicassets.io/atomicassets/v1/assets/${request.params.assetId}`)
-//     await axios.get(`https://wax-atomic.wizardsguild.one/atomicassets/v1/assets/${request.params.assetId}`,{
-//         headers: {
-//             'Content-Type' : 'application/json; charset=utf-8'//the token is a variable which holds the token
-//         }
-//        })
-//     .then(res => {
-//         console.log(res);
-//             if (res.status == 200) {
-//                 response.send(res.data)
-//             }
-//         }).catch((err) => {
-//             return response.send(err);
-//         });
-// });
+app.get('/atomicassets/v1/assets/:assetId', async function (request, response) {
+    await axios.get(`https://wax.api.atomicassets.io/atomicassets/v1/assets/${request.params.assetId}`,{
+        headers: {
+            'Content-Type' : 'application/json; charset=utf-8'//the token is a variable which holds the token
+        }
+       })
+    .then(res => {
+            if (res.status == 200) {
+                response.send(res.data)
+            }
+        }).catch((err) => {
+            return response.send(err);
+        });
+});
 
 app.get('/mine_worker', (async (req, res) => {
     let account = req.query.account;

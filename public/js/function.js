@@ -1,76 +1,38 @@
 function getRandom(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
 }
-//var url = base_api[getRandom(0, base_api.length-2)];
-function changeWaxServer(index) {
-    localStorage.setItem('wax_server', index)
-    setTimeout((() => { location.reload() }), 500)
-}
-var url = base_api[parseInt(localStorage.getItem('wax_server')) ? parseInt(localStorage.getItem('wax_server')) : 0];
-const wax = new waxjs.WaxJS(url);
 
-function timeout(ms, promise) {
-    return new Promise((resolve, reject) => {
-        const timer = setTimeout(() => {
-            reject(new Error('Transaction timeout!'))
-        }, ms)
-        promise
-            .then(value => {
-                clearTimeout(timer)
-                resolve(value)
-            })
-            .catch(reason => {
-                clearTimeout(timer)
-                reject(reason)
-            })
-    })
+const getBag = async (mining_account, account, eos_rpc) => {
+    const bag_res = await eos_rpc.get_table_rows({ code: mining_account, scope: mining_account, table: 'bags', lower_bound: account, upper_bound: account });
+    const bag = [];
+    if (bag_res.rows.length) {
+        const items_p = bag_res.rows[0].items.map((item_id) => {
+            return get_assets(item_id);
+        });
+        return await Promise.all(items_p);
+    }
+    return bag;
 }
 
+const getLand = async (federation_account, mining_account, account, eos_rpc) => {
+    try {
+        const miner_res = await eos_rpc.get_table_rows({ code: mining_account, scope: mining_account, table: 'miners', lower_bound: account, upper_bound: account });
+        let land_id;
+        if (miner_res.rows.length === 0) {
+            return null;
+        }
+        else {
+            land_id = miner_res.rows[0].current_land;
+        }
 
-const fromHexString = hexString =>
-    new Uint8Array(hexString.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
-
-const toHexString = bytes =>
-    bytes.reduce((str, byte) => str + byte.toString(16).padStart(2, '0'), '');
-
-const nameToInt = (name) => {
-    const sb = new Serialize.SerialBuffer({
-        textEncoder: new TextEncoder,
-        textDecoder: new TextDecoder
-    });
-
-    sb.pushName(name);
-
-    const name_64 = new Int64LE(sb.array);
-
-    return name_64 + '';
+        return await getLandById(federation_account, land_id, eos_rpc);
+    }
+    catch (e) {
+        console.error(`Failed to get land - ${e.message}`);
+        return null;
+    }
 }
 
-const nameToArray = (name) => {
-    const sb = new Serialize.SerialBuffer({
-        textEncoder: new TextEncoder,
-        textDecoder: new TextDecoder
-    });
-
-    sb.pushName(name);
-
-    return sb.array;
-}
-
-const intToName = (int) => {
-    int = new Int64LE(int);
-
-    const sb = new SerialBuffer({
-        textEncoder: new TextEncoder,
-        textDecoder: new TextDecoder
-    });
-
-    sb.pushArray(int.toArray());
-
-    const name = sb.getName();
-
-    return name;
-}
 
 
 const getBagMiningParams = (bag) => {
@@ -143,113 +105,110 @@ const getLandById = async (federation_account, land_id, eos_rpc) => {
     }
 }
 
-const getLand = async (federation_account, mining_account, account, eos_rpc) => {
-    try {
-        const miner_res = await eos_rpc.get_table_rows({ code: mining_account, scope: mining_account, table: 'miners', lower_bound: account, upper_bound: account });
-        let land_id;
-        if (miner_res.rows.length === 0) {
-            return null;
-        }
-        else {
-            land_id = miner_res.rows[0].current_land;
-        }
+//
+const intToName = (int) => {
+    int = new Int64LE(int);
 
-        return await getLandById(federation_account, land_id, eos_rpc);
-    }
-    catch (e) {
-        console.error(`Failed to get land - ${e.message}`);
-        return null;
-    }
-}
-
-const getBag = async (mining_account, account, eos_rpc) => {
-    const bag_res = await eos_rpc.get_table_rows({ code: mining_account, scope: mining_account, table: 'bags', lower_bound: account, upper_bound: account });
-    const bag = [];
-    if (bag_res.rows.length) {
-        const items_p = bag_res.rows[0].items.map((item_id) => {
-            return get_assets(item_id);
-        });
-        return await Promise.all(items_p);
-    }
-    return bag;
-}
-
-const getNextMineDelay = async (mining_account, account, params, eos_rpc) => {
-    const state_res = await eos_rpc.get_table_rows({
-        code: mining_account,
-        scope: mining_account,
-        table: 'miners',
-        lower_bound: account,
-        upper_bound: account
+    const sb = new SerialBuffer({
+        textEncoder: new TextEncoder,
+        textDecoder: new TextDecoder
     });
 
-    let ms_until_mine = -1;
+    sb.pushArray(int.toArray());
+
+    const name = sb.getName();
+
+    return name;
+}
+
+const getMineDelay = async function (account) {
+    try {
+        var minedelay = await getNextMineDelay(account);
+        return minedelay;
+    } catch (error) {
+        console.log('Cannnot get cooldown: ' + error);
+        return delay*1000;
+    }
+};
+
+const getNextMineDelay = async (account) => {
+    const state_res = await getMiner(account)
+
+    let ms_until_mine = delay * 1000;
     const now = new Date().getTime();
 
     if (state_res.rows.length && state_res.rows[0].last_mine_tx !== '0000000000000000000000000000000000000000000000000000000000000000') {
         const last_mine_ms = Date.parse(state_res.rows[0].last_mine + '.000Z');
-        ms_until_mine = last_mine_ms + (params.delay * 1000) - now;
-
+        try{
+            ms_until_mine = last_mine_ms + (delay * 1000) - now;
+        }catch(err){
+            ms_until_mine = delay * 1000;
+        }
         if (ms_until_mine < 0) {
             ms_until_mine = 0;
         }
     }
-    if (ms_until_mine >= 0)
-        return ms_until_mine;
-
-    return -1
+    return ms_until_mine
 };
 
-const getMineDelay = async function (account) {
-    try {
-        const bag = await getBag(mining_account, account, wax.api.rpc);
-        const land = await getLand(federation_account, mining_account, account, wax.api.rpc);
-        const params = getBagMiningParams(bag);
-        const land_params = getLandMiningParams(land);
-        params.delay *= land_params.delay / 10;
-        params.difficulty += land_params.difficulty;
-        var minedelay = await getNextMineDelay(mining_account, account, params, wax.api.rpc);
-        return minedelay;
-    } catch (error) {
-        console.log('Cannnot get cooldown: ' + error);
-        return -1;
-    }
-};
+function changeWaxServer(index) {
+    localStorage.setItem('wax_server', index)
+    setTimeout((() => { location.reload() }), 500)
+}
 
-const getBagDifficulty = async function (account) {
-    try {
-        const bag = await getBag(mining_account, account, wax.api.rpc);
-        const params = getBagMiningParams(bag);
-        return params.difficulty;
-    } catch (error) {
-        return error;
-    }
-};
+function timeout(ms, promise) {
+    return new Promise((resolve, reject) => {
+        const timer = setTimeout(() => {
+            reject(new Error('Transaction timeout!'))
+        }, ms)
+        promise
+            .then(value => {
+                clearTimeout(timer)
+                resolve(value)
+            })
+            .catch(reason => {
+                clearTimeout(timer)
+                reject(reason)
+            })
+    })
+}
 
-const getLandDifficulty = async function (account) {
-    try {
-        const land = await getLand(federation_account, mining_account, account, wax.api.rpc);
-        const params = getLandMiningParams(land);
-        return params.difficulty;
-    } catch (error) {
-        return error;
-    }
-};
+const fromHexString = hexString =>
+    new Uint8Array(hexString.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
 
+const toHexString = bytes =>
+    bytes.reduce((str, byte) => str + byte.toString(16).padStart(2, '0'), '');
+
+const nameToInt = (name) => {
+    const sb = new Serialize.SerialBuffer({
+        textEncoder: new TextEncoder,
+        textDecoder: new TextDecoder
+    });
+
+    sb.pushName(name);
+
+    const name_64 = new Int64LE(sb.array);
+
+    return name_64 + '';
+}
+
+const nameToArray = (name) => {
+    const sb = new Serialize.SerialBuffer({
+        textEncoder: new TextEncoder,
+        textDecoder: new TextDecoder
+    });
+
+    sb.pushName(name);
+
+    return sb.array;
+}
 
 const lastMineTx = async (mining_account, account, eos_rpc) => {
-    const state_res = await eos_rpc.get_table_rows({
-        code: mining_account,
-        scope: mining_account,
-        table: 'miners',
-        lower_bound: account,
-        upper_bound: account
-    });
+    const state_res = await getMiner(account)
     let last_mine_tx = '0000000000000000000000000000000000000000000000000000000000000000';
     if (state_res.rows.length) {
         last_mine_tx = state_res.rows[0].last_mine_tx;
     }
-
     return last_mine_tx;
 };
 
@@ -325,7 +284,7 @@ const doWorkWorker = async (mining_params) => {
             hash = null;
         }
 
-        if (itr >= 1000000 * 8) break;
+        if (itr >= 1000000 * 7) break;
     }
     if (!isMining) {
         const mine_work = {
@@ -352,9 +311,6 @@ const doWorkWorker = async (mining_params) => {
 
 const background_mine = async (account, oldNonce) => {
     return new Promise(async (resolve, reject) => {
-        const bagDifficulty = await getBagDifficulty(account);
-        const landDifficulty = await getLandDifficulty(account);
-        const difficulty = bagDifficulty + landDifficulty;
         const last_mine_tx = await lastMineTx(mining_account, account, wax.api.rpc);
         doWorkWorker({
             mining_account,
@@ -384,16 +340,6 @@ async function claim(account, nonce) {
             },],
             data: mine_data,
         },];
-        // let result = await timeout(95000, wax.api.transact({
-        //     actions,
-        // }, {
-        //     blocksBehind: 3,
-        //     expireSeconds: 90,
-        // })).then(function (response) {
-        //     return response;
-        // }).catch((err) => {
-        //     throw err;
-        // });
 
         let result = await timeout(150000, wax.api.transact({
             actions,
@@ -701,34 +647,6 @@ const lazy_server_mine = async (account) => {
     }
 
 };
-const getPlayerData = async (account) => {
-    let eos_rpc = wax.api.rpc;
-    const player_res = await eos_rpc.get_table_rows({
-        code: federation_account,
-        scope: federation_account,
-        table: 'players',
-        lower_bound: account,
-        upper_bound: account
-    });
-
-    const player_data = {
-        tag: '',
-        avatar: ''
-    };
-
-    if (player_res.rows.length) {
-        player_data.tag = player_res.rows[0].tag;
-        if (player_res.rows[0].avatar > 0) {
-            const asset = await get_assets(player_res.rows[0].avatar);
-            if (asset) {
-                player_data.avatar = asset;
-            }
-        }
-    }
-
-    return player_data;
-};
-
 async function updateBag(userAccount) {
     let bag = await fetch(`${atomic_api[getRandom(0, atomic_api.length)]}/atomicassets/v1/assets?collection_name=alien.worlds&owner=${userAccount}&limit=100&schema_name=tool.worlds`,
         {

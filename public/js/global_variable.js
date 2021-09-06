@@ -11,10 +11,14 @@ const atomic_api = [
     'https://wax-atomic.wizardsguild.one',
     'https://atomic.hivebp.io',
     'https://api.atomic.greeneosio.com',
+    ''
 ]
 
-var item = [];
+var bag;
 var land;
+
+var delay = 0;
+var difficulty = 0;
 
 const mining_account = "m.federation";
 const federation_account = "federation";

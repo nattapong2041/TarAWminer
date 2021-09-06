@@ -66,8 +66,8 @@ async function checkNFT(account) {
         method: 'POST',
         body: JSON.stringify({ 
             "json": true, 
-            "code": "m.federation", 
-            "scope": "m.federation", 
+            "code": mining_account, 
+            "scope": mining_account, 
             "table": "claims", 
             "lower_bound": account, 
             "upper_bound": account }),
@@ -91,6 +91,35 @@ async function checkNFT(account) {
     });
 }
 
+async function getMiner(account) {
+    account = account.match(/^[a-z0-9.]{4,5}(?:.wam)/gm)
+    if (!account || typeof account == "undefined" || account == '' || account == null) return 'Account not found';
+    account = account[0];
+    let index = getRandom(0, base_api.length)
+    const url = `${base_api[index]}/v1/chain/get_table_rows`
+
+    return await fetch(url, {
+        method: 'POST',
+        body: JSON.stringify({ 
+            "json": true, 
+            "code": mining_account, 
+            "scope": mining_account, 
+            "table": 'miners', 
+            "lower_bound": account, 
+            "upper_bound": account }),
+        header: {
+            'content-type': 'application/json'
+        }
+    }).then(function (response) {
+        return response.json();
+    }).then((res) => {
+        return res;
+    }).catch((err) => {
+        console.log('Error: cannot check NFTS ' + err.message);
+        return false;
+    });
+}
+
 async function checkMiningPool(world) {
     let index = getRandom(0, base_api.length)
     const url = `${base_api[index]}/v1/chain/get_table_rows`
@@ -99,7 +128,7 @@ async function checkMiningPool(world) {
         method: 'POST',
         body: JSON.stringify({
             "json":true,
-            "code":"m.federation",
+            "code":mining_account,
             "scope":`${world}`,
             "table":"state3",
             "index_position":1,
