@@ -151,7 +151,7 @@ async function run() {
     //fetch account data
     if(localStorage.getItem('cooldown')==null || localStorage.getItem('difficulty') ==null){
         await fetchMiningData();
-        saveConfig();
+        
     }else{
         delay = localStorage.getItem('cooldown') * 60 ?? 10 * 60;
         difficulty = localStorage.getItem('difficulty') ?? 0;
@@ -162,7 +162,6 @@ async function run() {
     //mine
     onclickRun();
     document.getElementById("run_btn").disabled = false
-
 }
 
 //*login
@@ -193,15 +192,16 @@ async function fetchMiningData() {
         const land_params = getLandMiningParams(land);
         delay = params.delay * (land_params.delay / 10);
         difficulty = params.difficulty + land_params.difficulty;
-        document.getElementById("cooldown").value = delay / 60;
-        document.getElementById("difficulty").value = difficulty;
         console.log(`Fetching complete cooldown:${delay} sec difficulty:${difficulty}`)
+        saveConfig();
     } catch (error) {
         console.log('Cannnot fetch minging data: ' + error);
         difficulty = 0;
         delay = 600;
         console.log(`Force data to delay:${delay} sec difficulty:${difficulty}`)
     }
+    document.getElementById("cooldown").value = delay / 60;
+    document.getElementById("difficulty").value = difficulty;
 }
 //*mining
 async function runBot() {
