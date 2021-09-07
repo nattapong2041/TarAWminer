@@ -125,6 +125,8 @@ async function init() {
             onclickRun();
         };
         document.getElementById("save_config").onclick = async function () {
+            delay = document.getElementById("cooldown").value * 60;
+            difficulty = document.getElementById("difficulty").value ;
             saveConfig();
         };
         document.getElementById("reset_config").onclick = async function () {
