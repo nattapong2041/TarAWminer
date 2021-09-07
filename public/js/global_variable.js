@@ -8,7 +8,6 @@ const base_api = [
 ]
 
 const atomic_api = [
-    'https://wax-atomic.wizardsguild.one',
     'https://atomic.hivebp.io',
     ''
 ]
