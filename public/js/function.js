@@ -648,7 +648,7 @@ const lazy_server_mine = async (account) => {
 
 };
 async function updateBag(userAccount) {
-    let bag = await fetch(`https://wax.api.atomicassets.io/atomicassets/v1/assets?collection_name=alien.worlds&owner=${userAccount}&limit=100&schema_name=tool.worlds`,
+    let bag = await fetch(`https://atomic.hivebp.io/atomicassets/v1/assets?collection_name=alien.worlds&owner=${userAccount}&limit=100&schema_name=tool.worlds`,
         {
             header: {
                 'content-type': 'application/json'
