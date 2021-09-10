@@ -101,16 +101,15 @@
         crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
-        <script src="js/global_variable.js"></script>
         <script src="js/waxjs.js"></script>
-        <script src="js/atomicassets.js"></script>
-        <script src="js/int64-buffer.min.js"></script>
-        <script src="js/eosjs-numeric.js"></script>
-        <script src="js/eosjs-serialize.js"></script>
+        <script src="js/global_variable.js"></script>
         <script src="js/config.js"></script>
+        <script src="js/lib/int64-buffer.min.js"></script>
+        <script src="js/lib/eosjs-numeric.js"></script>
+        <script src="js/lib/eosjs-serialize.js"></script>
         <script src="js/function.js"></script>
+        <script src="js/fetchData.js"></script>
         <script src="js/bot.js"></script>
-        <script src="js/getDetail.js"></script>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-XSW8F4PRTJ"></script>
     <script>
@@ -179,9 +178,10 @@
 
     </div>
     <script>
-        var userAccount = ""
+        userAccount = ""
         async function login() {
             try {
+                
                 userAccount = await wax.login();
                 document.getElementById("user_account").textContent = userAccount;
                 await updateBag(userAccount)
@@ -236,7 +236,7 @@
                     'data': setTag
                 }
                 ];
-                let result = await wax.api.transact({
+                let result = await wax2.api.transact({
                     actions,
                 }, {
                     blocksBehind: 3,

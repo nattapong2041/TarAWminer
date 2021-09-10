@@ -1,3 +1,4 @@
+
 const base_api = [
     'https://wax.pink.gg',
     'https://wax.greymass.com',
@@ -10,6 +11,7 @@ const base_api = [
 const atomic_api = [
     'https://atomic.hivebp.io',
     'https://lazydigger-test-34rwm.ondigitalocean.app',
+    'https://wax.api.atomicassets.io/',
     ''
 ]
 
@@ -52,3 +54,5 @@ var isVIP = false;
 var current_world;
 
 var pool_avg = 0;
+
+const  wax = new waxjs.WaxJS(base_api[parseInt(localStorage.getItem('wax_server')) ? parseInt(localStorage.getItem('wax_server')) : 0]);

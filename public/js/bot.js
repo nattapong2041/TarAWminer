@@ -1,9 +1,8 @@
-var wax;
+
 var isNeedToFetchDelay = true;
 //*init
 async function init() {
     try {
-        wax = new waxjs.WaxJS(base_api[parseInt(localStorage.getItem('wax_server')) ? parseInt(localStorage.getItem('wax_server')) : 0]);
         document.getElementById("update_detail").onclick = async function () {
             try {
                 updateTLM()
