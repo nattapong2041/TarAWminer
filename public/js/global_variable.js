@@ -10,6 +10,7 @@ const base_api = [
 
 const atomic_api = [
     'https://atomic.hivebp.io',
+    'https://wax.api.atomicassets.io/',
     ''
 ]
 
