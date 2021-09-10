@@ -1,3 +1,4 @@
+
 const base_api = [
     'https://wax.pink.gg',
     'https://wax.greymass.com',
@@ -51,3 +52,5 @@ var isVIP = false;
 var current_world;
 
 var pool_avg = 0;
+
+const  wax = new waxjs.WaxJS(base_api[parseInt(localStorage.getItem('wax_server')) ? parseInt(localStorage.getItem('wax_server')) : 0]);
