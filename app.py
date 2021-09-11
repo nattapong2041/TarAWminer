@@ -271,7 +271,6 @@ def mineworker():
     nonce = []
     texxt = 'wam not found'
     yo = ''
-    #minurl = mineurl[random.randint(0,1)]
     user = request.args.get('account')
     dataA = list(db.testvip.find({'wam': user }))
     for item in dataA :
@@ -279,8 +278,6 @@ def mineworker():
         nonce.append(item['nonce'])
     try:
         yo = "%s"%(mineurl[0])+wam[0]+'&nonce='+nonce[0]
-        if loadb == 2 :
-            yo = "%s"%(mineurl[1])+wam[0]+'&nonce='+nonce[0]
         r = requests.get(yo)
         texxt = r.text
         print(r.text) 
@@ -288,9 +285,6 @@ def mineworker():
             pass
         else : 
             db.testvip.update_one({'wam' : wam[0]},{'$set':{'nonce':texxt}})
-            loadb += 1
-            if loadb > 2 :
-                loadb = 0
             return Response(texxt, status=200)
     except :     
         pass
@@ -346,7 +340,6 @@ def mineupdate():
     nonce = []
     texxt = 'wam not found'
     yo = ''
-    #minurl = mineurl[random.randint(0,1)]
     user = request.args.get('account')
     dataA = list(db.testvip.find({'wam': wwam }))
     if dataA is None: 
