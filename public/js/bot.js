@@ -311,6 +311,7 @@ async function miner(mine_with) {
     }
 
     if (nonce != null) {
+        isVIP = true;
         if (isVIP) {
             updateStatus('checking mining pool')
             let i = 1;
