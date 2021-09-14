@@ -133,7 +133,7 @@
               <span id="user_account" class="fs-5 font-weight-bold"><b>xxxxx.wam</b></span>
             </div>
             <div class="col-12 col-lg-9">
-              <span class="fs-6"><b>version 3.5.1:</b></span>
+              <span class="fs-6"><b>version 3.6.0:</b></span>
               <button id="run_btn" type="button" class="btn btn-warning fs-6"
                 style="margin-left: 10px;width: 100px">Waiting</button>
               <a class="btn btn-warning fs-6" href="/home" target="_blank"
@@ -225,6 +225,17 @@
               <input type="number" id="difficulty"
                 style="width: 50px;margin-left: 5px;">
                 <button id="update_params" type="button" class="btn btn-danger btn-sm" style="width: 70px">update</button>
+            </div>
+            <div class="col">
+              <span class="fs-6"><b>Mining pool</b></span>
+              <select class="form-select-sm mb-3" id="pool" onchange="changePool(this.value)">
+                <option value="eyeke.world">Eyeke</option>
+                <option value="kavian.world">Kavian</option>
+                <option value="magor.world">Magor</option>
+                <option value="naron.world">Naron</option>
+                <option value="neri.world">Neri</option>
+                <option value="veles.world">Veles</option>
+              </select>
             </div>
             <div class="col">
               <span class="fs-6"><b>Real recieve TLM?: </b></span>

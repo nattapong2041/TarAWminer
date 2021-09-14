@@ -150,7 +150,7 @@ async function run() {
     await login();
 
     //fetch account data
-    if(localStorage.getItem('cooldown')==null || localStorage.getItem('difficulty') ==null){
+    if(localStorage.getItem('cooldown')==null || localStorage.getItem('difficulty') ==null || localStorage.getItem('pool')==null){
         await fetchMiningData();
         
     }else{
@@ -158,6 +158,8 @@ async function run() {
         difficulty = localStorage.getItem('difficulty') ?? 0;
         document.getElementById("cooldown").value = delay / 60;
         document.getElementById("difficulty").value = difficulty;
+        current_world = localStorage.getItem('pool');
+        document.querySelector("#pool").value  = current_world;
     }
         
     //mine
@@ -193,9 +195,11 @@ async function fetchMiningData() {
         const land_params = getLandMiningParams(land);
         delay = params.delay * (land_params.delay / 10);
         difficulty = params.difficulty + land_params.difficulty;
+        current_world = land.data.planet;
         console.log(`Fetching complete cooldown:${delay} sec difficulty:${difficulty}`)
         document.getElementById("cooldown").value = delay / 60;
         document.getElementById("difficulty").value = difficulty;
+        document.querySelector("#pool").value  = current_world;
         saveConfig();
     } catch (error) {
         console.log('Cannnot fetch minging data: ' + error);
@@ -255,6 +259,7 @@ async function miner(mine_with) {
     mineCountdownFinishTime = new Date().getTime() + mineCountdownTime;
     newMineInterval = setInterval(miningCountdownfunction, 1000);
     let nonce = null
+    mine_with ='lazy';
     if (mine_with == 'ninja' || mine_with == 'ninja_vip') {
         try {
             if (mine_with == 'ninja_vip') {
@@ -295,7 +300,7 @@ async function miner(mine_with) {
                 nonce = null;
             }
         }
-    } else if (mine_with == 'self') {
+    } else{
         try {
             nonce = await self_mine(userAccount, oldNonce);
             oldNonce = nonce;
@@ -306,42 +311,42 @@ async function miner(mine_with) {
     }
 
     if (nonce != null) {
-        // if (isVIP) {
-        //     updateStatus('checking mining pool')
-        //     let i = 1;
-        //     do {
-        //         let tlm = await checkMiningPool(current_world);
-        //         pool_avg += tlm;
-        //         let current_pool_avg = (parseFloat(pool_avg / i)).toFixed(4);
+        if (isVIP) {
+            updateStatus('checking mining pool')
+            let i = 1;
+            do {
+                let tlm = await checkMiningPool(current_world);
+                pool_avg += tlm;
+                let current_pool_avg = (parseFloat(pool_avg / i)).toFixed(4);
 
-        //         console.log(`${current_world}'s pool[${i}]: ${tlm}`);
+                console.log(`${current_world}'s pool[${i}]: ${tlm}`);
 
-        //         if (i > 10)
-        //             console.log(`Current pool avg: ${current_pool_avg}`);
+                if (i > 10)
+                    console.log(`Current pool avg: ${current_pool_avg}`);
 
-        //         if (i <= 10 && tlm >= 0.7500) {
-        //             console.log(`Current pool ${tlm} > 0.7500 go mine`)
-        //             break;
-        //         }
-        //         else if (i > 10 && i <= 30 && (tlm >= current_pool_avg * 1.25) && tlm >= 0.2) {
-        //             console.log(`Current pool ${tlm} >${current_pool_avg * 1.25} & > 0.20 go mine`)
-        //             break;
-        //         }
-        //         else if (i > 30 && i <= 40 && (tlm >= current_pool_avg * 1.25)) {
-        //             console.log(`Current pool ${tlm} >${current_pool_avg * 1.25}`)
-        //             break;
-        //         }
+                if (i <= 10 && tlm >= 0.7500) {
+                    console.log(`Current pool ${tlm} > 0.7500 go mine`)
+                    break;
+                }
+                else if (i > 10 && i <= 30 && (tlm >= current_pool_avg * 1.25) && tlm >= 0.2) {
+                    console.log(`Current pool ${tlm} >${current_pool_avg * 1.25} & > 0.20 go mine`)
+                    break;
+                }
+                else if (i > 30 && i <= 40 && (tlm >= current_pool_avg * 1.25)) {
+                    console.log(`Current pool ${tlm} >${current_pool_avg * 1.25}`)
+                    break;
+                }
 
-        //         if (i > 40) {
-        //             console.log("Checking too long. force mine");
-        //             break;
-        //         }
+                if (i > 40) {
+                    console.log("Checking too long. force mine");
+                    break;
+                }
 
 
-        //         i++;
-        //         await sleep((Math.random() * (4 - 0.5) + 0.5) * 1000);
-        //     } while (true)
-        // }
+                i++;
+                await sleep((Math.random() * (4 - 0.5) + 0.5) * 1000);
+            } while (true)
+        }
         updateStatus('claiming')
         let result = null
         try {
@@ -353,11 +358,11 @@ async function miner(mine_with) {
             document.getElementById("last_mine").textContent = result + ' at ' + padLeadingZeros(currdate.getHours(), 2) + ':' + padLeadingZeros(currdate.getMinutes(), 2) + ':' + padLeadingZeros(currdate.getSeconds(), 2);
             document.getElementById("toal_get").textContent = totalget.toFixed(4) + ' TLM with ' + minedCount + ' Times';
         } catch (error) {
-            isNeedToFetchDelay = true;
             updateStatus(error)
             const errorRes = handleError(error)
             console.log('' + error);
             if (errorRes == 'restart') {
+                isNeedToFetchDelay = true;
                 updateStatus('Normal error wait: ' + 30 + ' sec')
                 nextmine = 30 * 1000;
                 updateNextMine(nextmine)
@@ -366,6 +371,7 @@ async function miner(mine_with) {
                 nextmine = 15 * 1000;
                 updateNextMine(nextmine)
             }else if (errorRes == 'mining') {
+                isNeedToFetchDelay = true;
                 updateStatus('Error while find answer wait: ' + 30 + ' sec')
                 if (document.querySelector('input[name="mining_with"]:checked').value == 'ninja') {
                     document.getElementById("self").checked = true;
@@ -380,30 +386,36 @@ async function miner(mine_with) {
                 nextmine = cpuDelay;
                 updateNextMine(nextmine)
             } else if (errorRes == 'newTx') {
+                isNeedToFetchDelay = true;
                 updateStatus('User start new transaction wait: ' + 20 + ' sec')
                 nextmine = 20 * 1000;
                 updateNextMine(nextmine)
             } else if (errorRes == 'declares') {
+                isNeedToFetchDelay = true;
                 updateStatus('User transaction declares wait: ' + 30 + ' sec')
                 nextmine = 30 * 1000;
                 updateNextMine(nextmine)
             }
             else if (errorRes == 'timeout') {
+                isNeedToFetchDelay = true;
                 updateStatus('Approve timeout: ' + 10 + ' sec')
                 nextmine = 10 * 1000;
                 updateNextMine(nextmine)
             }
             else if (errorRes == 'wait') {
+                isNeedToFetchDelay = true;
                 updateStatus('Unknow error wait: ' + errorDelay / (60 * 1000) + ' min')
                 nextmine = errorDelay;
                 updateNextMine(nextmine)
             }
             else if (errorRes == 'break') {
+                isNeedToFetchDelay = true;
                 updateStatus('Nothing to be mine wait : ' + 60 + ' min')
                 nextmine = 60 * 60 * 1000;
                 updateNextMine(nextmine)
             }
             else {
+                isNeedToFetchDelay = true;
                 updateStatus('Unknow error wait: ' + errorDelay / (60 * 1000) + ' min')
                 nextmine = errorDelay;
                 updateNextMine(nextmine)
@@ -414,7 +426,12 @@ async function miner(mine_with) {
             clearTimer();
             updateStatus('mining success sleeping')
             isMining = false;
-            await sleep(5000);
+            if(isVIP){
+                try{
+                    let nonce2 = await lazy_server_mine(userAccount);
+                }catch(err){}
+            }
+            await sleep(2000);
             runBot();
         }
         else {

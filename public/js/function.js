@@ -151,6 +151,10 @@ const getNextMineDelay = async (account) => {
     return ms_until_mine
 };
 
+function changePool(pool) {
+    localStorage.setItem('pool', pool)
+}
+
 function changeWaxServer(index) {
     localStorage.setItem('wax_server', index)
     setTimeout((() => { location.reload() }), 500)
@@ -367,7 +371,7 @@ async function claim(account, nonce) {
                     console.log('Get tlm error');
                     tlm = lastTLM;
                 }
-                if (!document.querySelector("#need_real_tlm").checked) throw 'err';
+                //if (!document.querySelector("#need_real_tlm").checked) throw 'err';
                 if (tlmSuccess) {
                     let recieve = (parseFloat(tlm - lastTLM)).toFixed(4);
                     amounts.set(account, recieve.toString() + ' TLM');

@@ -27,6 +27,8 @@ function saveConfig() {
     //* MINING PARAMS
     localStorage.setItem('cooldown', document.getElementById("cooldown").value);
     localStorage.setItem('difficulty', document.getElementById("difficulty").value);
+    localStorage.setItem('pool', document.getElementById("pool").value);
+
 }
 
 function loadConfig() {
@@ -104,6 +106,7 @@ function resetConfig() {
     document.getElementById("auto_transfer_memo").value = null;
     document.getElementById("cooldown").value = 10;
     document.getElementById("difficulty").value = 0;
+    document.getElementById("pool").value = 'neri.world';
 }
 
 function copyConfig() {
@@ -125,6 +128,7 @@ function copyConfig() {
         auto_transfer_memo: ''+document.getElementById("auto_transfer_memo").value, 
         cooldown: ''+document.getElementById("cooldown").value, 
         difficulty: ''+document.getElementById("difficulty").value, 
+        pool: ''+document.getElementById("pool").value, 
     };
     let dummy = document.createElement("textarea");
     document.body.appendChild(dummy);
@@ -195,6 +199,10 @@ function setConfig() {
     if (config.difficulty != null ) {
         document.getElementById("difficulty").value = config.difficulty;
         difficulty = config.difficulty;
+    }
+    if (config.pool != null ) {
+        current_world = config.pool;
+        document.querySelector("#pool").value  = current_world;
     }
     saveConfig();
 }

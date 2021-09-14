@@ -49,7 +49,7 @@ var nftInterval;
 var userAccount = "";
 var oldNonce;
 var isVIP = false;
-var current_world;
+var current_world = '';
 
 var pool_avg = 0;
 
