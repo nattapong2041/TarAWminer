@@ -15,16 +15,12 @@
     "babel-cli": "^6.26.0",
     "babel-preset-es2015": "^6.24.1",
     "body-parser": "^1.19.0",
-    "cloudflare-scraper": "^1.0.8",
-    "cloudscraper": "^4.6.0",
     "cors": "^2.8.5",
     "ejs": "^3.1.6",
     "express": "^4.17.1",
     "express-session": "^1.17.2",
     "node-worker-threads-pool": "^1.5.0",
     "path": "^0.12.7",
-    "puppeteer": "^10.2.0",
-    "request": "^2.88.2",
     "serve-favicon": "^2.5.0"
   },
   "devDependencies": {
