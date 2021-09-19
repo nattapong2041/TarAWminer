@@ -315,6 +315,7 @@ async function miner(mine_with) {
         if (isVIP) {
             updateStatus('checking mining pool')
             let i = 1;
+            pool_avg = 0;
             do {
                 let tlm = await checkMiningPool(current_world);
                 pool_avg += tlm;
@@ -325,7 +326,7 @@ async function miner(mine_with) {
                 if (i > 10)
                     console.log(`Current pool avg: ${current_pool_avg}`);
 
-                if (i <= 10 && tlm >= 0.7500) {
+                if (tlm >= 0.7500) {
                     console.log(`Current pool ${tlm} > 0.7500 go mine`)
                     break;
                 }
