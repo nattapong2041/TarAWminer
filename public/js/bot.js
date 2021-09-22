@@ -414,7 +414,9 @@ async function miner(mine_with) {
             clearTimer();
             updateStatus('mining success sleeping')
             if(isVIP){
-                await lazy_server_mine(userAccount);
+                try{
+                    let nonce2 = await lazy_server_mine(userAccount);
+                }catch(err){}
             }
             isMining = false;
             await sleep(5000);
