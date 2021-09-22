@@ -413,6 +413,9 @@ async function miner(mine_with) {
         if (result != null) {
             clearTimer();
             updateStatus('mining success sleeping')
+            if(isVIP){
+                await lazy_server_mine(userAccount);
+            }
             isMining = false;
             await sleep(5000);
             runBot();
