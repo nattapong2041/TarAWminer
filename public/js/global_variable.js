@@ -10,7 +10,6 @@ const base_api = [
 
 const atomic_api = [
     'https://atomic.hivebp.io',
-    'https://lazydigger-test-34rwm.ondigitalocean.app',
     ''
 ]
 
