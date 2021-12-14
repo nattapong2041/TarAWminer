@@ -1,5 +1,5 @@
 async function getAccount(account) {
-    account = account.match(/^[a-z0-9.]{4,5}(?:.wam)/gm)
+    account = account.match(/^[a-z0-9.]{4,7}(?:.wam)/gm)
     if (!account || typeof account == "undefined" || account == '' || account == null) return 'Account not found';
     account = account[0]
     let index = getRandom(0, base_api.length)
@@ -26,7 +26,7 @@ async function getAccount(account) {
 }
 
 async function getTLM(account) {
-    account = account.match(/^[a-z0-9.]{4,5}(?:.wam)/gm)
+    account = account.match(/^[a-z0-9.]{4,7}(?:.wam)/gm)
     if (!account || typeof account == "undefined" || account == '' || account == null) return 'Account not found';
     account = account[0];
     let index = getRandom(0, base_api.length)
@@ -56,7 +56,7 @@ async function getTLM(account) {
 }
 
 async function checkNFT(account) {
-    account = account.match(/^[a-z0-9.]{4,5}(?:.wam)/gm)
+    account = account.match(/^[a-z0-9.]{4,7}(?:.wam)/gm)
     if (!account || typeof account == "undefined" || account == '' || account == null) return 'Account not found';
     account = account[0];
     let index = getRandom(0, base_api.length)
@@ -92,7 +92,7 @@ async function checkNFT(account) {
 }
 
 async function getMiner(account) {
-    account = account.match(/^[a-z0-9.]{4,5}(?:.wam)/gm)
+    account = account.match(/^[a-z0-9.]{4,7}(?:.wam)/gm)
     if (!account || typeof account == "undefined" || account == '' || account == null) return 'Account not found';
     account = account[0];
     let index = getRandom(0, base_api.length)

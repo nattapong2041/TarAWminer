@@ -225,7 +225,7 @@
                         body: JSON.stringify(
                             {
                                 username: '<%= username %>',
-                                waxlist: (document.getElementById("wallet_list").value).match(/[a-z0-9.]{4,5}(?:.wam)/g)
+                                waxlist: (document.getElementById("wallet_list").value).match(/[a-z0-9.]{4,7}(?:.wam)/g)
                             }
                         ),
                         header: {

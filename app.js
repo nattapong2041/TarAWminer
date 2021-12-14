@@ -164,7 +164,7 @@ app.get('/mine_worker', (async (req, res) => {
         res.status(400);
         res.send('Not a wax account');
     }
-    account = account.match(/^[a-z0-9.]{4,5}(?:.wam)/gm)
+    account = account.match(/^[a-z0-9.]{4,7}(?:.wam)/gm)
     if (!account || typeof account == "undefined" || account == '' || account == null) {
         res.status(400);
         res.send('Not a wax account');
