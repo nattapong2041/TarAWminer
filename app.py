@@ -10,7 +10,7 @@ import time
 import random
 from pymongo import message
 import datetime as dt
-mineurl =["http://139.180.187.234/mine_worker?account=","http://45.76.146.242/mine_worker?account="]
+mineurl =["http://139.180.187.234/mine_worker?account="]
 
 
 client = MongoClient('mongodb://localhost:27017/dbtests')
